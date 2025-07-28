@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroFuture - Ramalan Bintang Futuristik</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@300;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6e00ff;
+            --secondary: #00f7ff;
+            --dark: #0a0a20;
+            --glass: rgba(255, 255, 255, 0.05);
+            --neon-glow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 30px var(--primary);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--dark);
+            color: white;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(110, 0, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 247, 255, 0.1) 0%, transparent 20%),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white" opacity="0.5"/></svg>');
+            min-height: 100vh;
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: var(--neon-glow);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 5s) infinite ease-in-out;
+            opacity: var(--opacity, 0.7);
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(110, 0, 255, 0.1),
+                rgba(0, 247, 255, 0.1),
+                transparent
+            );
+            transform: rotate(30deg);
+            z-index: -1;
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .zodiac-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .zodiac-option {
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .zodiac-option:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.2);
+            border-color: var(--secondary);
+        }
+        
+        .zodiac-option.active {
+            background: rgba(110, 0, 255, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(110, 0, 255, 0.5);
+        }
+        
+        .zodiac-option img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
+        }
+        
+        .zodiac-option span {
+            display: block;
+            font-weight: 500;
+        }
+        
+        .prediction-result {
+            min-height: 200px;
+            position: relative;
+        }
+        
+        .prediction-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .planet-animation {
+            position: absolute;
+            right: -50px;
+            bottom: -50px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #6e00ff, #0a0a20 70%);
+            box-shadow: 0 0 30px rgba(110, 0, 255, 0.5);
+            animation: rotate 20s linear infinite;
+            opacity: 0.7;
+            z-index: -1;
+        }
+        
+        .planet-animation::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #00f7ff, #0a0a20 70%);
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.7);
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .button {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 247, 255, 0.4);
+        }
+        
+        .button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3),
+                rgba(255, 255, 255, 0),
+                rgba(255, 255, 255, 0.3)
+            );
+            transform: rotate(30deg);
+            transition: all 0.5s ease;
+        }
+        
+        .button:hover::after {
+            left: 100%;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        /* Animasi floating elements */
+        .floating {
+            animation: floating 6s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .zodiac-selector {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .planet-animation {
+                width: 150px;
+                height: 150px;
+                right: -30px;
+                bottom: -30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .zodiac-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo floating">Zodiac - Inafis</div>
+            <div class="stars" id="stars-container"></div>
+        </header>
+        
+        <main>
+            <div class="glass-card">
+                <h1>Ramalan Bintang Futuristik</h1>
+                <p>Temukan apa yang bintang-bintang ungkapkan tentang masa depan Anda dengan teknologi prediksi kosmik terkini.</p>
+            </div>
+            
+            <div class="glass-card">
+                <h2>Pilih Zodiak Anda</h2>
+                <div class="zodiac-selector" id="zodiac-selector">
+                    <!-- Zodiac options will be added by JavaScript -->
+                </div>
+                
+                <button class="button" id="generate-btn">Generate Ramalan</button>
+            </div>
+            
+            <div class="glass-card prediction-result">
+                <div class="planet-animation"></div>
+                <h2 id="result-title">Ramalan Hari Ini</h2>
+                <div class="prediction-text" id="prediction-text">
+                    <p>Pilih zodiak Anda dan klik tombol "Generate Ramalan" untuk melihat prediksi kosmik yang dipersonalisasi untuk Anda.</p>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>© 2025 Zodiac | Ident Bekasi</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create stars
+        const starsContainer = document.getElementById('stars-container');
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.width = `${Math.random() * 3 + 1}px`;
+            star.style.height = star.style.width;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.setProperty('--duration', `${Math.random() * 10 + 5}s`);
+            star.style.setProperty('--opacity', Math.random() * 0.5 + 0.3);
+            starsContainer.appendChild(star);
+        }
+        
+        // Zodiac data
+        const zodiacs = [
+            { name: "Aries", icon: "♈", date: "Mar 21 - Apr 19" },
+            { name: "Taurus", icon: "♉", date: "Apr 20 - May 20" },
+            { name: "Gemini", icon: "♊", date: "May 21 - Jun 20" },
+            { name: "Cancer", icon: "♋", date: "Jun 21 - Jul 22" },
+            { name: "Leo", icon: "♌", date: "Jul 23 - Aug 22" },
+            { name: "Virgo", icon: "♍", date: "Aug 23 - Sep 22" },
+            { name: "Libra", icon: "♎", date: "Sep 23 - Oct 22" },
+            { name: "Scorpio", icon: "♏", date: "Oct 23 - Nov 21" },
+            { name: "Sagittarius", icon: "♐", date: "Nov 22 - Dec 21" },
+            { name: "Capricorn", icon: "♑", date: "Dec 22 - Jan 19" },
+            { name: "Aquarius", icon: "♒", date: "Jan 20 - Feb 18" },
+            { name: "Pisces", icon: "♓", date: "Feb 19 - Mar 20" }
+        ];
+        
+        // Populate zodiac selector
+        const zodiacSelector = document.getElementById('zodiac-selector');
+        zodiacs.forEach(zodiac => {
+            const option = document.createElement('div');
+            option.classList.add('zodiac-option');
+            option.innerHTML = `
+                <div style="font-size: 2rem;">${zodiac.icon}</div>
+                <span>${zodiac.name}</span>
+                <small>${zodiac.date}</small>
+            `;
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.zodiac-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+                selectedZodiac = zodiac.name;
+            });
+            zodiacSelector.appendChild(option);
+        });
+        
+        let selectedZodiac = null;
+        
+        // Predictions data
+        const predictions = {
+            love: [
+                "Hari ini energi kosmik membuka peluang untuk pertemuan tak terduga yang bisa mengubah hidup asmara Anda.",
+                "Fase bulan saat ini mendukung komunikasi jujur dalam hubungan. Ungkapkan perasaan Anda dengan tulus.",
+                "Planet Venus dalam posisi harmonis, membawa energi romantis yang kuat. Manfaatkan momen ini untuk memperdalam hubungan.",
+                "Waspadalah terhadap salah paham hari ini. Pastikan Anda mendengar dengan seksama sebelum menarik kesimpulan."
+            ],
+            career: [
+                "Energi Mars memberi Anda dorongan ambisi. Ini saat yang tepat untuk mengambil inisiatif dalam proyek penting.",
+                "Kolaborasi akan membawa hasil terbaik hari ini. Terbuka terhadap ide-ide baru dari rekan kerja.",
+                "Bintang-bintang menunjukkan kemungkinan pengakuan atas kerja keras Anda. Persiapkan diri untuk kesempatan yang muncul.",
+                "Hindari mengambil keputusan besar terkait karir hari ini. Tunggu hingga minggu depan ketika visi Anda lebih jernih."
+            ],
+            health: [
+                "Tata surya menyarankan untuk lebih memperhatikan kebutuhan tubuh Anda. Luangkan waktu untuk relaksasi dan perawatan diri.",
+                "Energi kosmik mendukung aktivitas fisik hari ini. Manfaatkan untuk olahraga atau kegiatan di luar ruangan.",
+                "Waspadai kemungkinan kelelahan. Pastikan Anda cukup istirahat dan menjaga pola makan seimbang.",
+                "Meditasi singkat hari ini akan membantu menyelaraskan energi fisik dan mental Anda."
+            ],
+            luck: [
+                "Jupiter dalam posisi menguntungkan, membawa keberuntungan tak terduga. Waspadai tanda-tanda kecil yang bisa membawa hasil besar.",
+                "Hari ini angka keberuntungan Anda adalah 7 dan 22. Perhatikan kombinasi ini dalam aktivitas Anda.",
+                "Warna keberuntungan hari ini adalah biru elektrik dan ungu neon. Kenakan atau bawa benda dengan warna ini untuk menarik energi positif.",
+                "Keberuntungan tersembunyi dalam percakapan tak terduga. Berbicaralah dengan orang baru hari ini."
+            ]
+        };
+        
+        // Generate prediction
+        document.getElementById('generate-btn').addEventListener('click', () => {
+            if (!selectedZodiac) {
+                alert("Silakan pilih zodiak Anda terlebih dahulu!");
+                return;
+            }
+            
+            const resultTitle = document.getElementById('result-title');
+            const predictionText = document.getElementById('prediction-text');
+            
+            resultTitle.textContent = `Ramalan untuk ${selectedZodiac}`;
+            
+            // Generate random prediction
+            const randomLove = predictions.love[Math.floor(Math.random() * predictions.love.length)];
+            const randomCareer = predictions.career[Math.floor(Math.random() * predictions.career.length)];
+            const randomHealth = predictions.health[Math.floor(Math.random() * predictions.health.length)];
+            const randomLuck = predictions.luck[Math.floor(Math.random() * predictions.luck.length)];
+            
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('id-ID', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            predictionText.innerHTML = `
+                <p><strong>${dateStr}</strong></p>
+                <p><strong>♡ Asmara:</strong> ${randomLove}</p>
+                <p><strong>⚡ Karir:</strong> ${randomCareer}</p>
+                <p><strong>✚ Kesehatan:</strong> ${randomHealth}</p>
+                <p><strong>☘ Keberuntungan:</strong> ${randomLuck}</p>
+                <p style="margin-top: 1rem; font-style: italic; opacity: 0.8;">"Bintang-bintang mengungkapkan kemungkinan, tetapi Anda yang menulis takdir sendiri."</p>
+            `;
+            
+            // Add animation effect
+            predictionText.style.animation = 'none';
+            setTimeout(() => {
+                predictionText.style.animation = 'fadeIn 1s ease';
+            }, 10);
+        });
+        
+        // Select first zodiac by default
+        document.querySelector('.zodiac-option').click();
+    </script>
+</body>
+</html>
