@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Tabel Data - Inafis Bekasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background: #121212;
+            color: #f97316;
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(30, 30, 30, 0.4);
+            backdrop-filter: saturate(180%) blur(12px);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 32px 0 rgba(249, 115, 22, 0.25);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-black bg-opacity-80 glass shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img alt="Logo INAFIS" class="w-12 h-12 object-contain" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Pusinafis.png" />
+                <h1 class="text-2xl font-semibold text-orange-500">Inafis Bekasi</h1>
+            </div>
+            <a href="menudata.html" class="bg-orange-500 hover:bg-orange-600 text-black font-semibold px-4 py-2 rounded-md transition-colors shadow-md">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali
+            </a>
+        </div>
+    </header>
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
+        <section class="glass p-6">
+            <h2 class="text-xl font-semibold mb-6 text-center text-orange-400">Tabel Estimasi Waktu Kematian – Detail Jam per Jam (0–24 Jam)</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-orange-600">
+                            <th class="px-4 py-2 text-orange-400">Jam</th>
+                            <th class="px-4 py-2 text-orange-400">Livor Mortis</th>
+                            <th class="px-4 py-2 text-orange-400">Rigor Mortis</th>
+                            <th class="px-4 py-2 text-orange-400">Algor Mortis (Penurunan Suhu Tubuh)</th>
+                            <th class="px-4 py-2 text-orange-400">Tanda Tambahan / Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-orange-300">
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">0–1 jam</td>
+                            <td class="px-4 py-2">Belum tampak</td>
+                            <td class="px-4 py-2">Belum terjadi</td>
+                            <td class="px-4 py-2">Penurunan suhu sangat minimal (~0.5°C)</td>
+                            <td class="px-4 py-2">Pupil melebar, refleks hilang</td>
+                        </tr>
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">1–2 jam</td>
+                            <td class="px-4 py-2">Mulai tampak sebagai bercak merah muda</td>
+                            <td class="px-4 py-2">Belum terjadi</td>
+                            <td class="px-4 py-2">Turun ~1°C</td>
+                            <td class="px-4 py-2">Kulit pucat, otot mulai relaks</td>
+                        </tr>
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">2–4 jam</td>
+                            <td class="px-4 py-2">Warna semakin nyata, belum menetap</td>
+                            <td class="px-4 py-2">Awal mula kekakuan (rahang, kelopak mata)</td>
+                            <td class="px-4 py-2">Turun ~2–3°C</td>
+                            <td class="px-4 py-2">Bisa muncul goose bumps (piloereksi) pada kulit</td>
+                        </tr>
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">4–6 jam</td>
+                            <td class="px-4 py-2">Mulai menetap</td>
+                            <td class="px-4 py-2">Menyebar ke leher dan tungkai</td>
+                            <td class="px-4 py-2">Turun ~4–5°C</td>
+                            <td class="px-4 py-2">Mulai bau ringan pada mulut atau anus</td>
+                        </tr>
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">6–8 jam</td>
+                            <td class="px-4 py-2">Menetap, tak berubah saat ditekan</td>
+                            <td class="px-4 py-2">Kekakuan menyebar ke seluruh tubuh</td>
+                            <td class="px-4 py-2">Turun ~6–7°C</td>
+                            <td class="px-4 py-2">Pembentukan gas awal di usus</td>
+                        </tr>
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">8–12 jam</td>
+                            <td class="px-4 py-2">Menetap jelas, warna ungu tua</td>
+                            <td class="px-4 py-2">Maksimal (seluruh tubuh kaku)</td>
+                            <td class="px-4 py-2">Turun ~8–9°C</td>
+                            <td class="px-4 py-2">Perut mulai menggembung, warna kehijauan bisa muncul di perut kanan bawah</td>
+                        </tr>
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">12–16 jam</td>
+                            <td class="px-4 py-2">Menetap penuh</td>
+                            <td class="px-4 py-2">Tetap kaku</td>
+                            <td class="px-4 py-2">Suhu tubuh mendekati suhu lingkungan</td>
+                            <td class="px-4 py-2">Bau busuk mulai lebih jelas</td>
+                        </tr>
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">16–20 jam</td>
+                            <td class="px-4 py-2">Tidak berubah</td>
+                            <td class="px-4 py-2">Mulai mengendur</td>
+                            <td class="px-4 py-2">Hampir setara suhu lingkungan (~ambient)</td>
+                            <td class="px-4 py-2">Pembentukan gas meningkat, wajah membengkak</td>
+                        </tr>
+                        <tr class="border-b border-orange-600/30">
+                            <td class="px-4 py-2">20–24 jam</td>
+                            <td class="px-4 py-2">Tetap, bisa berubah bila ada pergerakan</td>
+                            <td class="px-4 py-2">Rigor mulai menghilang dari rahang</td>
+                            <td class="px-4 py-2">Suhu sama dengan lingkungan</td>
+                            <td class="px-4 py-2">Cairan bisa keluar dari lubang tubuh (mulut, hidung)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-black bg-opacity-80 glass py-4 mt-auto">
+        <div class="max-w-4xl mx-auto px-4 text-center text-orange-500 text-sm">
+            © 2024 Novy25 # Iden Kabupaten Bekasi
+        </div>
+    </footer>
+</body>
+</html>

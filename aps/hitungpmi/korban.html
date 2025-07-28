@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Input Data Korban & TKP - Inafis Bekasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background: #121212;
+            color: #f97316; /* orange-500 */
+            min-height: 100vh;
+        }
+        /* Glass effect container */
+        .glass {
+            background: rgba(30, 30, 30, 0.4);
+            backdrop-filter: saturate(180%) blur(12px);
+            -webkit-backdrop-filter: saturate(180%) blur(12px);
+            border: 1px solid rgba(249, 115, 22, 0.3); /* orange-500 with opacity */
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 32px 0 rgba(249, 115, 22, 0.25);
+        }
+        /* Scrollbar for dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #f97316;
+            border-radius: 10px;
+            border: 2px solid #1e1e1e;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-black bg-opacity-80 glass shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img alt="Logo INAFIS" class="w-12 h-12 object-contain" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Pusinafis.png" />
+                <h1 class="text-2xl font-semibold text-orange-500">Inafis Bekasi</h1>
+            </div>
+            <a href="index.html" class="bg-orange-500 hover:bg-orange-600 text-black font-semibold px-4 py-2 rounded-md transition-colors shadow-md">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali
+            </a>
+        </div>
+    </header>
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
+        <section class="glass p-6 max-w-2xl mx-auto">
+            <h2 class="text-xl font-semibold mb-6 text-center text-orange-400">Input Data Korban & TKP</h2>
+            <form class="space-y-6" id="victimTkpForm">
+                <!-- Data Korban -->
+                <fieldset class="border border-orange-600 p-4 rounded-md">
+                    <legend class="text-lg font-semibold text-orange-400 px-2">Data Korban</legend>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="victimName">Nama Korban (Opsional)</label>
+                        <input class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                               id="victimName" name="victimName" placeholder="Nama Lengkap Korban" type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="victimId">Nomor Identifikasi (Opsional)</label>
+                        <input class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                               id="victimId" name="victimId" placeholder="NIK/Nomor Kasus" type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="victimDescription">Ciri-ciri Khusus / Deskripsi (Opsional)</label>
+                        <textarea class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                  id="victimDescription" name="victimDescription" rows="3" placeholder="Misal: Tato di lengan kanan, tinggi sekitar 170cm"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="causeOfDeath">Penyebab Kematian (Opsional)</label>
+                        <input class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                               id="causeOfDeath" name="causeOfDeath" placeholder="Misal: Luka tusuk, kecelakaan lalu lintas" type="text" />
+                    </div>
+                </fieldset>
+
+                <!-- Data TKP -->
+                <fieldset class="border border-orange-600 p-4 rounded-md">
+                    <legend class="text-lg font-semibold text-orange-400 px-2">Data TKP (Tempat Kejadian Perkara)</legend>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="caseNumber">Nomor Kasus / Laporan (Wajib)</label>
+                        <input class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                               id="caseNumber" name="caseNumber" placeholder="Misal: LP/001/I/2024/RES.BKS" required type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="investigator">Penyidik / Petugas (Wajib)</label>
+                        <input class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                               id="investigator" name="investigator" placeholder="Nama Penyidik" required type="text" />
+                    </div>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="locationAddress">Alamat TKP (Wajib)</label>
+                        <textarea class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                  id="locationAddress" name="locationAddress" rows="2" placeholder="Jalan, Nomor, RT/RW, Kelurahan, Kecamatan, Kota" required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="discoveryDate">Tanggal Penemuan (Wajib)</label>
+                        <input class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                               id="discoveryDate" name="discoveryDate" required type="date" />
+                    </div>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="discoveryTime">Waktu Penemuan (Wajib)</label>
+                        <input class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                               id="discoveryTime" name="discoveryTime" required type="time" />
+                    </div>
+                    <div>
+                        <label class="block text-orange-400 font-medium mb-1" for="sceneDescription">Deskripsi TKP (Opsional)</label>
+                        <textarea class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                                  id="sceneDescription" name="sceneDescription" rows="3" placeholder="Misal: Ditemukan di semak-semak, dekat sungai, kondisi cuaca cerah"></textarea>
+                    </div>
+                </fieldset>
+
+                <div class="flex flex-col sm:flex-row gap-3 mt-4">
+                    <button class="flex-1 w-full bg-orange-600 hover:bg-orange-700 text-black font-semibold py-2 rounded-md transition-colors shadow-md"
+                            type="submit">
+                        <i class="fas fa-save mr-2"></i> Simpan Data
+                    </button>
+                    <button id="printFullReportBtn" type="button"
+                            class="flex-1 w-full bg-transparent border border-orange-600 text-orange-500 font-semibold py-2 rounded-md transition-colors hover:bg-orange-600 hover:text-black shadow-md disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-file-pdf mr-2"></i> Cetak Laporan Lengkap PDF
+                    </button>
+                </div>
+            </form>
+            <div aria-live="polite"
+                 class="mt-8 max-w-md mx-auto bg-black bg-opacity-40 border border-orange-600 rounded-md p-4 text-center font-semibold text-orange-400 text-lg hidden"
+                 id="formResult" role="alert"></div>
+        </section>
+    </main>
+    <footer class="bg-black bg-opacity-80 glass py-4 mt-auto">
+        <div class="max-w-4xl mx-auto px-4 text-center text-orange-500 text-sm select-none">
+            © 2024 Novy25 # Iden Kabupaten Bekasi
+        </div>
+    </footer>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+        const victimTkpForm = document.getElementById("victimTkpForm");
+        const formResultDiv = document.getElementById("formResult");
+        const printFullReportBtn = document.getElementById("printFullReportBtn");
+
+        let victimData = {};
+        let tkpData = {};
+        let deathTimeCalculation = null; // To store the calculation result from index.html
+
+        // Load data from localStorage when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedVictimData = localStorage.getItem('victimData');
+            const savedTkpData = localStorage.getItem('tkpData');
+            const savedDeathTimeCalculation = localStorage.getItem('deathTimeCalculation');
+
+            if (savedVictimData) {
+                victimData = JSON.parse(savedVictimData);
+                for (const key in victimData) {
+                    const input = document.getElementById(key);
+                    if (input) input.value = victimData[key];
+                }
+            }
+            if (savedTkpData) {
+                tkpData = JSON.parse(savedTkpData);
+                for (const key in tkpData) {
+                    const input = document.getElementById(key);
+                    if (input) input.value = tkpData[key];
+                }
+            }
+            if (savedDeathTimeCalculation) {
+                deathTimeCalculation = JSON.parse(savedDeathTimeCalculation);
+                printFullReportBtn.disabled = false; // Enable print button if calculation exists
+            }
+        });
+
+        victimTkpForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            // Collect Victim Data
+            victimData = {
+                victimName: document.getElementById("victimName").value,
+                victimId: document.getElementById("victimId").value,
+                victimDescription: document.getElementById("victimDescription").value,
+                causeOfDeath: document.getElementById("causeOfDeath").value,
+            };
+
+            // Collect TKP Data
+            tkpData = {
+                caseNumber: document.getElementById("caseNumber").value,
+                investigator: document.getElementById("investigator").value,
+                locationAddress: document.getElementById("locationAddress").value,
+                discoveryDate: document.getElementById("discoveryDate").value,
+                discoveryTime: document.getElementById("discoveryTime").value,
+                sceneDescription: document.getElementById("sceneDescription").value,
+            };
+
+            // Basic validation for required TKP fields
+            if (!tkpData.caseNumber || !tkpData.investigator || !tkpData.locationAddress || !tkpData.discoveryDate || !tkpData.discoveryTime) {
+                formResultDiv.textContent = "Harap lengkapi semua data TKP yang wajib diisi.";
+                formResultDiv.classList.remove("hidden", "text-orange-400");
+                formResultDiv.classList.add("text-red-600");
+                printFullReportBtn.disabled = true;
+                return;
+            }
+
+            // Save to localStorage
+            localStorage.setItem('victimData', JSON.stringify(victimData));
+            localStorage.setItem('tkpData', JSON.stringify(tkpData));
+
+            formResultDiv.textContent = "Data korban dan TKP berhasil disimpan!";
+            formResultDiv.classList.remove("hidden", "text-red-600");
+            formResultDiv.classList.add("text-orange-400");
+            printFullReportBtn.disabled = false; // Enable print button after saving
+
+            // Optional: Clear the message after a few seconds
+            setTimeout(() => {
+                formResultDiv.classList.add("hidden");
+            }, 3000);
+        });
+
+        printFullReportBtn.addEventListener("click", () => {
+            if (!deathTimeCalculation || !tkpData.caseNumber) {
+                alert("Harap hitung perkiraan waktu kematian di halaman utama dan simpan data korban/TKP terlebih dahulu.");
+                return;
+            }
+
+            const doc = new jsPDF();
+            const marginLeft = 15;
+            let y = 20;
+
+            // Header
+            doc.setTextColor(249, 115, 22);
+            doc.setFontSize(20);
+            doc.text("LAPORAN LENGKAP INVESTIGASI KEMATIAN", marginLeft, y);
+            y += 10;
+            doc.setFontSize(12);
+            doc.text("Inafis Bekasi - Polres Bekasi", marginLeft, y);
+            y += 12;
+
+            doc.setDrawColor(249, 115, 22);
+            doc.setLineWidth(0.5);
+            doc.line(marginLeft, y, 195, y);
+            y += 10;
+
+            // Data TKP
+            doc.setFontSize(14);
+            doc.setTextColor(249, 115, 22);
+            doc.text("I. Data Tempat Kejadian Perkara (TKP)", marginLeft, y);
+            y += 8;
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Nomor Kasus: ${tkpData.caseNumber}`, marginLeft, y); y += 7;
+            doc.text(`Penyidik/Petugas: ${tkpData.investigator}`, marginLeft, y); y += 7;
+            doc.text(`Alamat TKP: ${tkpData.locationAddress}`, marginLeft, y); y += 7;
+            doc.text(`Tanggal Penemuan: ${tkpData.discoveryDate}`, marginLeft, y); y += 7;
+            doc.text(`Waktu Penemuan: ${tkpData.discoveryTime}`, marginLeft, y); y += 7;
+            if (tkpData.sceneDescription) {
+                doc.text(`Deskripsi TKP: ${tkpData.sceneDescription}`, marginLeft, y); y += 7;
+            }
+            y += 10;
+
+            // Data Korban
+            doc.setFontSize(14);
+            doc.setTextColor(249, 115, 22);
+            doc.text("II. Data Korban", marginLeft, y);
+            y += 8;
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Nama Korban: ${victimData.victimName || '-'}`, marginLeft, y); y += 7;
+            doc.text(`Nomor Identifikasi: ${victimData.victimId || '-'}`, marginLeft, y); y += 7;
+            doc.text(`Jenis Kelamin: ${deathTimeCalculation.gender === 'male' ? 'Laki-laki' : 'Perempuan'}`, marginLeft, y); y += 7;
+            doc.text(`Usia: ${deathTimeCalculation.age} tahun`, marginLeft, y); y += 7;
+            doc.text(`Berat Badan: ${deathTimeCalculation.weight} kg`, marginLeft, y); y += 7;
+            if (victimData.victimDescription) {
+                doc.text(`Ciri-ciri Khusus: ${victimData.victimDescription}`, marginLeft, y); y += 7;
+            }
+            if (victimData.causeOfDeath) {
+                doc.text(`Penyebab Kematian: ${victimData.causeOfDeath}`, marginLeft, y); y += 7;
+            }
+            y += 10;
+
+            // Hasil Perhitungan Waktu Kematian
+            doc.setFontSize(14);
+            doc.setTextColor(249, 115, 22);
+            doc.text("III. Hasil Perkiraan Waktu Kematian", marginLeft, y);
+            y += 8;
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Suhu Tubuh Korban: ${deathTimeCalculation.bodyTemp} °C`, marginLeft, y); y += 7;
+            doc.text(`Suhu Lingkungan: ${deathTimeCalculation.ambientTemp} °C`, marginLeft, y); y += 7;
+            const clothingDesc = {
+                none: "Tidak memakai pakaian", light: "Pakaian ringan", medium: "Pakaian sedang", heavy: "Pakaian tebal"
+            };
+            doc.text(`Jenis Pakaian: ${clothingDesc[deathTimeCalculation.clothing]}`, marginLeft, y); y += 7;
+            doc.text(`Perkiraan Waktu Kematian: ${deathTimeCalculation.timeRounded} jam yang lalu`, marginLeft, y); y += 10;
+
+            // Rumus yang digunakan
+            doc.setFontSize(14);
+            doc.setTextColor(249, 115, 22);
+            doc.text("IV. Rumus yang Digunakan", marginLeft, y);
+            y += 8;
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            const formulaLines = [
+                "Waktu kematian (jam) = (37 - suhu tubuh korban) / (k × (37 - suhu lingkungan))",
+                "",
+                "Dimana:",
+                "- k adalah koefisien berdasarkan jenis pakaian, jenis kelamin, berat badan, dan usia:",
+                "  • Tidak memakai pakaian (none) = 1.0",
+                "  • Pakaian ringan (light) = 0.9",
+                "  • Pakaian sedang (medium) = 0.7",
+                "  • Pakaian tebal (heavy) = 0.5",
+                "  • Penyesuaian jenis kelamin: Perempuan (k * 0.95), Laki-laki (k * 1.05)",
+                "  • Penyesuaian berat badan: <50kg (k * 1.1), >90kg (k * 0.9)",
+                "  • Penyesuaian usia: <10 tahun (k * 1.15), >70 tahun (k * 1.05)",
+                "",
+                `Nilai k yang digunakan: ${deathTimeCalculation.k.toFixed(2)}`,
+            ];
+
+            formulaLines.forEach((line) => {
+                if (y > 280) { // Check for page overflow
+                    doc.addPage();
+                    y = 20;
+                }
+                doc.text(line, marginLeft, y);
+                y += 7;
+            });
+
+            doc.save(`Laporan_Investigasi_Kasus_${tkpData.caseNumber}.pdf`);
+        });
+    </script>
+</body>
+</html>

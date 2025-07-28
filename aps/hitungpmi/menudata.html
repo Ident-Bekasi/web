@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="id">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>Menu Data - Inafis Bekasi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+    <style>
+        body {
+            font-family: "Inter", sans-serif;
+            background: #121212;
+            color: #f97316;
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(30, 30, 30, 0.4);
+            backdrop-filter: saturate(180%) blur(12px);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            border-radius: 0.5rem;
+            box-shadow: 0 8px 32px 0 rgba(249, 115, 22, 0.25);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <header class="bg-black bg-opacity-80 glass shadow-lg">
+        <div class="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img alt="Logo INAFIS" class="w-12 h-12 object-contain" src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Pusinafis.png" />
+                <h1 class="text-2xl font-semibold text-orange-500">Inafis Bekasi</h1>
+            </div>
+            <a href="index.html" class="bg-orange-500 hover:bg-orange-600 text-black font-semibold px-4 py-2 rounded-md transition-colors shadow-md">
+                <i class="fas fa-arrow-left mr-2"></i>Kembali
+            </a>
+        </div>
+    </header>
+    <main class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
+        <section class="glass p-6">
+            <h2 class="text-xl font-semibold mb-6 text-center text-orange-400">Data Tabel Kematian Perjam</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="tabel1.html" class="glass p-6 hover:bg-orange-600/20 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-table text-3xl text-orange-500"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold text-orange-400">Waktu Kematian 0 - 24 Jam</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="tabel2.html" class="glass p-6 hover:bg-orange-600/20 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-table text-3xl text-orange-500"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold text-orange-400">Waktu Kematian 24 - 48 Jam</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="glass p-6 hover:bg-orange-600/20 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-table text-3xl text-orange-500"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold text-orange-400">Waktu Kematian 48 - 72 Jam</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="glass p-6 hover:bg-orange-600/20 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-table text-3xl text-orange-500"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold text-orange-400">Waktu Kematian 72 - 96 Jam</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="glass p-6 hover:bg-orange-600/20 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-table text-3xl text-orange-500"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold text-orange-400">Waktu Kematian 96 - 120 Jam</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="glass p-6 hover:bg-orange-600/20 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <i class="fas fa-table text-3xl text-orange-500"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold text-orange-400">Waktu Kematian 120 - 144 Jam</h3>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    </main>
+    <footer class="bg-black bg-opacity-80 glass py-4 mt-auto">
+        <div class="max-w-4xl mx-auto px-4 text-center text-orange-500 text-sm">
+            © 2024 Novy25 # Iden Kabupaten Bekasi
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<html class="scroll-smooth" lang="id">
+ <head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Inafis Bekasi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background: #121212;
+      color: #f97316; /* orange-500 */
+      min-height: 100vh;
+    }
+    /* Glass effect container */
+    .glass {
+      background: rgba(30, 30, 30, 0.4);
+      backdrop-filter: saturate(180%) blur(12px);
+      -webkit-backdrop-filter: saturate(180%) blur(12px);
+      border: 1px solid rgba(249, 115, 22, 0.3); /* orange-500 with opacity */
+      border-radius: 0.5rem;
+      box-shadow: 0 8px 32px 0 rgba(249, 115, 22, 0.25);
+    }
+    /* Scrollbar for dark theme */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #f97316;
+      border-radius: 10px;
+      border: 2px solid #1e1e1e;
+    }
+  </style>
+ </head>
+ <body class="flex flex-col min-h-screen">
+  <header class="bg-black bg-opacity-80 glass shadow-lg">
+   <div class="max-w-4xl mx-auto px-4 py-5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+     <img
+       alt="Logo INAFIS berwarna oranye dengan latar belakang gelap, bergaya modern dan minimalis"
+       class="w-12 h-12 object-contain"
+       height="48"
+       loading="lazy"
+       src="https://upload.wikimedia.org/wikipedia/commons/f/f1/Pusinafis.png"
+       width="48"
+     />
+     <h1 class="text-2xl font-semibold flex items-center gap-2 text-orange-500">
+      <i class=""></i> Inafis Bekasi
+     </h1>
+    </div>
+    <a href="menudata.html" class="bg-orange-500 hover:bg-orange-600 text-black font-semibold px-4 py-2 rounded-md transition-colors shadow-md">
+     <i class="fas fa-table mr-2"></i>Lihat Data
+    </a>
+   </div>
+  </header>
+  <main class="flex-grow max-w-4xl mx-auto px-4 py-8 w-full">
+   <section class="glass p-6 max-w-md mx-auto">
+    <h2 class="text-xl font-semibold mb-6 text-center text-orange-400">
+     Hitung Perkiraan Waktu Kematian Berdasarkan Suhu Tubuh
+    </h2>
+    <form class="space-y-6" id="deathTimeForm">
+     <div>
+      <label
+        class="block text-orange-400 font-medium mb-1"
+        for="bodyTemp"
+        >Suhu Tubuh Korban (°C)</label
+      >
+      <input
+        class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        id="bodyTemp"
+        max="45"
+        min="20"
+        name="bodyTemp"
+        placeholder="Misal: 30.5"
+        required=""
+        step="0.1"
+        type="number"
+      />
+     </div>
+     <div>
+      <label
+        class="block text-orange-400 font-medium mb-1"
+        for="ambientTemp"
+        >Suhu Lingkungan (°C)</label
+      >
+      <input
+        class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        id="ambientTemp"
+        max="60"
+        min="-20"
+        name="ambientTemp"
+        placeholder="Misal: 25"
+        required=""
+        step="0.1"
+        type="number"
+      />
+     </div>
+     <div>
+      <label
+        class="block text-orange-400 font-medium mb-1"
+        for="clothing"
+        >Jenis Pakaian Korban</label
+      >
+      <select
+        class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        id="clothing"
+        name="clothing"
+        required=""
+      >
+       <option class="text-orange-500" disabled="" selected="" value="">
+        Pilih jenis pakaian
+       </option>
+       <option class="bg-black text-orange-300" value="none">
+        Tidak memakai pakaian
+       </option>
+       <option class="bg-black text-orange-300" value="light">
+        Pakaian ringan (kaos, baju tipis)
+       </option>
+       <option class="bg-black text-orange-300" value="medium">
+        Pakaian sedang (kemeja, jaket tipis)
+       </option>
+       <option class="bg-black text-orange-300" value="heavy">
+        Pakaian tebal (jaket tebal, mantel)
+       </option>
+      </select>
+     </div>
+     <div>
+      <label
+        class="block text-orange-400 font-medium mb-1"
+        for="gender"
+        >Jenis Kelamin Korban</label
+      >
+      <select
+        class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        id="gender"
+        name="gender"
+        required=""
+      >
+       <option class="text-orange-500" disabled="" selected="" value="">
+        Pilih jenis kelamin
+       </option>
+       <option class="bg-black text-orange-300" value="male">
+        Laki-laki
+       </option>
+       <option class="bg-black text-orange-300" value="female">
+        Perempuan
+       </option>
+      </select>
+     </div>
+     <div>
+      <label
+        class="block text-orange-400 font-medium mb-1"
+        for="weight"
+        >Berat Badan Korban (kg)</label
+      >
+      <input
+        class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        id="weight"
+        max="300"
+        min="1"
+        name="weight"
+        placeholder="Misal: 70"
+        required=""
+        step="0.1"
+        type="number"
+      />
+     </div>
+     <div>
+      <label
+        class="block text-orange-400 font-medium mb-1"
+        for="age"
+        >Usia Korban (tahun)</label
+      >
+      <input
+        class="w-full rounded-md border border-orange-600 bg-black bg-opacity-50 text-orange-300 placeholder-orange-500 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+        id="age"
+        max="120"
+        min="0"
+        name="age"
+        placeholder="Misal: 30"
+        required=""
+        step="1"
+        type="number"
+      />
+     </div>
+     <div>
+      <a
+        href="victim_form.html"
+        class="block w-full bg-orange-500 hover:bg-orange-600 text-black font-semibold py-2 rounded-md transition-colors shadow-md text-center mt-4"
+      >
+       <i class="fas fa-user-plus mr-2"></i> Input Data Korban
+      </a>
+     </div>
+     <div class="flex flex-col sm:flex-row gap-3 mt-4">
+      <button
+        class="flex-1 w-full bg-orange-600 hover:bg-orange-700 text-black font-semibold py-2 rounded-md transition-colors shadow-md"
+        type="submit"
+      >
+       Hitung Waktu Kematian
+      </button>
+      <button
+        id="printReportBtn"
+        type="button"
+        class="flex-1 w-full bg-transparent border border-orange-600 text-orange-500 font-semibold py-2 rounded-md transition-colors hover:bg-orange-600 hover:text-black shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled
+      >
+       <i class="fas fa-file-pdf mr-2"></i> Cetak Laporan PDF
+      </button>
+     </div>
+    </form>
+    <div
+      aria-live="polite"
+      class="mt-8 max-w-md mx-auto bg-black bg-opacity-40 border border-orange-600 rounded-md p-4 text-center font-semibold text-orange-400 text-lg hidden"
+      id="result"
+      role="alert"
+    ></div>
+   </section>
+  </main>
+  <footer class="bg-black bg-opacity-80 glass py-4 mt-auto">
+   <div class="max-w-4xl mx-auto px-4 text-center text-orange-500 text-sm select-none">
+    © 2024 Novy25 # Iden Kabupaten Bekasi
+   </div>
+  </footer>
+  <script>
+    const { jsPDF } = window.jspdf;
+
+    const form = document.getElementById("deathTimeForm");
+    const resultDiv = document.getElementById("result");
+    const printBtn = document.getElementById("printReportBtn");
+
+    let lastCalculation = null;
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const bodyTemp = parseFloat(form.bodyTemp.value);
+      const ambientTemp = parseFloat(form.ambientTemp.value);
+      const clothing = form.clothing.value;
+      const gender = form.gender.value;
+      const weight = parseFloat(form.weight.value);
+      const age = parseInt(form.age.value);
+
+      if (bodyTemp >= 37) {
+        resultDiv.textContent =
+          "Suhu tubuh korban tidak mungkin lebih atau sama dengan suhu normal (37°C). Mohon periksa kembali input.";
+        resultDiv.classList.remove("hidden", "text-orange-400");
+        resultDiv.classList.add("text-red-600");
+        printBtn.disabled = true;
+        return;
+      }
+
+      if (ambientTemp >= 37) {
+        resultDiv.textContent =
+          "Suhu lingkungan tidak boleh sama atau lebih tinggi dari suhu tubuh normal (37°C). Mohon periksa kembali input.";
+        resultDiv.classList.remove("hidden", "text-orange-400");
+        resultDiv.classList.add("text-red-600");
+        printBtn.disabled = true;
+        return;
+      }
+
+      const kValues = {
+        none: 1.0,
+        light: 0.9,
+        medium: 0.7,
+        heavy: 0.5,
+      };
+
+      let k = kValues[clothing];
+      if (!k) {
+        resultDiv.textContent = "Jenis pakaian tidak valid.";
+        resultDiv.classList.remove("hidden", "text-orange-400");
+        resultDiv.classList.add("text-red-600");
+        printBtn.disabled = true;
+        return;
+      }
+
+      // Adjust k based on gender
+      if (gender === 'female') {
+        k *= 0.95; // Example adjustment: 5% slower cooling for females
+      } else if (gender === 'male') {
+        k *= 1.05; // Example adjustment: 5% faster cooling for males
+      }
+
+      // Adjust k based on weight (larger bodies cool slower)
+      if (weight < 50) {
+        k *= 1.1; // Lighter bodies cool faster
+      } else if (weight > 90) {
+        k *= 0.9; // Heavier bodies cool slower
+      }
+
+      // Adjust k based on age (children and elderly might cool differently)
+      if (age < 10) {
+        k *= 1.15; // Children cool faster due to higher surface area to volume ratio
+      } else if (age > 70) {
+        k *= 1.05; // Elderly might cool slightly faster due to less insulation
+      }
+
+      const denominator = k * (37 - ambientTemp);
+      if (denominator <= 0) {
+        resultDiv.textContent =
+          "Input suhu lingkungan dan jenis pakaian menghasilkan perhitungan tidak valid. Mohon periksa kembali.";
+        resultDiv.classList.remove("hidden", "text-orange-400");
+        resultDiv.classList.add("text-red-600");
+        printBtn.disabled = true;
+        return;
+      }
+
+      const timeSinceDeath = (37 - bodyTemp) / denominator;
+      const timeRounded = Math.max(0, timeSinceDeath).toFixed(2);
+
+      resultDiv.textContent = `Perkiraan waktu kematian adalah sekitar ${timeRounded} jam yang lalu.`;
+      resultDiv.classList.remove("hidden", "text-red-600");
+      resultDiv.classList.add("text-orange-400");
+
+      lastCalculation = {
+        bodyTemp,
+        ambientTemp,
+        clothing,
+        gender,
+        weight,
+        age,
+        k,
+        timeRounded,
+      };
+
+      // Save the calculation result to localStorage
+      localStorage.setItem('deathTimeCalculation', JSON.stringify(lastCalculation));
+
+      printBtn.disabled = false;
+    });
+
+    printBtn.addEventListener("click", () => {
+      if (!lastCalculation) return;
+
+      const { bodyTemp, ambientTemp, clothing, gender, weight, age, k, timeRounded } = lastCalculation;
+
+      // Clothing description map
+      const clothingDesc = {
+        none: "Tidak memakai pakaian",
+        light: "Pakaian ringan (kaos, baju tipis)",
+        medium: "Pakaian sedang (kemeja, jaket tipis)",
+        heavy: "Pakaian tebal (jaket tebal, mantel)",
+      };
+
+      // Gender description map
+      const genderDesc = {
+        male: "Laki-laki",
+        female: "Perempuan",
+      };
+
+      const doc = new jsPDF();
+
+      const marginLeft = 15;
+      let y = 20;
+
+      doc.setTextColor(249, 115, 22);
+      doc.setFontSize(18);
+      doc.text("Laporan Perkiraan Waktu Kematian", marginLeft, y);
+      y += 12;
+
+      doc.setDrawColor(249, 115, 22);
+      doc.setLineWidth(0.5);
+      doc.line(marginLeft, y, 195, y);
+      y += 10;
+
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`Suhu Tubuh Korban: ${bodyTemp} °C`, marginLeft, y);
+      y += 8;
+      doc.text(`Suhu Lingkungan: ${ambientTemp} °C`, marginLeft, y);
+      y += 8;
+      doc.text(`Jenis Pakaian Korban: ${clothingDesc[clothing]}`, marginLeft, y);
+      y += 8;
+      doc.text(`Jenis Kelamin Korban: ${genderDesc[gender]}`, marginLeft, y);
+      y += 8;
+      doc.text(`Berat Badan Korban: ${weight} kg`, marginLeft, y);
+      y += 8;
+      doc.text(`Usia Korban: ${age} tahun`, marginLeft, y);
+      y += 12;
+
+      doc.setFontSize(14);
+      doc.setTextColor(249, 115, 22);
+      doc.text("Hasil Perhitungan:", marginLeft, y);
+      y += 10;
+
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.text(
+        `Perkiraan waktu kematian adalah sekitar ${timeRounded} jam yang lalu.`,
+        marginLeft,
+        y
+      );
+      y += 15;
+
+      doc.setFontSize(14);
+      doc.setTextColor(249, 115, 22);
+      doc.text("Rumus yang digunakan:", marginLeft, y);
+      y += 10;
+
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      const formulaLines = [
+        "Waktu kematian (jam) = (37 - suhu tubuh korban) / (k × (37 - suhu lingkungan))",
+        "",
+        "Dimana:",
+        "- k adalah koefisien berdasarkan jenis pakaian, jenis kelamin, berat badan, dan usia:",
+        "  • Tidak memakai pakaian (none) = 1.0",
+        "  • Pakaian ringan (light) = 0.9",
+        "  • Pakaian sedang (medium) = 0.7",
+        "  • Pakaian tebal (heavy) = 0.5",
+        "  • Penyesuaian jenis kelamin: Perempuan (k * 0.95), Laki-laki (k * 1.05)",
+        "  • Penyesuaian berat badan: <50kg (k * 1.1), >90kg (k * 0.9)",
+        "  • Penyesuaian usia: <10 tahun (k * 1.15), >70 tahun (k * 1.05)",
+        "",
+        `Nilai k yang digunakan: ${k.toFixed(2)} (Pakaian: ${clothingDesc[clothing]}, Kelamin: ${genderDesc[gender]}, Berat: ${weight}kg, Usia: ${age}thn)`,
+      ];
+
+      formulaLines.forEach((line) => {
+        if (y > 280) {
+          doc.addPage();
+          y = 20;
+        }
+        doc.text(line, marginLeft, y);
+        y += 7;
+      });
+
+      doc.save("Laporan_Perkiraan_Waktu_Kematian.pdf");
+    });
+  </script>
+ </body>
+</html>
