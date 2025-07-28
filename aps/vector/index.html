@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Vector Fingerprint Converter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00f0ff;
+            --secondary: #ff00f0;
+            --dark: #0a0a12;
+            --light: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-highlight: rgba(255, 255, 255, 0.2);
+            --danger: #ff3a3a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 2rem;
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            letter-spacing: 1px;
+        }
+        
+        .app-description {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .app-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        
+        .upload-section, .result-section {
+            flex: 1;
+            min-width: 300px;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-section:hover, .result-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .upload-section::before, .result-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            padding-bottom: 0.5rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--glass-border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            background: var(--glass);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(0, 240, 255, 0.05);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+        
+        .upload-area i {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+        
+        .upload-area p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 1rem 1.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 240, 255, 0.4);
+        }
+        
+        .btn:hover::before {
+            opacity: 1;
+        }
+        
+        .btn-block {
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6e00ff, #ff00f0);
+            box-shadow: 0 4px 15px rgba(110, 0, 255, 0.3);
+        }
+        
+        .btn-secondary::before {
+            background: linear-gradient(135deg, #ff00f0, #6e00ff);
+        }
+        
+        .canvas-container {
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        canvas {
+            max-width: 100%;
+            display: block;
+            background: transparent;
+        }
+        
+        .processing-indicator {
+            text-align: center;
+            margin: 1.5rem 0;
+            display: none;
+        }
+        
+        .processing-indicator.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .parameter-controls {
+            margin: 1.5rem 0;
+        }
+        
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            outline: none;
+            border: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--primary);
+        }
+        
+        .value-display {
+            text-align: right;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 0.5rem;
+        }
+        
+        .download-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .error-message {
+            color: var(--danger);
+            background: rgba(255, 58, 58, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            display: none;
+            border-left: 3px solid var(--danger);
+            backdrop-filter: blur(5px);
+        }
+        
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 1.5rem;
+            background: var(--glass);
+            border-radius: 8px;
+            padding: 0.5rem;
+            border: 1px solid var(--glass-border);
+        }
+        
+        .tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.7);
+            flex: 1;
+            text-align: center;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(255, 0, 240, 0.2));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--glass-border);
+            backdrop-filter: blur(5px);
+            font-size: 0.9rem;
+        }
+        
+        /* Floating particles animation */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .upload-section, .result-section {
+                padding: 1.5rem;
+            }
+            
+            .download-options {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating particles background -->
+    <div class="particles" id="particles"></div>
+    
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-fingerprint"></i> Latent Fingerprint Converter</h1>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="app-description">
+            <h2>Ubah sidik jari</h2>
+        </div>
+        
+        <div class="app-container">
+            <div class="upload-section">
+                <h2 class="section-title"><i class="fas fa-cloud-upload-alt"></i> Upload Fingerprint</h2>
+                
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-fingerprint"></i>
+                    <p>Drag & drop gambar sidik jari atau upload files</p>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+                
+                <div class="parameter-controls">
+                    <div class="control-group">
+                        <label for="threshold"><i class="fas fa-sliders-h"></i> Threshold:</label>
+                        <input type="range" id="threshold" min="0" max="255" value="128">
+                        <div class="value-display"><span id="thresholdValue">128</span></div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="smoothing"><i class="fas fa-wave-square"></i> Smoothing:</label>
+                        <input type="range" id="smoothing" min="0" max="10" value="3">
+                        <div class="value-display"><span id="smoothingValue">3</span></div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="detail"><i class="fas fa-search-plus"></i> Detail Level:</label>
+                        <input type="range" id="detail" min="1" max="5" value="3">
+                        <div class="value-display"><span id="detailValue">3</span></div>
+                    </div>
+                </div>
+                
+                <button id="processBtn" class="btn btn-block">
+                    <i class="fas fa-cogs"></i> Process Fingerprint
+                </button>
+                
+                <div class="error-message" id="errorMessage">
+                    <i class="fas fa-exclamation-triangle"></i> Error processing image. Please ensure you've uploaded a valid fingerprint scan.
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <h2 class="section-title"><i class="fas fa-project-diagram"></i> Vector Results</h2>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="vector"><i class="fas fa-vector-square"></i> Vector</div>
+                    <div class="tab" data-tab="original"><i class="fas fa-image"></i> Original</div>
+                    <div class="tab" data-tab="edges"><i class="fas fa-border-style"></i> Edges</div>
+                </div>
+                
+                <div class="processing-indicator" id="processingIndicator">
+                    <div class="spinner"></div>
+                    <p>Processing fingerprint data...</p>
+                </div>
+                
+                <div class="tab-content active" data-tab="vector">
+                    <div class="canvas-container">
+                        <canvas id="vectorCanvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="tab-content" data-tab="original">
+                    <div class="canvas-container">
+                        <canvas id="originalCanvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="tab-content" data-tab="edges">
+                    <div class="canvas-container">
+                        <canvas id="edgesCanvas"></canvas>
+                    </div>
+                </div>
+                
+                <div class="download-options">
+                    <button id="downloadSvgBtn" class="btn btn-secondary">
+                        <i class="fas fa-file-download"></i> Download SVG
+                    </button>
+                    <button id="downloadPngBtn" class="btn btn-secondary">
+                        <i class="fas fa-file-image"></i> Download PNG
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2025 Latent Fingerprint Converter | Identifikasi Bekasi</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create floating particles
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 1px and 3px
+                const size = Math.random() * 2 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}vw`;
+                particle.style.top = `${Math.random() * 100}vh`;
+                
+                // Random animation duration between 10s and 20s
+                const duration = Math.random() * 10 + 10;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random delay
+                particle.style.animationDelay = `${Math.random() * 10}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+            
+            // DOM Elements
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const processBtn = document.getElementById('processBtn');
+            const originalCanvas = document.getElementById('originalCanvas');
+            const edgesCanvas = document.getElementById('edgesCanvas');
+            const vectorCanvas = document.getElementById('vectorCanvas');
+            const thresholdSlider = document.getElementById('threshold');
+            const smoothingSlider = document.getElementById('smoothing');
+            const detailSlider = document.getElementById('detail');
+            const thresholdValue = document.getElementById('thresholdValue');
+            const smoothingValue = document.getElementById('smoothingValue');
+            const detailValue = document.getElementById('detailValue');
+            const processingIndicator = document.getElementById('processingIndicator');
+            const errorMessage = document.getElementById('errorMessage');
+            const downloadSvgBtn = document.getElementById('downloadSvgBtn');
+            const downloadPngBtn = document.getElementById('downloadPngBtn');
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Variables
+            let uploadedImage = null;
+            let processedImageData = null;
+            
+            // Event Listeners
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--primary)';
+                uploadArea.style.backgroundColor = 'rgba(0, 240, 255, 0.1)';
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'var(--glass-border)';
+                uploadArea.style.backgroundColor = 'var(--glass)';
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--glass-border)';
+                uploadArea.style.backgroundColor = 'var(--glass)';
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileUpload(fileInput.files[0]);
+                }
+            });
+            
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    handleFileUpload(fileInput.files[0]);
+                }
+            });
+            
+            processBtn.addEventListener('click', processImage);
+            
+            thresholdSlider.addEventListener('input', () => {
+                thresholdValue.textContent = thresholdSlider.value;
+            });
+            
+            smoothingSlider.addEventListener('input', () => {
+                smoothingValue.textContent = smoothingSlider.value;
+            });
+            
+            detailSlider.addEventListener('input', () => {
+                detailValue.textContent = detailSlider.value;
+            });
+            
+            downloadSvgBtn.addEventListener('click', downloadSvg);
+            downloadPngBtn.addEventListener('click', downloadPng);
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    const tabToShow = document.querySelector(`.tab-content[data-tab="${tab.dataset.tab}"]`);
+                    tabToShow.classList.add('active');
+                });
+            });
+            
+            // Functions
+            function handleFileUpload(file) {
+                if (!file.type.match('image.*')) {
+                    showError();
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedImage = new Image();
+                    uploadedImage.onload = function() {
+                        drawOriginalImage();
+                    };
+                    uploadedImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                
+                hideError();
+            }
+            
+            function drawOriginalImage() {
+                const ctx = originalCanvas.getContext('2d');
+                originalCanvas.width = uploadedImage.width;
+                originalCanvas.height = uploadedImage.height;
+                ctx.drawImage(uploadedImage, 0, 0);
+            }
+            
+            function processImage() {
+                if (!uploadedImage) {
+                    showError();
+                    return;
+                }
+                
+                processingIndicator.classList.add('active');
+                
+                // Simulate processing delay
+                setTimeout(() => {
+                    try {
+                        // Prepare canvases
+                        edgesCanvas.width = vectorCanvas.width = uploadedImage.width;
+                        edgesCanvas.height = vectorCanvas.height = uploadedImage.height;
+                        
+                        // Edge detection
+                        const edgesCtx = edgesCanvas.getContext('2d');
+                        edgesCtx.drawImage(uploadedImage, 0, 0);
+                        
+                        const imageData = edgesCtx.getImageData(0, 0, edgesCanvas.width, edgesCanvas.height);
+                        const edgeData = applyEdgeDetection(
+                            imageData, 
+                            parseInt(thresholdSlider.value),
+                            parseInt(smoothingSlider.value),
+                            parseInt(detailSlider.value)
+                        );
+                        
+                        edgesCtx.putImageData(edgeData, 0, 0);
+                        
+                        // Vectorization
+                        const vectorPoints = traceEdgePoints(edgeData);
+                        drawVector(vectorPoints);
+                        
+                        processedImageData = {
+                            original: uploadedImage.src,
+                            edges: edgesCanvas.toDataURL(),
+                            vector: vectorCanvas.toDataURL(),
+                            svg: generateSvg(vectorPoints)
+                        };
+                        
+                        document.querySelector('.tab[data-tab="vector"]').click();
+                    } catch (e) {
+                        console.error(e);
+                        showError();
+                    } finally {
+                        processingIndicator.classList.remove('active');
+                    }
+                }, 500);
+            }
+            
+            function applyEdgeDetection(imageData, threshold, smoothing, detail) {
+                const width = imageData.width;
+                const height = imageData.height;
+                const data = imageData.data;
+                
+                // Convert to grayscale first
+                for (let i = 0; i < data.length; i += 4) {
+                    const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                    data[i] = data[i + 1] = data[i + 2] = avg > threshold ? 255 : 0;
+                }
+                
+                // Apply simple edge enhancement (simplified for demo)
+                const output = new ImageData(
+                    new Uint8ClampedArray(data),
+                    width,
+                    height
+                );
+                
+                return output;
+            }
+            
+            function traceEdgePoints(imageData) {
+                const width = imageData.width;
+                const height = imageData.height;
+                const data = imageData.data;
+                const points = [];
+                
+                // Simple edge tracing algorithm
+                for (let y = 0; y < height; y += 2) {
+                    for (let x = 0; x < width; x += 2) {
+                        const idx = (y * width + x) * 4;
+                        if (data[idx] === 0) { // Black pixel represents edge
+                            points.push({x, y});
+                        }
+                    }
+                }
+                
+                return points;
+            }
+            
+            function drawVector(points) {
+                const ctx = vectorCanvas.getContext('2d');
+                ctx.clearRect(0, 0, vectorCanvas.width, vectorCanvas.height);
+                
+                // Create neon glow effect
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = 'var(--primary)';
+                ctx.strokeStyle = 'white';
+                ctx.lineWidth = 1.5;
+                
+                // Simple straight line connection between points
+                ctx.beginPath();
+                if (points.length > 0) {
+                    ctx.moveTo(points[0].x, points[0].y);
+                    
+                    for (let i = 1; i < points.length; i++) {
+                        ctx.lineTo(points[i].x, points[i].y);
+                    }
+                }
+                ctx.stroke();
+                
+                // Reset shadow
+                ctx.shadowBlur = 0;
+            }
+            
+            function generateSvg(points) {
+                const width = vectorCanvas.width;
+                const height = vectorCanvas.height;
+                
+                let svgPath = '';
+                if (points.length > 0) {
+                    svgPath = `M ${points[0].x} ${points[0].y}`;
+                    
+                    for (let i = 1; i < points.length; i++) {
+                        svgPath += ` L ${points[i].x} ${points[i].y}`;
+                    }
+                }
+                
+                return `
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                         width="${width}" 
+                         height="${height}" 
+                         viewBox="0 0 ${width} ${height}">
+                        <defs>
+                            <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="3" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                        </defs>
+                        <path d="${svgPath}" 
+                              fill="none" 
+                              stroke="white" 
+                              stroke-width="1.5"
+                              filter="url(#neon-glow)"
+                              style="stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 2s ease-out forwards;">
+                        <animate attributeName="stroke" values="white;#00f0ff;white" dur="3s" repeatCount="indefinite" />
+                        </path>
+                        <style>
+                            @keyframes draw {
+                                to { stroke-dashoffset: 0; }
+                            }
+                        </style>
+                    </svg>
+                `;
+            }
+            
+            function downloadSvg() {
+                if (!processedImageData) return;
+                
+                const blob = new Blob([processedImageData.svg], {type: 'image/svg+xml'});
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'fingerprint_vector.svg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+            
+            function downloadPng() {
+                if (!processedImageData) return;
+                
+                const a = document.createElement('a');
+                a.href = vectorCanvas.toDataURL('image/png');
+                a.download = 'fingerprint_vector.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+            
+            function showError() {
+                errorMessage.classList.add('show');
+            }
+            
+            function hideError() {
+                errorMessage.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
