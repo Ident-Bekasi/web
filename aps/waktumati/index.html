@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Waktu Kematian - AGUS PC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Partikel Latar Belakang -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Glowing Circles Background -->
+    <div class="glow">
+        <div class="glow-circle glow-1"></div>
+        <div class="glow-circle glow-2"></div>
+        <div class="glow-circle glow-3"></div>
+    </div>
+    
+    <!-- Header -->
+    <header class="glass">
+        <div class="logo">
+            <i class="fas fa-fingerprint fa-flip"></i>
+            <h1>IDENT BEKASI</h1>
+        </div>
+        
+        <!-- Hamburger Icon for Mobile -->
+        <button class="hamburger-menu" id="hamburgerMenu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Desktop Navigation (will be hidden on mobile) -->
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#">Layanan</a></li>
+                <li><a href="#">Produk</a></li>
+                <li><a href="#">Kontak</a></li>
+                <li><a href="#" class="active"><i class="fas fa-calculator"></i> Kalkulator</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Mobile Sidebar Navigation -->
+    <div class="sidebar" id="mobileSidebar">
+        <button class="close-sidebar" id="closeSidebar">
+            <i class="fas fa-times"></i>
+        </button>
+        <nav>
+            <ul>
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#">Layanan</a></li>
+                <li><a href="#">Produk</a></li>
+                <li><a href="#">Kontak</a></li>
+                <li><a href="#" class="active"><i class="fas fa-calculator"></i> Kalkulator</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Overlay for Sidebar -->
+    <div class="overlay" id="sidebarOverlay"></div>
+    
+    <!-- Aplikasi Kalkulator -->
+    <section class="calculator-app">
+        <div class="section-title">
+            <h2>Kalkulator Waktu Kematian Forensik</h2>
+            <p>Perkirakan waktu kematian berdasarkan parameter forensik</p>
+        </div>
+        
+        <div class="calculator-container">
+            <div class="calculator-form glass">
+                <h3><i class="fas fa-thermometer-half"></i> Parameter Forensik</h3>
+                
+                <div class="form-group">
+                    <label for="bodyTemp">Suhu Tubuh Mayat (°C)</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="bodyTemp" min="20" max="37" step="0.1" placeholder="Masukkan suhu tubuh">
+                        <span class="unit">°C</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="envTemp">Suhu Lingkungan (°C)</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="envTemp" min="10" max="40" step="0.1" placeholder="Masukkan suhu lingkungan">
+                        <span class="unit">°C</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bodyWeight">Berat Badan (kg)</label>
+                    <div class="input-with-unit">
+                        <input type="number" id="bodyWeight" min="30" max="150" step="0.1" placeholder="Masukkan berat badan">
+                        <span class="unit">kg</span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Jenis Kelamin</label>
+                    <select id="gender" required>
+                        <option value="">Pilih Jenis Kelamin</option>
+                        <option value="male">Pria</option>
+                        <option value="female">Wanita</option>
+                        <option value="trans_male">Trans Pria</option>
+                        <option value="trans_female">Trans Wanita</option>
+                        <option value="non_binary">Non-Biner</option>
+                        <option value="unknown">Tidak Diketahui</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Jenis Pakaian</label>
+                    <div class="clothing-options">
+                        <div class="clothing-option selected" data-value="light">
+                            <i class="fas fa-shirt"></i>
+                            <div>Tipis</div>
+                        </div>
+                        <div class="clothing-option" data-value="medium">
+                            <i class="fas fa-tshirt"></i>
+                            <div>Sedang</div>
+                        </div>
+                        <div class="clothing-option" data-value="heavy">
+                            <i class="fas fa-vest"></i>
+                            <div>Tebal</div>
+                        </div>
+                    </div>
+                    
+                    <div class="data-input-buttons">
+                        <button class="data-button victim-button">
+                            <i class="fas fa-user"></i> Input Data Korban
+                        </button>
+                        <button class="data-button scene-button">
+                            <i class="fas fa-map-marker-alt"></i> Input Data TKP
+                        </button>
+                    </div>
+                    
+                    <button id="calculateBtn" class="cta-button" style="width: 100%; margin-top: 20px;">
+                        <i class="fas fa-calculator"></i> Hitung Waktu Kematian
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Kartu Informasi Parameter (Tersembunyi secara default) -->
+            <div class="calculator-result glass" id="parameterInfoCard" style="display: none;">
+                <h3><i class="fas fa-info-circle"></i> Informasi Parameter</h3>
+                <div class="result-details">
+                    <div class="detail-item">
+                        <span>Suhu Tubuh:</span>
+                        <span id="resultBodyTemp">Suhu tubuh mayat yang diukur.</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Suhu Lingkungan:</span>
+                        <span id="resultEnvTemp">Suhu rata-rata di sekitar lokasi penemuan.</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Berat Badan:</span>
+                        <span id="resultWeight">Berat badan perkiraan atau aktual korban.</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Jenis Kelamin:</span>
+                        <span id="resultGender">Jenis kelamin korban untuk faktor koreksi.</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Jenis Pakaian:</span>
+                        <span id="resultClothing">Kategori pakaian yang dikenakan korban.</span>
+                    </div>
+                </div>
+                <div class="parameter-info">
+                    <h4><i class="fas fa-exclamation-triangle"></i> Penting!</h4>
+                    <p>Hasil ini merupakan perkiraan berdasarkan model matematika dan tidak menggantikan pemeriksaan forensik oleh profesional. Akurasi dapat dipengaruhi oleh berbagai faktor seperti kelembaban, posisi tubuh, dan kondisi lingkungan.</p>
+                </div>
+            </div>
+
+            <!-- Kartu Hasil Perhitungan (Tersembunyi secara default) -->
+            <div class="calculator-result glass" id="calculationResultCard" style="display: none;">
+                <h3><i class="fas fa-clock"></i> Hasil Perhitungan</h3>
+                <div class="result-content">
+                    <div class="result-label">Perkiraan Lama Kematian</div>
+                    <div class="time-result" id="timeResult">0.0</div>
+                    <div class="result-label">jam yang lalu</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="logo">
+            <i class="fas fa-microchip"></i>
+            <h1>AGUS PC</h1>
+        </div>
+        
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+        
+        <p class="copyright">© 2025 AGUS - Service Komputer/Laptop, & Aksesoris. All Rights Reserved.</p>
+    </footer>
+    
+    <script src="script.js"></script>
+</body>
+</html>
