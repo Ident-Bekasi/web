@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forensic Time Estimator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="title">FORENSIC TIME ESTIMATOR</h1>
+            <p class="subtitle">Estimasi waktu kematian berdasarkan parameter forensik</p>
+        </header>
+        
+        <div class="grid">
+            <div class="card">
+                <h2 class="card-title"><i>📊</i> Data Korban</h2>
+                <div class="form-group">
+                    <label for="bodyTemp">Suhu Tubuh Korban (°C)</label>
+                    <input type="number" id="bodyTemp" step="0.1" min="0" max="45" placeholder="Contoh: 32.5">
+                </div>
+                <div class="form-group">
+                    <label for="envTemp">Suhu Lingkungan (°C)</label>
+                    <input type="number" id="envTemp" step="0.1" min="-10" max="50" placeholder="Contoh: 25.0">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Jenis Kelamin</label>
+                    <select id="gender">
+                        <option value="male">Laki-laki</option>
+                        <option value="female">Perempuan</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i>👔</i> Kondisi Korban</h2>
+                <div class="form-group">
+                    <label for="clothing">Pakaian yang Dipakai</label>
+                    <select id="clothing">
+                        <option value="none">Tidak berpakaian</option>
+                        <option value="light">Pakaian tipis</option>
+                        <option value="medium" selected>Pakaian sedang</option>
+                        <option value="heavy">Pakaian tebal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bodyType">Bentuk Tubuh</label>
+                    <select id="bodyType">
+                        <option value="thin">Kurus</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="overweight">Gemuk</option>
+                        <option value="obese">Sangat gemuk</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="environment">Lingkungan</label>
+                    <select id="environment">
+                        <option value="land">Darat</option>
+                        <option value="water">Air</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i>🔍</i> Faktor Tambahan</h2>
+                <div class="form-group">
+                    <label for="humidity">Kelembaban (%)</label>
+                    <input type="number" id="humidity" min="0" max="100" value="60">
+                </div>
+                <div class="form-group">
+                    <label for="wind">Kecepatan Angin (km/jam)</label>
+                    <input type="number" id="wind" min="0" max="100" value="5">
+                </div>
+                <div class="form-group">
+                    <label for="foundPosition">Posisi Ditemukan</label>
+                    <select id="foundPosition">
+                        <option value="open">Terbuka</option>
+                        <option value="shaded">Tertutup/Teduh</option>
+                        <option value="buried">Terkubur</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn" id="calculateBtn">ESTIMASI WAKTU KEMATIAN</button>
+        
+        <div class="result-container" id="resultContainer">
+            <h2 class="result-title">HASIL ESTIMASI</h2>
+            <div class="result" id="result">-</div>
+            <div class="additional-info" id="additionalInfo">
+                * Hasil merupakan estimasi dan dapat bervariasi berdasarkan kondisi aktual
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 Forensic Time Estimator | IDENT Kab. Bekasi</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
