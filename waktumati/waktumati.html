@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forensic Time Estimator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Exo+2:wght@300;400;500&display=swap');
+
+        :root {
+            --primary: #00f7ff;
+            --secondary: #ff00ff;
+            --accent: #00ff87;
+            --dark: #0a0a1a;
+            --darker: #050510;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --warning: #ff6b6b;
+            --success: #00ff87;
+            --whatsapp: #25D366;
+            --print: #007bff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px var(--primary);
+            animation: pulse 2s infinite alternate;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .card-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title i {
+            margin-right: 10px;
+            font-size: 1.3rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+
+        .btn {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: var(--darker);
+            border: none;
+            padding: 15px 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 30px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-whatsapp {
+            background: linear-gradient(90deg, var(--whatsapp), #128C7E);
+            margin-right: 10px;
+        }
+
+        .btn-print {
+            background: linear-gradient(90deg, var(--print), #0056b3);
+            margin-left: 10px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .action-buttons .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 12px 25px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .action-buttons .btn i {
+            margin-right: 8px;
+        }
+
+        .result-container {
+            text-align: center;
+            margin-top: 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .result-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .result {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 247, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .additional-info {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .factors-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .factors-table th, .factors-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .factors-table th {
+            background: rgba(0, 0, 0, 0.3);
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+        }
+
+        .factors-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .warning {
+            color: var(--warning);
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .calculation-steps {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+            font-family: monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .calculation-step {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .calculation-step:last-child {
+            border-bottom: none;
+        }
+
+        .victim-id-card {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .photo-upload-card {
+            grid-column: 1 / -1;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .photo-upload-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            border: 2px dashed var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .photo-upload-item:hover {
+            border-color: var(--primary);
+        }
+
+        .photo-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 3rem;
+        }
+
+        .photo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .upload-btn {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border: 1px solid var(--primary);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .upload-btn:hover {
+            background: rgba(0, 247, 255, 0.2);
+        }
+
+        .file-name {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            color: rgba(255, 255, 255, 0.7);
+            word-break: break-all;
+        }
+
+        .photo-requirements {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 5px;
+        }
+
+        .calculation-explanation {
+            margin-top: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .explanation-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+
+        .explanation-content {
+            line-height: 1.6;
+        }
+
+        .formula {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 1.1rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        .formula-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .factor-list {
+            margin-top: 15px;
+        }
+
+        .factor-item {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .factor-item:before {
+            content: "•";
+            color: var(--primary);
+            position: absolute;
+            left: 0;
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 247, 255, 0.3);
+            box-shadow: 0 0 20px var(--primary);
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100vw) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 15px var(--primary);
+            }
+            100% {
+                text-shadow: 0 0 25px var(--primary), 0 0 35px var(--secondary);
+            }
+        }
+
+        .glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 247, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            filter: blur(50px);
+            z-index: -1;
+        }
+
+        .glow-1 {
+            top: -250px;
+            left: -250px;
+        }
+
+        .glow-2 {
+            bottom: -250px;
+            right: -250px;
+            background: radial-gradient(circle, rgba(255, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.2rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .victim-id-card {
+                grid-template-columns: 1fr;
+            }
+            
+            .photo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+
+        /* Styles for print */
+        @media print {
+            .particles, .glow, .btn, .action-buttons, .photo-upload-card, footer {
+                display: none !important;
+            }
+            
+            body {
+                background: white;
+                color: black;
+                padding: 15px;
+            }
+            
+            .card {
+                background: white;
+                border: 1px solid #ddd;
+                box-shadow: none;
+                color: black;
+            }
+            
+            .result {
+                color: #0066cc;
+            }
+            
+            .container {
+                max-width: 100%;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="title">FORENSIC TIME ESTIMATOR</h1>
+            <p class="subtitle">Estimasi waktu kematian berdasarkan parameter forensik</p>
+        </header>
+        
+        <div class="grid">
+            <!-- Card Identitas Korban -->
+            <div class="card victim-id-card">
+                <div>
+                    <h2 class="card-title"><i>🆔</i> Identitas Korban</h2>
+                    <div class="form-group">
+                        <label for="victimName">Nama Korban</label>
+                        <input type="text" id="victimName" placeholder="Nama lengkap korban">
+                    </div>
+                    <div class="form-group">
+                        <label for="victimAge">Usia (tahun)</label>
+                        <input type="number" id="victimAge" min="0" max="120" placeholder="Usia korban">
+                        <div class="warning" id="ageWarning">Usia harus antara 0 dan 120 tahun</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="victimGender">Jenis Kelamin</label>
+                        <select id="victimGender">
+                            <option value="male">Laki-laki</option>
+                            <option value="female">Perempuan</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="card-title"><i>📏</i> Data Fisik</h2>
+                    <div class="form-group">
+                        <label for="victimHeight">Tinggi Badan (cm)</label>
+                        <input type="number" id="victimHeight" min="50" max="250" placeholder="Tinggi badan dalam cm">
+                        <div class="warning" id="heightWarning">Tinggi badan harus antara 50 cm dan 250 cm</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="victimWeight">Berat Badan (kg)</label>
+                        <input type="number" id="victimWeight" min="2" max="300" placeholder="Berat badan dalam kg">
+                        <div class="warning" id="weightWarning">Berat badan harus antara 2 kg dan 300 kg</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="caseNumber">Nomor Kasus</label>
+                        <input type="text" id="caseNumber" placeholder="Nomor identifikasi kasus">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Card Upload Foto -->
+            <div class="card photo-upload-card">
+                <h2 class="card-title"><i>📸</i> Dokumentasi Foto Korban</h2>
+                <div class="photo-grid">
+                    <div class="photo-upload-item">
+                        <div class="photo-preview" id="facePreview">
+                            <i>👤</i>
+                        </div>
+                        <label class="upload-btn">
+                            <input type="file" id="facePhoto" accept="image/*" style="display: none;">
+                            Upload Foto Wajah
+                        </label>
+                        <div class="file-name" id="faceFileName">Belum ada file dipilih</div>
+                        <div class="photo-requirements">Wajah terlihat jelas, pencahayaan cukup</div>
+                    </div>
+                    
+                    <div class="photo-upload-item">
+                        <div class="photo-preview" id="bodyPreview">
+                            <i>👕</i>
+                        </div>
+                        <label class="upload-btn">
+                            <input type="file" id="bodyPhoto" accept="image/*" style="display: none;">
+                            Upload Foto Seluruh Tubuh
+                        </label>
+                        <div class="file-name" id="bodyFileName">Belum ada file dipilih</div>
+                        <div class="photo-requirements">Tubuh utuh terlihat, posisi natural</div>
+                    </div>
+                    
+                    <div class="photo-upload-item">
+                        <div class="photo-preview" id="woundPreview">
+                            <i>🤕</i>
+                        </div>
+                        <label class="upload-btn">
+                            <input type="file" id="woundPhoto" accept="image/*" style="display: none;">
+                            Upload Foto Luka
+                        </label>
+                        <div class="file-name" id="woundFileName">Belum ada file dipilih</div>
+                        <div class="photo-requirements">Opsional - fokus pada area luka</div>
+                    </div>
+                    
+                    <div class="photo-upload-item">
+                        <div class="photo-preview" id="specialPreview">
+                            <i>🔍</i>
+                        </div>
+                        <label class="upload-btn">
+                            <input type="file" id="specialPhoto" accept="image/*" style="display: none;">
+                            Upload Foto Ciri Khusus
+                        </label>
+                        <div class="file-name" id="specialFileName">Belum ada file dipilih</div>
+                        <div class="photo-requirements">Opsional - tato, bekas luka, tanda khusus</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i>📊</i> Data Korban</h2>
+                <div class="form-group">
+                    <label for="bodyTemp">Suhu Tubuh Korban (°C)</label>
+                    <input type="number" id="bodyTemp" step="0.1" min="0" max="45" placeholder="Contoh: 32.5">
+                    <div class="warning" id="bodyTempWarning">Suhu tubuh harus antara 0°C dan 45°C</div>
+                </div>
+                <div class="form-group">
+                    <label for="envTemp">Suhu Lingkungan (°C)</label>
+                    <input type="number" id="envTemp" step="0.1" min="-10" max="50" placeholder="Contoh: 25.0">
+                    <div class="warning" id="envTempWarning">Suhu lingkungan harus antara -10°C dan 50°C</div>
+                </div>
+                <div class="form-group">
+                    <label for="bodyFoundTime">Waktu Ditemukan</label>
+                    <input type="datetime-local" id="bodyFoundTime">
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i>👔</i> Kondisi Korban</h2>
+                <div class="form-group">
+                    <label for="clothing">Pakaian yang Dipakai</label>
+                    <select id="clothing">
+                        <option value="none">Tidak berpakaian</option>
+                        <option value="light">Pakaian tipis</option>
+                        <option value="medium" selected>Pakaian sedang</option>
+                        <option value="heavy">Pakaian tebal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bodyType">Bentuk Tubuh</label>
+                    <select id="bodyType">
+                        <option value="thin">Kurus</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="overweight">Gemuk</option>
+                        <option value="obese">Sangat gemuk</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="environment">Lingkungan</label>
+                    <select id="environment">
+                        <option value="land">Darat</option>
+                        <option value="water">Air</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i>🔍</i> Faktor Tambahan</h2>
+                <div class="form-group">
+                    <label for="humidity">Kelembaban (%)</label>
+                    <input type="number" id="humidity" min="0" max="100" value="60">
+                    <div class="warning" id="humidityWarning">Kelembaban harus antara 0% dan 100%</div>
+                </div>
+                <div class="form-group">
+                    <label for="wind">Kecepatan Angin (km/jam)</label>
+                    <input type="number" id="wind" min="0" max="100" value="5">
+                    <div class="warning" id="windWarning">Kecepatan angin harus antara 0 km/jam dan 100 km/jam</div>
+                </div>
+                <div class="form-group">
+                    <label for="foundPosition">Posisi Ditemukan</label>
+                    <select id="foundPosition">
+                        <option value="open">Terbuka</option>
+                        <option value="shaded">Tertutup/Teduh</option>
+                        <option value="buried">Terkubur</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <button class="btn" id="calculateBtn">ESTIMASI WAKTU KEMATIAN</button>
+        
+        <div class="result-container" id="resultContainer">
+            <h2 class="result-title">HASIL ESTIMASI</h2>
+            <div class="result" id="result">-</div>
+            
+            <div class="calculation-steps" id="calculationSteps">
+                <!-- Langkah-langkah kalkulasi akan ditampilkan di sini -->
+            </div>
+            
+            <table class="factors-table">
+                <thead>
+                    <tr>
+                        <th>Faktor</th>
+                        <th>Nilai</th>
+                        <th>Pengali</th>
+                    </tr>
+                </thead>
+                <tbody id="factorsTableBody">
+                    <!-- Data faktor akan ditampilkan di sini -->
+                </tbody>
+            </table>
+            
+            <div class="action-buttons">
+                <button class="btn btn-whatsapp" id="whatsappBtn">
+                    <i class="fab fa-whatsapp"></i> KIRIM VIA WHATSAPP
+                </button>
+                <button class="btn btn-print" id="printBtn">
+                    <i class="fas fa-print"></i> CETAK HASIL
+                </button>
+            </div>
+            
+            <div class="calculation-explanation">
+                <h3 class="explanation-title">Penjelasan Metode Perhitungan</h3>
+                <div class="explanation-content">
+                    <p>Estimasi waktu kematian dilakukan berdasarkan prinsip <strong>Algor Mortis</strong> (penurunan suhu tubuh setelah kematian) dengan mempertimbangkan berbagai faktor yang mempengaruhi laju pendinginan.</p>
+                    
+                    <div class="formula">
+                        <div class="formula-title">Rumus Dasar:</div>
+                        Waktu (jam) = ΔSuhu Tubuh / (Laju Pendinginan Dasar × Faktor Penyesuaian)
+                    </div>
+                    
+                    <p>Dimana:</p>
+                    <ul class="factor-list">
+                        <li class="factor-item"><strong>ΔSuhu Tubuh</strong> = Suhu normal tubuh (37°C) - Suhu tubuh korban saat ditemukan</li>
+                        <li class="factor-item"><strong>Laju Pendinginan Dasar</strong> = 0.8°C per jam (standar forensik)</li>
+                        <li class="factor-item"><strong>Faktor Penyesuaian</strong> = Perkalian dari semua faktor lingkungan dan individu</li>
+                    </ul>
+                    
+                    <div class="formula">
+                        <div class="formula-title">Rumus Lengkap:</div>
+                        Waktu = (37 - T<sub>body</sub>) / (0.8 × F<sub>clothing</sub> × F<sub>bodyType</sub> × F<sub>environment</sub> × F<sub>humidity</sub> × F<sub>wind</sub> × F<sub>position</sub>)
+                    </div>
+                    
+                    <h4>Faktor-faktor yang Dipertimbangkan:</h4>
+                    <ul class="factor-list">
+                        <li class="factor-item"><strong>Pakaian</strong>: Makin tebal pakaian, makin lambat pendinginan (nilai 0.8-1.2)</li>
+                        <li class="factor-item"><strong>Bentuk Tubuh</strong>: Orang gemuk cenderung lebih lambat kehilangan panas (nilai 0.8-1.1)</li>
+                        <li class="factor-item"><strong>Lingkungan</strong>: Air mendinginkan tubuh 2x lebih cepat dari udara (nilai 1.0-2.0)</li>
+                        <li class="factor-item"><strong>Kelembaban</strong>: Udara lembab mempercepat pendinginan (nilai 0.75-1.25)</li>
+                        <li class="factor-item"><strong>Angin</strong>: Angin mempercepat pendinginan (nilai 1.0-3.0)</li>
+                        <li class="factor-item"><strong>Posisi</strong>: Tubuh terkubur/teduh lebih lambat dingin (nilai 0.7-1.1)</li>
+                    </ul>
+                    
+                    <p>Metode ini berdasarkan penelitian forensik yang dikembangkan oleh Henssge dan Madea (Handbook of Forensic Medicine, 2004) dengan modifikasi untuk kondisi Indonesia.</p>
+                </div>
+            </div>
+            
+            <div class="additional-info" id="additionalInfo">
+                * Hasil merupakan estimasi dan dapat bervariasi berdasarkan kondisi aktual
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 Forensic Time Estimator | IDENT Kab. Bekasi</p>
+        </footer>
+    </div>
+
+    <script>
+        // Membuat partikel latar belakang
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Ukuran dan posisi acak
+                const size = Math.random() * 20 + 5;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}vw`;
+                particle.style.top = `${posY}vh`;
+                
+                // Warna acak (cyan atau magenta)
+                const color = Math.random() > 0.5 ? '0, 247, 255' : '255, 0, 255';
+                particle.style.background = `rgba(${color}, ${0.2 + Math.random() * 0.3})`;
+                particle.style.boxShadow = `0 0 20px rgba(${color}, 0.5)`;
+                
+                // Animasi dengan durasi acak
+                const duration = Math.random() * 20 + 15;
+                particle.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Fungsi untuk menangani upload gambar
+        function setupImageUpload(inputId, previewId, fileNameId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const fileName = document.getElementById(fileNameId);
+            
+            input.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    // Validasi tipe file
+                    if (!file.type.match('image.*')) {
+                        alert('Hanya file gambar yang diizinkan!');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    // Validasi ukuran file (maksimal 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('Ukuran file tidak boleh lebih dari 5MB!');
+                        this.value = '';
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    
+                    reader.addEventListener('load', function() {
+                        preview.innerHTML = '';
+                        const img = document.createElement('img');
+                        img.src = this.result;
+                        preview.appendChild(img);
+                    });
+                    
+                    reader.readAsDataURL(file);
+                    fileName.textContent = file.name;
+                } else {
+                    preview.innerHTML = '<i>📷</i>';
+                    fileName.textContent = 'Belum ada file dipilih';
+                }
+            });
+        }
+
+        // Validasi input
+        function validateInputs() {
+            let isValid = true;
+            
+            const bodyTemp = parseFloat(document.getElementById('bodyTemp').value);
+            const envTemp = parseFloat(document.getElementById('envTemp').value);
+            const humidity = parseFloat(document.getElementById('humidity').value);
+            const wind = parseFloat(document.getElementById('wind').value);
+            const victimAge = parseInt(document.getElementById('victimAge').value);
+            const victimHeight = parseInt(document.getElementById('victimHeight').value);
+            const victimWeight = parseInt(document.getElementById('victimWeight').value);
+            
+            // Validasi suhu tubuh
+            if (isNaN(bodyTemp) || bodyTemp < 0 || bodyTemp > 45) {
+                document.getElementById('bodyTempWarning').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('bodyTempWarning').style.display = 'none';
+            }
+            
+            // Validasi suhu lingkungan
+            if (isNaN(envTemp) || envTemp < -10 || envTemp > 50) {
+                document.getElementById('envTempWarning').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('envTempWarning').style.display = 'none';
+            }
+            
+            // Validasi kelembaban
+            if (isNaN(humidity) || humidity < 0 || humidity > 100) {
+                document.getElementById('humidityWarning').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('humidityWarning').style.display = 'none';
+            }
+            
+            // Validasi kecepatan angin
+            if (isNaN(wind) || wind < 0 || wind > 100) {
+                document.getElementById('windWarning').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('windWarning').style.display = 'none';
+            }
+            
+            // Validasi usia
+            if (!isNaN(victimAge) && (victimAge < 0 || victimAge > 120)) {
+                document.getElementById('ageWarning').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('ageWarning').style.display = 'none';
+            }
+            
+            // Validasi tinggi badan
+            if (!isNaN(victimHeight) && (victimHeight < 50 || victimHeight > 250)) {
+                document.getElementById('heightWarning').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('heightWarning').style.display = 'none';
+            }
+            
+            // Validasi berat badan
+            if (!isNaN(victimWeight) && (victimWeight < 2 || victimWeight > 300)) {
+                document.getElementById('weightWarning').style.display = 'block';
+                isValid = false;
+            } else {
+                document.getElementById('weightWarning').style.display = 'none';
+            }
+            
+            return isValid;
+        }
+
+        // Algoritma estimasi waktu kematian
+        function estimateTimeOfDeath(data) {
+            const calculationSteps = [];
+            const factorsTable = [];
+            
+            calculationSteps.push("=== MEMULAI PERHITUNGAN ESTIMASI WAKTU KEMATIAN ===");
+            
+            // Faktor dasar: penurunan suhu tubuh rata-rata 0.8°C per jam
+            let baseRate = 0.8;
+            calculationSteps.push(`Laju pendinginan dasar: ${baseRate}°C per jam`);
+            
+            // Penyesuaian berdasarkan faktor lingkungan dan individu
+            let adjustment = 1.0;
+            calculationSteps.push(`Faktor penyesuaian awal: ${adjustment.toFixed(2)}`);
+            
+            // Pengaruh pakaian
+            const clothingFactors = {
+                'none': { value: 1.2, desc: "Tidak berpakaian" },
+                'light': { value: 1.1, desc: "Pakaian tipis" },
+                'medium': { value: 1.0, desc: "Pakaian sedang" },
+                'heavy': { value: 0.8, desc: "Pakaian tebal" }
+            };
+            adjustment *= clothingFactors[data.clothing].value;
+            factorsTable.push({ factor: "Pakaian", value: clothingFactors[data.clothing].desc, multiplier: clothingFactors[data.clothing].value });
+            calculationSteps.push(`Faktor pakaian (${clothingFactors[data.clothing].desc}): ${clothingFactors[data.clothing].value} -> Total penyesuaian: ${adjustment.toFixed(2)}`);
+            
+            // Pengaruh bentuk tubuh
+            const bodyTypeFactors = {
+                'thin': { value: 1.1, desc: "Kurus" },
+                'normal': { value: 1.0, desc: "Normal" },
+                'overweight': { value: 0.9, desc: "Gemuk" },
+                'obese': { value: 0.8, desc: "Sangat gemuk" }
+            };
+            adjustment *= bodyTypeFactors[data.bodyType].value;
+            factorsTable.push({ factor: "Bentuk Tubuh", value: bodyTypeFactors[data.bodyType].desc, multiplier: bodyTypeFactors[data.bodyType].value });
+            calculationSteps.push(`Faktor bentuk tubuh (${bodyTypeFactors[data.bodyType].desc}): ${bodyTypeFactors[data.bodyType].value} -> Total penyesuaian: ${adjustment.toFixed(2)}`);
+            
+            // Pengaruh lingkungan (air vs darat)
+            const environmentFactors = {
+                'land': { value: 1.0, desc: "Darat" },
+                'water': { value: 2.0, desc: "Air" }
+            };
+            if (data.environment === 'water') {
+                adjustment *= environmentFactors[data.environment].value; // Lebih cepat di air
+                factorsTable.push({ factor: "Lingkungan", value: environmentFactors[data.environment].desc, multiplier: environmentFactors[data.environment].value });
+                calculationSteps.push(`Faktor lingkungan (${environmentFactors[data.environment].desc}): ${environmentFactors[data.environment].value} -> Total penyesuaian: ${adjustment.toFixed(2)}`);
+            }
+            
+            // Pengaruh kelembaban
+            const humidityFactor = (1 + (data.humidity - 50) / 200);
+            adjustment *= humidityFactor;
+            factorsTable.push({ factor: "Kelembaban", value: `${data.humidity}%`, multiplier: humidityFactor.toFixed(2) });
+            calculationSteps.push(`Faktor kelembaban (${data.humidity}%): ${humidityFactor.toFixed(2)} -> Total penyesuaian: ${adjustment.toFixed(2)}`);
+            
+            // Pengaruh angin
+            const windFactor = (1 + data.wind / 50);
+            adjustment *= windFactor;
+            factorsTable.push({ factor: "Angin", value: `${data.wind} km/jam`, multiplier: windFactor.toFixed(2) });
+            calculationSteps.push(`Faktor angin (${data.wind} km/jam): ${windFactor.toFixed(2)} -> Total penyesuaian: ${adjustment.toFixed(2)}`);
+            
+            // Pengaruh posisi ditemukan
+            const positionFactors = {
+                'open': { value: 1.1, desc: "Terbuka" },
+                'shaded': { value: 0.9, desc: "Tertutup/Teduh" },
+                'buried': { value: 0.7, desc: "Terkubur" }
+            };
+            adjustment *= positionFactors[data.foundPosition].value;
+            factorsTable.push({ factor: "Posisi", value: positionFactors[data.foundPosition].desc, multiplier: positionFactors[data.foundPosition].value });
+            calculationSteps.push(`Faktor posisi (${positionFactors[data.foundPosition].desc}): ${positionFactors[data.foundPosition].value} -> Total penyesuaian: ${adjustment.toFixed(2)}`);
+            
+            // Perbedaan suhu tubuh dengan lingkungan
+            const normalBodyTemp = 37; // Suhu normal tubuh 37°C
+            const tempDiff = normalBodyTemp - data.bodyTemp;
+            const envDiff = normalBodyTemp - data.envTemp;
+            
+            calculationSteps.push(`Perbedaan suhu tubuh: ${normalBodyTemp}°C - ${data.bodyTemp}°C = ${tempDiff.toFixed(1)}°C`);
+            calculationSteps.push(`Perbedaan suhu lingkungan: ${normalBodyTemp}°C - ${data.envTemp}°C = ${envDiff.toFixed(1)}°C`);
+            
+            // Estimasi waktu (dalam jam)
+            let estimatedHours;
+            let formulaUsed;
+            
+            // Jika lingkungan lebih dingin dari tubuh, perhitungan lebih kompleks
+            if (data.envTemp < data.bodyTemp) {
+                const envEffect = (1 + (normalBodyTemp - data.envTemp) / 20);
+                estimatedHours = tempDiff / (baseRate * adjustment * envEffect);
+                formulaUsed = `Waktu = ${tempDiff.toFixed(1)}°C / (${baseRate}°C/jam × ${adjustment.toFixed(2)} × ${envEffect.toFixed(2)}) = ${estimatedHours.toFixed(2)} jam`;
+                calculationSteps.push(`Lingkungan lebih dingin dari tubuh, menggunakan formula khusus:`);
+                calculationSteps.push(formulaUsed);
+            } else {
+                estimatedHours = tempDiff / (baseRate * adjustment);
+                formulaUsed = `Waktu = ${tempDiff.toFixed(1)}°C / (${baseRate}°C/jam × ${adjustment.toFixed(2)}) = ${estimatedHours.toFixed(2)} jam`;
+                calculationSteps.push(`Menggunakan formula standar:`);
+                calculationSteps.push(formulaUsed);
+            }
+            
+            calculationSteps.push(`=== PERHITUNGAN SELESAI → ${estimatedHours.toFixed(2)} jam ===`);
+            
+            return {
+                hours: Math.max(0, estimatedHours),
+                steps: calculationSteps,
+                factors: factorsTable
+            };
+        }
+
+        // Format hasil estimasi
+        function formatResult(hours) {
+            if (hours === 0) {
+                return "Kurang dari 1 jam";
+            }
+            
+            const totalMinutes = Math.round(hours * 60);
+            const days = Math.floor(totalMinutes / 1440);
+            const hoursRemainder = Math.floor((totalMinutes % 1440) / 60);
+            const minutes = totalMinutes % 60;
+            
+            if (days > 0) {
+                return `${days} hari, ${hoursRemainder} jam, ${minutes} menit`;
+            } else if (hoursRemainder > 0) {
+                return `${hoursRemainder} jam, ${minutes} menit`;
+            } else {
+                return `${minutes} menit`;
+            }
+        }
+
+        // Fungsi untuk mengirim hasil via WhatsApp
+        function sendWhatsApp() {
+            const resultText = document.getElementById('result').textContent;
+            const victimName = document.getElementById('victimName').value || 'Korban';
+            const caseNumber = document.getElementById('caseNumber').value || 'Tidak ada';
+            
+            const message = `Berikut kami kirimkan hasil penghitungan waktu kematian dengan menggunakan aplikasi FORENSIC TIME ESTIMATOR By IDENT Kab. BEKASI:\n\n` +
+                           `Nama Korban: ${victimName}\n` +
+                           `Nomor Kasus: ${caseNumber}\n` +
+                           `Hasil Estimasi: ${resultText}\n\n` +
+                           `Terima kasih`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+        }
+
+        // Fungsi untuk mencetak hasil
+        function printResult() {
+            window.print();
+        }
+
+        // Event listener untuk tombol hitung
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            // Validasi input
+            if (!validateInputs()) {
+                alert('Harap periksa input Anda. Beberapa nilai tidak valid!');
+                return;
+            }
+            
+            // Mengumpulan data dari form
+            const data = {
+                bodyTemp: parseFloat(document.getElementById('bodyTemp').value),
+                envTemp: parseFloat(document.getElementById('envTemp').value),
+                gender: document.getElementById('victimGender').value,
+                clothing: document.getElementById('clothing').value,
+                bodyType: document.getElementById('bodyType').value,
+                environment: document.getElementById('environment').value,
+                humidity: parseFloat(document.getElementById('humidity').value),
+                wind: parseFloat(document.getElementById('wind').value),
+                foundPosition: document.getElementById('foundPosition').value
+            };
+            
+            // Validasi input suhu
+            if (isNaN(data.bodyTemp) || isNaN(data.envTemp)) {
+                alert('Masukkan suhu tubuh dan suhu lingkungan yang valid!');
+                return;
+            }
+            
+            // Validasi suhu tubuh tidak lebih tinggi dari normal
+            if (data.bodyTemp > 37) {
+                if (!confirm('Suhu tubuh yang dimasukkan lebih tinggi dari suhu normal (37°C). Apakah Anda yakin ingin melanjutkan?')) {
+                    return;
+                }
+            }
+            
+            // Melakukan estimasi
+            const result = estimateTimeOfDeath(data);
+            const resultText = formatResult(result.hours);
+            
+            // Menampilkan hasil
+            document.getElementById('result').textContent = resultText;
+            
+            // Menampilkan langkah-langkah kalkulasi
+            const stepsContainer = document.getElementById('calculationSteps');
+            stepsContainer.innerHTML = '';
+            
+            result.steps.forEach(step => {
+                const stepElement = document.createElement('div');
+                stepElement.classList.add('calculation-step');
+                stepElement.textContent = step;
+                stepsContainer.appendChild(stepElement);
+            });
+            
+            // Menampilkan tabel faktor
+            const factorsTableBody = document.getElementById('factorsTableBody');
+            factorsTableBody.innerHTML = '';
+            
+            result.factors.forEach(factor => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${factor.factor}</td>
+                    <td>${factor.value}</td>
+                    <td>${factor.multiplier}</td>
+                `;
+                factorsTableBody.appendChild(row);
+            });
+            
+            document.getElementById('resultContainer').classList.add('show');
+        });
+
+        // Event listener untuk tombol WhatsApp
+        document.getElementById('whatsappBtn').addEventListener('click', sendWhatsApp);
+
+        // Event listener untuk tombol cetak
+        document.getElementById('printBtn').addEventListener('click', printResult);
+
+        // Inisialisasi
+        window.addEventListener('load', function() {
+            createParticles();
+            
+            // Set waktu ditemukan default ke waktu sekarang
+            const now = new Date();
+            const timeString = now.toISOString().slice(0, 16);
+            document.getElementById('bodyFoundTime').value = timeString;
+            
+            // Sembunyikan pesan peringatan awal
+            document.querySelectorAll('.warning').forEach(warning => {
+                warning.style.display = 'none';
+            });
+            
+            // Setup upload gambar
+            setupImageUpload('facePhoto', 'facePreview', 'faceFileName');
+            setupImageUpload('bodyPhoto', 'bodyPreview', 'bodyFileName');
+            setupImageUpload('woundPhoto', 'woundPreview', 'woundFileName');
+            setupImageUpload('specialPhoto', 'specialPreview', 'specialFileName');
+        });
+    </script>
+</body>
+</html>
