@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buku Saku Pos PAM Nataru 2025/2026 - Polsek Tambun Rest Area Km 19-A</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a1a2d;
+            color: #f0f0f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Latar belakang animasi */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(25, 100, 200, 0.2);
+            border-radius: 50%;
+        }
+
+        .blue-light {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 80, 255, 0.15) 0%, rgba(0, 80, 255, 0) 70%);
+            border-radius: 50%;
+            animation: pulse 8s infinite alternate;
+        }
+
+        .blue-light:nth-child(2) {
+            top: 30%;
+            right: 10%;
+            width: 200px;
+            height: 200px;
+            animation-delay: 2s;
+        }
+
+        .blue-light:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            width: 250px;
+            height: 250px;
+            animation-delay: 4s;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; transform: scale(1); }
+            100% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        /* Header dengan logo */
+        header {
+            background: linear-gradient(90deg, rgba(0, 40, 85, 0.9) 0%, rgba(0, 20, 60, 0.9) 100%);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 10;
+            border-bottom: 3px solid #ffcc00;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            height: 70px;
+            width: auto;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+        }
+
+        .header-title {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .header-title h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+        }
+
+        .header-title p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Container utama */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Menu navigasi */
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            background-color: rgba(0, 30, 70, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn {
+            background: linear-gradient(to bottom, rgba(0, 60, 120, 0.8), rgba(0, 30, 70, 0.8));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn:hover {
+            background: linear-gradient(to bottom, rgba(0, 80, 160, 0.9), rgba(0, 50, 110, 0.9));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(to bottom, rgba(255, 204, 0, 0.9), rgba(230, 180, 0, 0.9));
+            color: #0a1a2d;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+        }
+
+        /* Konten tab */
+        .tab-content {
+            display: none;
+            background-color: rgba(10, 30, 60, 0.85);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 204, 0, 0.2);
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Styling untuk konten */
+        h2 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 204, 0, 0.3);
+        }
+
+        h3 {
+            color: #66b3ff;
+            margin: 20px 0 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .info-box {
+            background-color: rgba(0, 40, 90, 0.6);
+            border-left: 4px solid #ffcc00;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box {
+            background-color: rgba(200, 50, 0, 0.2);
+            border-left: 4px solid #ff6600;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Tabel */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: rgba(0, 30, 60, 0.7);
+        }
+
+        th {
+            background-color: rgba(0, 60, 120, 0.9);
+            color: #ffcc00;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        tr:nth-child(even) {
+            background-color: rgba(0, 40, 80, 0.5);
+        }
+
+        tr:hover {
+            background-color: rgba(0, 80, 160, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(0, 20, 50, 0.9);
+            padding: 25px 20px;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 2px solid #ffcc00;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-content p {
+            margin-bottom: 10px;
+        }
+
+        .footer-logo {
+            height: 60px;
+            margin: 10px;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 15px 10px;
+            }
+            
+            .logo-container {
+                justify-content: space-between;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .header-title h1 {
+                font-size: 1.4rem;
+            }
+            
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .container {
+                padding: 20px 10px;
+            }
+            
+            .tab-content {
+                padding: 20px 15px;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+
+        /* Efek khusus */
+        .badge {
+            display: inline-block;
+            background-color: #ffcc00;
+            color: #0a1a2d;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        .emergency-btn {
+            background: linear-gradient(to right, #ff3300, #cc0000);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto;
+            width: 250px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(255, 50, 0, 0.5);
+        }
+
+        .emergency-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 50, 0, 0.8);
+        }
+
+        .download-btn {
+            background: linear-gradient(to right, #0066cc, #004499);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            background: linear-gradient(to right, #0088ff, #0066cc);
+            transform: translateY(-2px);
+        }
+
+        .highlight {
+            background-color: rgba(255, 204, 0, 0.15);
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Latar belakang animasi -->
+    <div class="background-animation" id="backgroundAnimation"></div>
+    
+    <!-- Header dengan logo -->
+    <header>
+        <div class="header-title">
+            <h1> BUKU SAKU POS PAM NATARU 2025/2026</h1>
+            <p>POLSEK TAMBUN - REST AREA KM 19-A</p>
+        </div>
+    </header>
+
+    <!-- Container utama -->
+    <div class="container">
+        <!-- Menu navigasi -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" data-tab="identitas"><i class="fas fa-id-card"></i> Identitas Pos</button>
+            <button class="tab-btn" data-tab="tugas"><i class="fas fa-tasks"></i> Tugas Pokok</button>
+            <button class="tab-btn" data-tab="sop"><i class="fas fa-clipboard-list"></i> SOP Dasar</button>
+            <button class="tab-btn" data-tab="skala"><i class="fas fa-chart-bar"></i> Skala Respons</button>
+            <button class="tab-btn" data-tab="komunikasi"><i class="fas fa-walkie-talkie"></i> Pedoman Komunikasi</button>
+            <button class="tab-btn" data-tab="catatan"><i class="fas fa-book"></i> Catatan Harian</button>
+        </div>
+
+        <!-- Konten tab: Identitas Pos -->
+        <div class="tab-content active" id="identitas">
+            <h2><i class="fas fa-id-card"></i> IDENTITAS POS PAM NATARU</h2>
+            <div class="info-box">
+                <p><strong>Periode Operasi:</strong> 19 Desember 2025 – 2 Januari 2026</p>
+                <p><strong>Kode Operasi:</strong> OPERASI NATARU 2025/2026</p>
+            </div>
+            
+            <h3>Data Pos</h3>
+            <ul>
+                <li><strong>Nama Pos:</strong> <span class="highlight">Pos PAM Nataru KM 19-A</span></li>
+                <li><strong>Lokasi:</strong> <span class="highlight">Rest Area Jakarta-Cikampek KM 19-A</span></li>
+                <li><strong>KA POSMPAM :</strong> <span class="highlight">IPTU BUDIAWAN, (69100266)</span></li>
+                <li><strong>PERWIRA POSPAM :</strong> <span class="highlight">IPDA RUDIYANTO, (72080049)</span></li>
+                <li><strong>Jumlah Personel:</strong> <span class="highlight">17 orang (2 BKO dari Babinsa Babelan)</span></li>
+                <li><strong>Nomor Darurat Pos:</strong> <span class="highlight">021-9876543</span></li>
+                <li><strong>Koordinat GPS:</strong> <span class="highlight">-6.193125, 106.821853</span></li>
+            </ul>
+            
+            <h3>Visi Pos PAM Nataru 2025/2026</h3>
+            <div class="info-box">
+                <p><i class="fas fa-bullseye"></i> <strong>"Mewujudkan Pengamanan Nataru yang Kondusif, Aman, dan Tertib melalui Pelayanan Publik yang Profesional."</strong></p>
+            </div>
+            
+            <h3>Misi</h3>
+            <ol>
+                <li>Melaksanakan pengamanan objek vital dan tempat keramaian secara optimal.</li>
+                <li>Mencegah gangguan kamtibmas dan tindak kriminalitas selama periode Nataru.</li>
+                <li>Memberikan pelayanan prima kepada masyarakat dan tamu yang berkunjung.</li>
+                <li>Melakukan koordinasi dengan unsur terkait dalam pengamanan Nataru.</li>
+            </ol>
+            
+            <button class="emergency-btn" id="emergencyBtn">
+                <i class="fas fa-phone-alt"></i> PANGGILAN DARURAT 110
+            </button>
+        </div>
+
+        <!-- Konten tab: Tugas Pokok -->
+        <div class="tab-content" id="tugas">
+            <h2><i class="fas fa-tasks"></i> TUGAS POKOK POS PAM NATARU</h2>
+            
+            <div class="info-box">
+                <p><i class="fas fa-info-circle"></i> Berdasarkan Surat Perintah Kapolri No. SP/1234/XII/2025 tentang Pengamanan Nataru 2025/2026</p>
+            </div>
+            
+            <h3>Tugas Utama</h3>
+            <ol>
+                <li><strong>Pengamanan dan Pengaturan Lalu Lintas:</strong> Melaksanakan pengamanan dan pengaturan lalu lintas di titik/area yang menjadi objek vital/keramaian selama periode Nataru.</li>
+                <li><strong>Patroli dan Pencegahan:</strong> Melakukan patroli dan pencegahan premanisme, tindak kriminal, dan gangguan kamtibmas di wilayah pengamanan.</li>
+                <li><strong>Pelayanan Publik:</strong> Memberikan pelayanan, informasi, dan pertolongan pertama kepada masyarakat (Public Service).</li>
+                <li><strong>Penegakan Hukum:</strong> Melakukan penegakan hukum terhadap pelanggaran lalu lintas dan ketertiban umum sesuai ketentuan perundangan.</li>
+                <li><strong>Pelaporan:</strong> Melaporkan setiap kejadian secara cepat dan akurat kepada pimpinan sesuai prosedur.</li>
+                <li><strong>Koordinasi:</strong> Melakukan koordinasi dengan unsur TNI, Satpol PP, dan instansi terkait lainnya dalam pengamanan Nataru.</li>
+            </ol>
+            
+            <h3>Area Tanggung Jawab</h3>
+            <ul>
+                <li>Rest Area Jakarta-Cikampek KM-19</li>
+                <li>Kantong Parkir Rest Area Jakarta-Cikampek KM-19</li>
+                <li>Fasilitas Umum dan Khusus Rest Area Jakarta-Cikampek KM-19</li>
+                <li>Jalan Tol Rest Area Jakarta-Cikampek KM-19</li>
+            </ul>
+            
+            <h3>Waktu Operasi</h3>
+            <ul>
+                <li><strong>Hari Normal:</strong> 06.00 - 24.00 WIB (2 shift)</li>
+                <li><strong>Malam Tahun Baru:</strong> 31 Des 18.00 - 1 Jan 06.00 (siaga penuh)</li>
+                <li><strong>Libur Nasional:</strong> 24, 25, 31 Des, 1 Jan (siaga penuh 24 jam)</li>
+            </ul>
+        </div>
+
+        <!-- Konten tab: SOP Dasar -->
+        <div class="tab-content" id="sop">
+            <h2><i class="fas fa-clipboard-list"></i> STANDAR OPERASIONAL PROSEDUR (SOP) DASAR</h2>
+            
+            <h3>A. Saat Bertugas</h3>
+            <ol>
+                <li><strong>Penampilan:</strong> Berpenampilan rapi, sopan, dan berwibawa sesuai standar kepolisian.</li>
+                <li><strong>Peralatan:</strong> Membawa peralatan lengkap (HT, senter, peluit, alat pendukung lainnya).</li>
+                <li><strong>Posisi:</strong> Menempati posisi sesuai penugasan, tidak boleh meninggalkan pos tanpa izin.</li>
+                <li><strong>Sikap:</strong> Bersikap proaktif, waspada, dan komunikatif terhadap masyarakat.</li>
+                <li><strong>Kesehatan:</strong> Menjaga kondisi fisik dan mental selama bertugas.</li>
+            </ol>
+            
+            <h3>B. Menangani Kejadian (Prosedur AMANKA)</h3>
+            <div class="info-box">
+                <p><strong>AMANKA:</strong> Amati, Maju, Alihkan perhatian, Nilai situasi, Kendalikan, Amankan TKP</p>
+            </div>
+            <ol>
+                <li><strong>Amati:</strong> Amati situasi dari jarak aman, identifikasi potensi bahaya.</li>
+                <li><strong>Maju:</strong> Mendekati lokasi kejadian dengan hati-hati dan siaga.</li>
+                <li><strong>Alihkan:</strong> Alihkan perhatian pelaku/pihak yang bertikai jika diperlukan.</li>
+                <li><strong>Nilai:</strong> Nilai situasi dan tentukan langkah yang akan diambil.</li>
+                <li><strong>Kendalikan:</strong> Kendalikan situasi dengan tegas dan profesional.</li>
+                <li><strong>Amankan:</strong> Amankan TKP dan lakukan evakuasi jika diperlukan.</li>
+            </ol>
+            
+            <h3>C. Protokol Kesehatan</h3>
+            <ul>
+                <li>Gunakan masker jika diperlukan dalam kondisi tertentu (penanganan kerumunan).</li>
+                <li>Sedia hand sanitizer di pos dan kendaraan operasional.</li>
+                <li>Tetap menjaga kebersihan diri dan lingkungan pos.</li>
+                <li>Lakukan pengecekan suhu tubuh secara berkala bagi personel.</li>
+            </ul>
+            
+            <div class="warning-box">
+                <p><i class="fas fa-exclamation-triangle"></i> <strong>Penting:</strong> Selalu utamakan keselamatan diri dan masyarakat dalam setiap tindakan.</p>
+            </div>
+        </div>
+
+        <!-- Konten tab: Skala Respons -->
+        <div class="tab-content" id="skala">
+            <h2><i class="fas fa-chart-bar"></i> SKALA RESPON DAN ESKALASI</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tingkat Gangguan</th>
+                        <th>Tindakan Awal</th>
+                        <th>Pelaporan</th>
+                        <th>Kekuatan Tambahan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>RINGAN</strong><br>(Macet, tersesat, pertikaian ringan)</td>
+                        <td>Pengaturan, mediasi, informasi, pengalihan arus</td>
+                        <td>Ke Komandan Pos</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><strong>SEDANG</strong><br>(Kecelakaan, keributan, pelanggaran berat)</td>
+                        <td>Amankan TKP, berikan pertolongan, kendalikan pelaku, pengalihan lalu lintas</td>
+                        <td>Ke Command Center Sektor & Dankorsat</td>
+                        <td>Personel cadangan sektor, unit dalmas</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BERAT</strong><br>(Bencana, kerusuhan, kejahatan bersenjata)</td>
+                        <td>Evakuasi, isolasi area, lakukan pembatasan, siaga tembak</td>
+                        <td>Langsung ke Dankorsat, Kapolda & BKO TNI</td>
+                        <td>SPG/CC Satbrimob, Ren opsnal, Paspampres</td>
+                    </tr>
+                    <tr>
+                        <td><strong>DARURAT KHUSUS</strong><br>(Terorisme, ancaman bom, sandera)</td>
+                        <td>Evakuasi massal, lockdown area, koordinasi Densus 88</td>
+                        <td>Langsung ke Kapolri, Menkopolhukam</td>
+                        <td>Densus 88, Gultor, Kopassus</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Data Penting</h3>
+            <ul>
+                <li><strong>Command Center Polres Metro Bekasi:</strong> 0811-1939-110</li>
+                <li><strong>Posko Siaga Medis Center:</strong> 0817-4876-334</li>
+                <li><strong>Dinas Pemadam Kebakaran:</strong> 113 / 021-8833-6732</li>
+                <li><strong>Siaga Kecamatan: </strong> 021-8832-6170</li>
+                <li><strong>Command Center Sektor (Polsek Tambun):</strong> 021-88027380812</li>
+                <li><strong>RS Hermina (RS Terdekat):</strong> 021-8265-1212</li>
+            </ul>
+            
+            <a href="#" class="download-btn"><i class="fas fa-download"></i> Download Protokol Lengkap (PDF)</a>
+        </div>
+
+        <!-- Konten tab: Pedoman Komunikasi -->
+        <div class="tab-content" id="komunikasi">
+            <h2><i class="fas fa-walkie-talkie"></i> PEDOMAN KOMUNIKASI (HT/RADIO)</h2>
+            
+            <div class="info-box">
+                <p><i class="fas fa-broadcast-tower"></i> <strong>Gunakan 10 Code Polri atau kode lokal yang ditetapkan.</strong></p>
+            </div>
+            
+            <h3>Kode Komunikasi 10-Code</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Arti</th>
+                        <th>Kode</th>
+                        <th>Arti</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>10-1</strong></td>
+                        <td>Terima tak jelas</td>
+                        <td><strong>10-20</strong></td>
+                        <td>Lokasi</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10-4</strong></td>
+                        <td>Mengerti / OK</td>
+                        <td><strong>10-33</strong></td>
+                        <td>Darurat, butuh bantuan segera</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10-5</strong></td>
+                        <td>Ulangi pesan</td>
+                        <td><strong>10-76</strong></td>
+                        <td>Dalam perjalanan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10-7</strong></td>
+                        <td>Keluar dinas</td>
+                        <td><strong>10-78</strong></td>
+                        <td>Butuh bantuan</td>
+                    </tr>
+                    <tr>
+                        <td><strong>10-8</strong></td>
+                        <td>Siap/Siaga</td>
+                        <td><strong>10-99</strong></td>
+                        <td>Tugas selesai</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Format Laporan Radio</h3>
+            <div class="info-box">
+                <p><strong>[Pemanggil] untuk [Penerima], [Isi Pesan], [Diakhiri kode 10-4 atau permintaan balasan].</strong></p>
+            </div>
+            
+            <h4>Contoh:</h4>
+            <ul>
+                <li><strong>Pemanggil:</strong> "Pos Rest Area KM 19-A, Command Center, telah terjadi Laka Lantas tunggal di Jalan Tol Jakarta-Cikampek, korban 1 orang luka ringan, butuh ambulans, 10-78."</li>
+                <li><strong>Balasan:</strong> "Command Center, Pos Rest Area KM 19-A, 8-6, ambulans menuju lokasi, 10-76, 10-4."</li>
+            </ul>
+            
+            <h3>Kode Khusus Nataru 2025/2026</h3>
+            <ul>
+                <li><strong>Kode Merah:</strong> Kejadian darurat massal (kerusuhan, teror)</li>
+                <li><strong>Kode Kuning:</strong> Kejadian menengah (kecelakaan, keributan)</li>
+                <li><strong>Kode Hijau:</strong> Situasi normal terkendali</li>
+                <li><strong>Kode Biru:</strong> Butuh bantuan medis darurat</li>
+                <li><strong>Kode Hitam:</strong> Korban jiwa dalam kejadian</li>
+            </ul>
+            
+            <div class="warning-box">
+                <p><i class="fas fa-exclamation-circle"></i> <strong>Perhatian:</strong> Jaga kerahasiaan komunikasi radio. Jangan gunakan untuk percakapan pribadi.</p>
+            </div>
+        </div>
+
+        <!-- Konten tab: Catatan Harian -->
+        <div class="tab-content" id="catatan">
+            <h2><i class="fas fa-book"></i> CATATAN HARIAN POS</h2>
+            
+            <div class="info-box">
+                <p><i class="fas fa-calendar-alt"></i> <strong>Periode: 18 Desember 2025 – 2 Januari 2026</strong></p>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tanggal</th>
+                        <th>Waktu</th>
+                        <th>Kejadian/Pelaksanaan Tugas</th>
+                        <th>Personel Penanggungjawab</th>
+                        <th>Tindakan/Laporan</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="logTable">
+                    <!-- Data akan diisi oleh JavaScript -->
+                </tbody>
+            </table>
+            
+            <h3 style="margin-top: 30px;">Tambah Catatan Harian</h3>
+            <div style="background-color: rgba(0, 40, 90, 0.6); padding: 20px; border-radius: 8px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div>
+                        <label for="logDate">Tanggal:</label>
+                        <input type="date" id="logDate" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.9);">
+                    </div>
+                    <div>
+                        <label for="logTime">Waktu:</label>
+                        <input type="time" id="logTime" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.9);">
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="logEvent">Kejadian/Pelaksanaan Tugas:</label>
+                    <textarea id="logEvent" rows="3" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.9);"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="logPerson">Personel Penanggungjawab:</label>
+                    <input type="text" id="logPerson" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.9);">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="logAction">Tindakan/Laporan:</label>
+                    <textarea id="logAction" rows="3" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.9);"></textarea>
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label for="logStatus">Status:</label>
+                    <select id="logStatus" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; background-color: rgba(255,255,255,0.9);">
+                        <option value="selesai">Selesai</option>
+                        <option value="proses">Dalam Proses</option>
+                        <option value="darurat">Darurat</option>
+                    </select>
+                </div>
+                
+                <button id="addLogBtn" style="background: linear-gradient(to right, #0066cc, #004499); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-plus-circle"></i> Tambah Catatan
+                </button>
+            </div>
+            
+            <a href="#" class="download-btn" style="margin-top: 20px;"><i class="fas fa-file-excel"></i> Export Catatan ke Excel</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p><strong>BUKU SAKU POS PAM NATARU 2025/2026</strong></p>
+            <p>POLRES METRO BEKASI - POLSEK TAMBUN</p>
+            <p>"KAMI HADIR UNTUK ANDA. SELAMAT TAHUN BARU 2026"</p>
+            <p style="margin-top: 15px; font-size: 0.9rem; opacity: 0.8;">
+                <i class="fas fa-lock"></i> DOKUMEN INI BERSIFAT RAHASIA TERBATAS DAN HANYA UNTUK KALANGAN INTERNAL POLRI
+            </p>
+            <p style="margin-top: 15px; font-size: 0.8rem; opacity: 0.7;">
+                @PAM Nataru 2025/2026 - Novy25
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Inisialisasi latar belakang animasi
+        function createParticles() {
+            const background = document.getElementById('backgroundAnimation');
+            
+            // Tambahkan partikel
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Ukuran acak
+                const size = Math.random() * 5 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posisi acak
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Animasi
+                const duration = Math.random() * 20 + 10;
+                particle.style.animation = `moveParticle ${duration}s linear infinite`;
+                
+                background.appendChild(particle);
+            }
+            
+            // Tambahkan animasi CSS untuk partikel
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes moveParticle {
+                    0% { transform: translateY(0) translateX(0); opacity: 0; }
+                    10% { opacity: 1; }
+                    90% { opacity: 1; }
+                    100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Fungsi untuk tab navigation
+        function setupTabs() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Hapus kelas active dari semua tab dan konten
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Tambahkan kelas active ke tab yang diklik
+                    btn.classList.add('active');
+                    
+                    // Tampilkan konten yang sesuai
+                    const tabId = btn.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        }
+        
+        // Fungsi untuk tombol darurat
+        function setupEmergencyButton() {
+            const emergencyBtn = document.getElementById('emergencyBtn');
+            
+            emergencyBtn.addEventListener('click', () => {
+                // Simulasi panggilan darurat
+                alert('MENGHUBUNGI 110...\n\nPusat Bantuan Polda Metro Jaya:\nNomor Darurat: 110\nCommand Center: 021-5234110\nAmbulans: 119\nPemadam Kebakaran: 113');
+                
+                // Log ke catatan harian
+                const now = new Date();
+                const dateStr = now.toISOString().split('T')[0];
+                const timeStr = now.toTimeString().split(' ')[0].substring(0,5);
+                
+                addLogEntry({
+                    date: dateStr,
+                    time: timeStr,
+                    event: 'Panggilan darurat diaktifkan dari buku saku digital',
+                    person: 'Sistem Otomatis',
+                    action: 'Alert dikirim ke Command Center Polda Metro Jaya',
+                    status: 'darurat'
+                });
+            });
+        }
+        
+        // Data contoh untuk catatan harian
+        const sampleLogs = [
+            {
+                date: '2025-12-18',
+                time: '08:00',
+                event: 'Apel pagi dan pembagian tugas pos',
+                person: 'AKP. Rizki Ananda',
+                action: 'Personel berjumlah 24 orang sudah ditempatkan sesuai posisi',
+                status: 'selesai'
+            },
+            {
+                date: '2025-12-18',
+                time: '14:15',
+                event: 'Memberi arahan kepada pengunjung yang tersesat',
+                person: 'AIPDA. Novy Anggraito',
+                action: 'Pengunjung sudah diarahkan ke tujuan',
+                status: 'selesai'
+            }
+        ];
+        
+        // Fungsi untuk menampilkan catatan harian
+        function displayLogs() {
+            const logTable = document.getElementById('logTable');
+            
+            // Kosongkan tabel
+            logTable.innerHTML = '';
+            
+            // Tambahkan data contoh
+            sampleLogs.forEach(log => {
+                const row = document.createElement('tr');
+                
+                // Warna status
+                let statusColor = '#4CAF50'; // Hijau untuk selesai
+                if (log.status === 'proses') statusColor = '#FF9800'; // Oranye untuk proses
+                if (log.status === 'darurat') statusColor = '#F44336'; // Merah untuk darurat
+                
+                row.innerHTML = `
+                    <td>${log.date}</td>
+                    <td>${log.time}</td>
+                    <td>${log.event}</td>
+                    <td>${log.person}</td>
+                    <td>${log.action}</td>
+                    <td><span class="badge" style="background-color: ${statusColor}">${log.status.toUpperCase()}</span></td>
+                `;
+                
+                logTable.appendChild(row);
+            });
+        }
+        
+        // Fungsi untuk menambah catatan
+        function addLogEntry(log) {
+            const logTable = document.getElementById('logTable');
+            
+            // Warna status
+            let statusColor = '#4CAF50'; // Hijau untuk selesai
+            if (log.status === 'proses') statusColor = '#FF9800'; // Oranye untuk proses
+            if (log.status === 'darurat') statusColor = '#F44336'; // Merah untuk darurat
+            
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${log.date}</td>
+                <td>${log.time}</td>
+                <td>${log.event}</td>
+                <td>${log.person}</td>
+                <td>${log.action}</td>
+                <td><span class="badge" style="background-color: ${statusColor}">${log.status.toUpperCase()}</span></td>
+            `;
+            
+            // Tambahkan di awal tabel
+            logTable.insertBefore(row, logTable.firstChild);
+        }
+        
+        // Fungsi untuk setup form tambah catatan
+        function setupLogForm() {
+            const addBtn = document.getElementById('addLogBtn');
+            
+            addBtn.addEventListener('click', () => {
+                const date = document.getElementById('logDate').value;
+                const time = document.getElementById('logTime').value;
+                const event = document.getElementById('logEvent').value;
+                const person = document.getElementById('logPerson').value;
+                const action = document.getElementById('logAction').value;
+                const status = document.getElementById('logStatus').value;
+                
+                // Validasi
+                if (!date || !time || !event || !person || !action) {
+                    alert('Harap lengkapi semua field!');
+                    return;
+                }
+                
+                // Tambahkan catatan
+                addLogEntry({date, time, event, person, action, status});
+                
+                // Reset form
+                document.getElementById('logDate').value = '';
+                document.getElementById('logTime').value = '';
+                document.getElementById('logEvent').value = '';
+                document.getElementById('logPerson').value = '';
+                document.getElementById('logAction').value = '';
+                document.getElementById('logStatus').value = 'selesai';
+                
+                // Tampilkan notifikasi
+                alert('Catatan harian berhasil ditambahkan!');
+            });
+        }
+        
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            setupTabs();
+            setupEmergencyButton();
+            displayLogs();
+            setupLogForm();
+            
+            // Set tanggal default untuk form catatan
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('logDate').value = today;
+            document.getElementById('logDate').min = '2025-12-18';
+            document.getElementById('logDate').max = '2026-01-02';
+            
+            // Set waktu default
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                               now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('logTime').value = timeString;
+        });
+    </script>
+</body>
+</html>
