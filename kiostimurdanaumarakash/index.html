@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kios Timur Danau Marakash - Kawasan Kuliner Terpusat & Terpadu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #ff6b6b;
+            --secondary-color: #4ecdc4;
+            --accent-color: #ffd166;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: var(--light-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
+            opacity: 0.15;
+            filter: blur(40px);
+        }
+
+        /* Glassmorphism container */
+        .glass-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        /* Menu Button - Top Right */
+        .menu-btn {
+            position: fixed;
+            top: 1.8rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background: var(--light-color);
+            margin: 3px 0;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 5rem 2rem 2rem;
+            z-index: 1000;
+            transition: right 0.5s cubic-bezier(0.77, 0.2, 0.05, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            border-left: 1px solid var(--glass-border);
+        }
+
+        .nav-menu.active {
+            right: 0;
+        }
+
+        .nav-menu a {
+            color: var(--light-color);
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-menu a:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(-10px);
+        }
+
+        .nav-menu a i {
+            width: 25px;
+            text-align: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            padding: 3rem;
+        }
+
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #ffd166);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 0;
+        }
+
+        h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            bottom: -10px;
+            left: 20%;
+            border-radius: 2px;
+        }
+
+        /* Culinary Grid */
+        .culinary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .culinary-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 300px;
+            transition: transform 0.5s ease;
+        }
+
+        .culinary-card:hover {
+            transform: scale(1.05);
+        }
+
+        .culinary-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .culinary-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .culinary-card .card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            color: white;
+        }
+
+        .culinary-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Facilities Section */
+        .facilities {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .facility {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .facility i {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            color: var(--light-color);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .culinary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .glass-container {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+            
+            .menu-btn {
+                top: 1.5rem;
+                right: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-menu {
+                width: 100%;
+            }
+            
+            .facility {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-utensils"></i>
+            <span>K2TDM</span>
+        </div>
+    </header>
+
+    <!-- Menu Button -->
+    <div class="menu-btn" id="menuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="nav-menu" id="navMenu">
+        <a href="#home"><i class="fas fa-home"></i> Beranda</a>
+        <a href="#about"><i class="fas fa-info-circle"></i> Tentang</a>
+        <a href="#culinary"><i class="fas fa-utensils"></i> Kuliner</a>
+        <a href="#facilities"><i class="fas fa-concierge-bell"></i> Fasilitas</a>
+        <a href="#events"><i class="fas fa-calendar-alt"></i> Acara</a>
+        <a href="#contact"><i class="fas fa-envelope"></i> Kontak</a>
+        <a href="#reservation"><i class="fas fa-bookmark"></i> Reservasi</a>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="glass-container hero-content">
+            <h1>Kawasan Kuliner Terpusat & Terpadu</h1>
+            <p>Temukan pengalaman kuliner terbaik di satu tempat yang menyatukan cita rasa nusantara dengan pemandangan indah dan nyaman.</p>
+            <div class="glass-container" style="display: inline-block; padding: 1rem 2rem;">
+                <a href="#culinary" style="color: inherit; text-decoration: none; font-weight: 500;">
+                    Jelajahi Kuliner <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- About Section -->
+        <section id="about">
+            <h2>Tentang K2TDM</h2>
+            <div class="glass-container">
+                <p>K2TDM adalah kawasan kuliner terpadu pertama yang menghadirkan berbagai konsep makanan dalam satu tempat dengan desain modern dan fasilitas lengkap. Kami menyediakan suasana yang nyaman untuk pengalaman memudahkanb menjelajahi aneka makanan dan minuman yang ada di area.</p>
+                <p>Dengan lebih dari 48 tenant kuliner pilihan, K2TDM menjadi destinasi utama para pecinta makanan yang ingin mengeksplorasi berbagai cita rasa dari tradisional hingga kontemporer.</p>
+            </div>
+        </section>
+
+        <!-- Culinary Section -->
+        <section id="culinary">
+            <h2>Kuliner Unggulan</h2>
+            <div class="culinary-grid">
+                <div class="culinary-card glass-container" style="padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Makanan Internasional">
+                    <div class="card-content">
+                        <h3>Internasional</h3>
+                        <p>Rasa dunia dalam satu suapan</p>
+                    </div>
+                </div>
+                <div class="culinary-card glass-container" style="padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Makanan Nusantara">
+                    <div class="card-content">
+                        <h3>Nusantara</h3>
+                        <p>Keautentikan rasa tradisional Indonesia</p>
+                    </div>
+                </div>
+                <div class="culinary-card glass-container" style="padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Makanan Sehat">
+                    <div class="card-content">
+                        <h3>Sehat & Organik</h3>
+                        <p>Nutrisi lengkap untuk tubuh sehat</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Facilities Section -->
+        <section id="facilities">
+            <h2>Fasilitas Terpadu</h2>
+            <div class="facilities">
+                <div class="facility glass-container">
+                    <i class="fas fa-parking"></i>
+                    <h3>Parkir Luas</h3>
+                    <p>Area parkir yang luas dan aman</p>
+                </div>
+                <div class="facility glass-container">
+                    <i class="fas fa-child"></i>
+                    <h3>Area Bermain</h3>
+                    <p>Zona khusus untuk anak-anak</p>
+                </div>
+                <div class="facility glass-container">
+                    <i class="fas fa-music"></i>
+                    <h3>Live Music</h3>
+                    <p>Hiburan musik langsung setiap akhir pekan</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">l
+        <div class="glass-container" style="max-width: 800px; margin: 0 auto;">
+            <h2 style="margin-bottom: 1rem;">Hubungi Kami</h2>
+            <p>Jalan Kuliner No. 123, Kota Gastronomi</p>
+            <p>Email: info@gastrohub.com | Telepon: (021) 1234-5678</p>
+            
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+            
+            <p>&copy; 2025 NovyAS. Semua hak dilindungi.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Background Animation
+        const bgAnimation = document.getElementById('bgAnimation');
+        const colors = ['#ff6b6b', '#4ecdc4', '#ffd166', '#6b48ff'];
+        
+        for (let i = 0; i < 20; i++) {
+            const circle = document.createElement('div');
+            circle.classList.add('bg-circle');
+            
+            // Random properties
+            const size = Math.random() * 200 + 50;
+            const posX = Math.random() * 100;
+            const posY = Math.random() * 100;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            circle.style.width = `${size}px`;
+            circle.style.height = `${size}px`;
+            circle.style.left = `${posX}%`;
+            circle.style.top = `${posY}%`;
+            circle.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
+            
+            // Animation
+            const duration = Math.random() * 20 + 10;
+            circle.style.animation = `float ${duration}s infinite alternate ease-in-out`;
+            
+            // Add keyframes dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% { transform: translate(0, 0) rotate(0deg); }
+                    100% { transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(${Math.random() * 360}deg); }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            bgAnimation.appendChild(circle);
+        }
+
+        // Menu Toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        menuBtn.addEventListener('click', () => {
+            menuBtn.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-menu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuBtn.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Glass container hover effect enhancement
+        const glassContainers = document.querySelectorAll('.glass-container');
+        glassContainers.forEach(container => {
+            container.addEventListener('mouseenter', () => {
+                container.style.backdropFilter = 'blur(20px)';
+            });
+            
+            container.addEventListener('mouseleave', () => {
+                container.style.backdropFilter = 'blur(12px)';
+            });
+        });
+    </script>
+</body>
+</html>
