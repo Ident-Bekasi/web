@@ -1,0 +1,52 @@
+1. **Instalasi dependensi**:
+```bash
+pip install streamlit opencv-python numpy pandas matplotlib scikit-image scipy pillow
+```
+
+2. **Simpan kode**:
+   Simpan kode di atas dalam file bernama `fingerprint_app.py`
+
+3. **Jalankan aplikasi**:
+```bash
+streamlit run fingerprint_app.py
+```
+
+## Fitur Utama Aplikasi
+
+### 1. **Analisis Sidik Jari Tunggal**
+   - Upload gambar sidik jari
+   - Preprocessing otomatis (grayscale, enhancement, binarization)
+   - Deteksi minutiae (ridge ending, bifurcation)
+   - Identifikasi pola (Loop, Whorl, Arch)
+   - Prediksi jari dan tangan (kiri/kanan) dengan persentase kepercayaan
+   - Visualisasi hasil analisis
+
+### 2. **Perbandingan Dua Sidik Jari**
+   - Upload sidik jari referensi (database)
+   - Upload sidik jari latent (TKP)
+   - Perbandingan otomatis menggunakan AI
+   - Analisis minutiae dan pola
+   - Skor kecocokan dalam persentase
+   - Kesimpulan forensik
+
+### 3. **Fitur Analisis**
+   - **Metadata Analysis**: Analisis karakteristik gambar
+   - **Pattern Recognition**: Identifikasi pola dasar sidik jari
+   - **Minutiae Extraction**: Deteksi titik karakteristik
+   - **Hand/Finger Prediction**: Prediksi jari dan tangan
+   - **Forensic Comparison**: Perbandingan berdasarkan ilmu forensik
+
+### 4. **Visualisasi**
+   - Tampilan gambar asli dan hasil preprocessing
+   - Plot minutiae dengan warna berbeda
+   - Skeletonization ridge pattern
+   - Perbandingan visual antara dua sidik jari
+
+## Catatan Penting
+
+1. Aplikasi ini adalah **simulasi sistem forensik** dan menggunakan algoritma sederhana untuk demonstrasi
+2. Untuk aplikasi forensik nyata, diperlukan model AI yang lebih kompleks dan dataset training yang luas
+3. Akurasi prediksi dapat bervariasi tergantung kualitas gambar input
+4. Sistem ini dirancang untuk tujuan edukasi dan demonstrasi teknologi
+
+Aplikasi ini memberikan antarmuka yang user-friendly dengan visualisasi yang jelas, sehingga cocok untuk digunakan oleh petugas forensik, peneliti, atau mahasiswa yang mempelajari daktiloskopi digital.
