@@ -1,112 +1,577 @@
-<html><meta charset='UTF-8'/><meta content='width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5' name='viewport'/><meta content='IE=edge' http-equiv='X-UA-Compatible'/>
+<!DOCTYPE html>
+<html lang="id">
 <head>
-<title>Script HTML Kamu Mau Gak Jadi Pacar Aku?</title>
-<meta name="description" content="Tapi Kita Akan Putus dalam Waktu">
-<meta name="keywords" content="Kamu Mau Gak Jadi Pacar Aku Tapi Kita Akan Putus dalam Waktu">
-<link rel="icon" type="image/x-icon" href="https://www.palingit.com/favicon.ico">
-<!-- 
-  Made with love by Rayys!
-     Blog: https://feeldream.id
-     Instagram: @rayyarrr
-     TikTok: @feelthisray
-  Thanks to all <3
-  
-  DM ke IG: @rayyarrr apabila masih bingung
-  untuk cara edit scriptnya!
--->
-<link href="https://htmlku.com/bukabentar/style.css" rel="stylesheet" type="text/css" /><script src="https://htmlku.com/bukabentar/script.js"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap" rel="stylesheet"><script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKG By "EVA"- Analisis Rekam Jantung</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #1a6dcc 0%, #0d4d9c 100%);
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .app-description {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .app-description h2 {
+            color: #1a6dcc;
+            margin-bottom: 15px;
+        }
+        
+        .app-description ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .app-description li {
+            margin-bottom: 8px;
+        }
+        
+        .main-app {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .upload-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .result-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        h3 {
+            color: #1a6dcc;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .upload-area {
+            border: 3px dashed #1a6dcc;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f9fbff;
+        }
+        
+        .upload-area:hover {
+            background-color: #edf4ff;
+        }
+        
+        .upload-area.dragover {
+            background-color: #e1ecff;
+            border-color: #0d4d9c;
+        }
+        
+        .upload-icon {
+            font-size: 50px;
+            color: #1a6dcc;
+            margin-bottom: 15px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-button {
+            background-color: #1a6dcc;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        
+        .upload-button:hover {
+            background-color: #0d4d9c;
+        }
+        
+        .preview-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        #imagePreview {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .analysis-results {
+            margin-top: 20px;
+        }
+        
+        .result-item {
+            background-color: #f9fbff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #1a6dcc;
+        }
+        
+        .result-title {
+            font-weight: bold;
+            color: #1a6dcc;
+            margin-bottom: 5px;
+        }
+        
+        .result-value {
+            font-size: 1.1rem;
+        }
+        
+        .normal {
+            color: #2ecc71;
+        }
+        
+        .warning {
+            color: #e67e22;
+        }
+        
+        .danger {
+            color: #e74c3c;
+        }
+        
+        .interpretation {
+            background-color: #fff9e6;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #f1c40f;
+        }
+        
+        .sample-images {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        }
+        
+        .sample-images h3 {
+            margin-bottom: 15px;
+        }
+        
+        .sample-images p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .sample-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .sample-image {
+            width: 180px;
+            height: 120px;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .sample-image:hover {
+            transform: translateY(-5px);
+        }
+        
+        .sample-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .disclaimer {
+            background-color: #fff3f3;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .disclaimer h3 {
+            color: #e74c3c;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-app {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #1a6dcc;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-<style>
-:root {
---warna-bg: rgba(0, 0, 0, .5); 
---warna-teks: #fff;
---warna-bingkai: #fff;
---bingkai: 8px;
---bingkai-kiri: 2px solid var(--warna-bingkai);
---bingkai-kanan: 2px solid var(--warna-bingkai);
---gaya-font: 'Josefin Sans', sans-serif;
-}
-</style>
 <body>
-	
-   <!-- Ganti Audio di sini --><audio id="linkmp3">https://feeldreams.github.io/hayoloh/inow.mp3</audio>
-   
-   <div id="bodyblur">
-     <!-- Wallpaper --><img src="https://feeldreams.github.io/pics/awan/2.jpg" id="wallpaper"/>
-   </div>
+    <div class="container">
+        <header>
+            <h1>EVA EKG</h1>
+            <p class="subtitle">Biar Mama Gak Pusing</p>
+        </header>
 
-   <div id='Content'>
-   	
-     <div id="suratin" onClick="memulai();audio.play();">
-       <!-- Tombol Surat --><img src="https://rayyscoding.github.io/envelope.png"/>
-     </div>
-     <p id="ket">Klik Suratnya Malla!</p>
+        
+        <div class="main-app">
+            <section class="upload-section">
+                <h3>Masukin Gambar EKG</h3>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📄</div>
+                    <p>Nih Masukin Sini gambarnya mah "gambarnya yang lurus di krop dulu ya"</p>
+                    <button class="upload-button" id="browseButton">Masukin Sini</button>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                    <p style="margin-top: 15px; color: #666; font-size: 0.9rem;">Format yang didukung: JPG, PNG, GIF (maks. 5MB)</p>
+                </div>
+            </section>
+            
+            <section class="result-section">
+                <h3>Hasil Analisis EKG</h3>
+                <div class="analysis-results" id="analysisResults">
+                    <p style="text-align: center; color: #999; padding: 30px 0;">Hasil analisis akan muncul di sini setelah Anda mengunggah gambar EKG.</p>
+                </div>
+                
+                <div class="interpretation" id="interpretation" style="display: none;">
+                    <h3>Interpretasi</h3>
+                    <p id="interpretationText">Interpretasi akan muncul di sini setelah analisis selesai.</p>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>Love U MAMA &copy; 2026 - Eva Ratnasari</p>
+        </footer>
+    </div>
 
-     <div><blockquote id='bq'>
-       <div>
-         <!-- Stiker untuk Konten -->
-         <img src="https://feeldreams.github.io/pandapanah.gif" id="fotoakhir"/>
-         <img src="https://feeldreams.github.io/peach1.gif" id="fotoakhir2"/>
-         <img src="https://feeldreams.github.io/weee.gif" id="fotoakhir3"/>
-         <img src="https://htmlku.com/0/panda/ketawa2.gif" id="fotoakhir4"/>
-         <img src="https://htmlku.com/0/panda/muah.gif" id="fotoakhir5"/>
-       </div>
-
-       <!-- Konten Pertanyaan -->
-       <p id="kalimat">Nalla Kamu Mau Gak<br>Jalan Sama Nopi? 🤭❤️<br><span id="pesanTolak" style="opacity:0;font-size: 15px;font-weight: 400;transform:scale(0);transition: all .6s ease;position: absolute;display: flex;justify-content: center;">Harus mau dong! 😝</span></p>
-       <p id="kalimatb"></p>
-       <p id="kalimatc"></p>
-
-       <!-- Konten Jawaban -->
-       <p id="kalimat2">Yeaayy! 😆</p>
-       <p id="kalimatb2">Besoj W Jemput ya,,<br>Baliknya Agak Siangan Aja</p>
-       <p id="kalimat2b">Eiittss.. 🏃</p>
-       <p id="kalimatc2">Tapi W <b>BOONG</b><br>dalam waktu: <b id="ctimer" style="font-size:24px">5</b> 🫠</p>
-
-       <!-- Konten Jawaban 2 -->
-       <p id="kalimat3">CANDA! 😜</p>
-       <p id="kalimatb3">Besok W jemput<br>dandan yang cantik ya,,,</p>
-       <p id="kalimatc3"><b>i love uuuu MALLA 😍💗🤍</b></p>
-     </blockquote></div>
-
-     <!-- Tombol Multifungsi -->
-     <div id="Tombol">
-       <a id="By" onClick="multifungsi()">
-         <b id="tmbl">Mau</b>
-       </a>
-       
-       <a id="Bn" onClick="ditolak()">Gamau</a><a id="Bn2" onClick="ditolak2()"></a>
-     </div>
-     
-   </div>
-
-<!-- Jangan Edit Bagian Ini -->
-  <script>
-  ftom=0;jikapr=1;ftganti=0;flag=1;flagg=1;fungsi=0;Bn2.innerHTML=Bn.innerHTML;kalimat2b.style="display:none";function showDiv() {pesanwhatsapp = "Aku mau kok jadi pacarmu ><";Bn2.style.display="none";Content.style = "opacity:1;margin-top:10vh;";ket.style="margin-top:30px";}
-  function memulai(){suratin.style="transition:all .7s ease;transform:scale(10);opacity:0";ket.style="display:none";setTimeout(mulaikonten,500)}
-  function mulaikonten() {otomatis();suratin.style="display:none";Content.style = "opacity:1;margin-top:10vh";bodyblur.style="opacity:.6;";wallpaper.style="transform: scale(1.5);opacity:1;";fotoakhir.style="display:inline-flex;";setTimeout(ftmuncul,200);bq.style = "position:relative;opacity:1;visibility:visible;transform: scale(1);border-radius:var(--bingkai);margin-top:0";fungsi=1;setTimeout(tombol,500);}
-  function tunjukkan(){}
-function hilangkan() {}
-  function ftmuncul(){
-    if(ftganti==0){fotoakhir.style="display:inline-flex;opacity:1;transform:scale(1)";}
-    if(ftganti==1){fotoakhir.src = fotoakhir2.src;fotoakhir.style="display:inline-flex;opacity:1;transition:all .7s ease;transform:scale(1);";}
-    if(ftganti==2){fotoakhir.src = fotoakhir3.src;fotoakhir.style="display:inline-flex;opacity:1;transition:all .7s ease;transform:scale(1);";}
-    if(ftganti==3){fotoakhir.src = fotoakhir4.src;fotoakhir.style="display:inline-flex;opacity:1;transition:all .7s ease;transform:scale(1);";}
-    if(ftganti==4){fotoakhir.src = fotoakhir5.src;fotoakhir.style="display:inline-flex;opacity:1;transition:all .7s ease;transform:scale(1);";}
-  }
-  function fthilang(){fotoakhir.style="display:inline-flex;opacity:1;transition:all .7s ease;transform:scale(.1)";}
-  function jjfoto(){fotoakhir.style.animation="rto .8s infinite alternate";}
-  
-  function tombol(){Tombol.style="opacity:1;transform: scale(1);";Bn.style="margin:12px 0 12px 12px";ftom=1;}
-  function multifungsi(){if(ftom==1){diterima();} if(ftom==5){menuju();}}
-  async function menuju(){await swals.fire('OK!', 'Kirim pesan ke WhatsApp aku, ya!', 'success');window.location = "https://api.whatsapp.com/send?phone=&text=" + pesanwhatsapp;Tombol.style="margin-top:15px;opacity:1;transform: scale(1);";} setTimeout(showDiv,100);
-
-  const swalst = Swal.mixin({timer: 2777, allowOutsideClick: false, showConfirmButton: false, timerProgressBar: true, imageHeight: 100,}); audio = new Audio('' + linkmp3.innerHTML);const swals = Swal.mixin({allowOutsideClick: false, cancelButtonColor: '#FF0040', imageWidth: 100, imageHeight: 100,}); const style = document.createElement('style'); var today = new Date();var dd = String(today.getDate()).padStart(2, '0');var mm = String(today.getMonth() + 1).padStart(2, '0');var yyyy = today.getFullYear();const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];today = dd + ' ' + monthNames[today.getMonth()] + ' ' + yyyy;
-   const body = document.querySelector("body");
-</script><!--
-<script src="https://test.feeldream.repl.co/tambahan.js"></script>-->
-<!-- Sampai Sini -->
+    <script>
+        // Elemen DOM
+        const fileInput = document.getElementById('fileInput');
+        const browseButton = document.getElementById('browseButton');
+        const uploadArea = document.getElementById('uploadArea');
+        const imagePreview = document.getElementById('imagePreview');
+        const analysisResults = document.getElementById('analysisResults');
+        const interpretation = document.getElementById('interpretation');
+        const interpretationText = document.getElementById('interpretationText');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const sampleImages = document.querySelectorAll('.sample-image');
+        
+        // Contoh data analisis EKG untuk berbagai kondisi
+        const ekgAnalysisData = {
+            normal: {
+                heartRate: 72,
+                rhythm: "Normal Sinus Rhythm",
+                prInterval: 160,
+                qrsDuration: 90,
+                qtInterval: 380,
+                axis: "Normal",
+                interpretation: "EKG menunjukkan ritme sinus normal dengan denyut jantung 72 BPM. Semua interval dalam batas normal. Tidak ada bukti iskemia, hipertrofi, atau aritmia yang signifikan."
+            },
+            tachycardia: {
+                heartRate: 115,
+                rhythm: "Sinus Tachycardia",
+                prInterval: 140,
+                qrsDuration: 85,
+                qtInterval: 320,
+                axis: "Normal",
+                interpretation: "EKG menunjukkan takikardia sinus dengan denyut jantung 115 BPM. Mungkin disebabkan oleh olahraga, kecemasan, demam, atau kondisi medis lainnya. Tidak ada bukti aritmia ventrikel."
+            },
+            bradycardia: {
+                heartRate: 48,
+                rhythm: "Sinus Bradycardia",
+                prInterval: 180,
+                qrsDuration: 95,
+                qtInterval: 420,
+                axis: "Normal",
+                interpretation: "EKG menunjukkan bradikardia sinus dengan denyut jantung 48 BPM. Mungkin normal pada atlet terlatih atau bisa menunjukkan kondisi seperti sick sinus syndrome. Interval PR sedikit memanjang."
+            },
+            arrhythmia: {
+                heartRate: "Variabel (65-110)",
+                rhythm: "Atrial Fibrillation",
+                prInterval: "Tidak terukur",
+                qrsDuration: 90,
+                qtInterval: 360,
+                axis: "Normal",
+                interpretation: "EKG menunjukkan fibrilasi atrium dengan respons ventrikel yang bervariasi. Tidak ada gelombang P yang terlihat, dan ritme tidak teratur. Perlu evaluasi lebih lanjut untuk manajemen antikoagulasi dan kontrol ritme."
+            }
+        };
+        
+        // Event listener untuk tombol browse
+        browseButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        // Event listener untuk input file
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                processImage(file);
+            }
+        });
+        
+        // Event listener untuk drag and drop
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            if (e.dataTransfer.files.length > 0) {
+                const file = e.dataTransfer.files[0];
+                processImage(file);
+            }
+        });
+        
+        // Event listener untuk gambar contoh
+        sampleImages.forEach(sample => {
+            sample.addEventListener('click', () => {
+                const sampleType = sample.getAttribute('data-sample');
+                simulateImageAnalysis(sampleType);
+            });
+        });
+        
+        // Fungsi untuk memproses gambar
+        function processImage(file) {
+            // Validasi tipe file
+            if (!file.type.match('image.*')) {
+                alert('Silakan unggah file gambar (JPG, PNG, GIF)');
+                return;
+            }
+            
+            // Validasi ukuran file (maks 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Ukuran file terlalu besar. Maksimum 5MB.');
+                return;
+            }
+            
+            // Tampilkan preview gambar
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+                
+                // Simulasi analisis setelah gambar dimuat
+                setTimeout(() => {
+                    analyzeEKGImage();
+                }, 500);
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        // Fungsi untuk menganalisis gambar EKG (simulasi)
+        function analyzeEKGImage() {
+            // Tampilkan indikator loading
+            loadingIndicator.style.display = 'block';
+            analysisResults.innerHTML = '';
+            interpretation.style.display = 'none';
+            
+            // Simulasikan waktu pemrosesan
+            setTimeout(() => {
+                // Sembunyikan loading
+                loadingIndicator.style.display = 'none';
+                
+                // Pilih analisis acak untuk simulasi
+                const conditions = ['normal', 'tachycardia', 'bradycardia', 'arrhythmia'];
+                const randomCondition = conditions[Math.floor(Math.random() * conditions.length)];
+                
+                // Tampilkan hasil
+                displayResults(ekgAnalysisData[randomCondition]);
+            }, 2000);
+        }
+        
+        // Fungsi untuk simulasi analisis gambar contoh
+        function simulateImageAnalysis(sampleType) {
+            // Tampilkan indikator loading
+            loadingIndicator.style.display = 'block';
+            analysisResults.innerHTML = '';
+            interpretation.style.display = 'none';
+            
+            // Tampilkan gambar contoh
+            imagePreview.src = document.querySelector(`.sample-image[data-sample="${sampleType}"] img`).src;
+            imagePreview.style.display = 'block';
+            
+            // Simulasikan waktu pemrosesan
+            setTimeout(() => {
+                // Sembunyikan loading
+                loadingIndicator.style.display = 'none';
+                
+                // Tampilkan hasil sesuai contoh
+                displayResults(ekgAnalysisData[sampleType]);
+            }, 1500);
+        }
+        
+        // Fungsi untuk menampilkan hasil analisis
+        function displayResults(data) {
+            // Tampilkan hasil analisis
+            analysisResults.innerHTML = `
+                <div class="result-item">
+                    <div class="result-title">Denyut Jantung</div>
+                    <div class="result-value ${getHeartRateClass(data.heartRate)}">${data.heartRate} ${typeof data.heartRate === 'number' ? 'BPM' : ''}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Irama Jantung</div>
+                    <div class="result-value">${data.rhythm}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Interval PR</div>
+                    <div class="result-value ${getIntervalClass(data.prInterval, 'pr')}">${data.prInterval} ${typeof data.prInterval === 'number' ? 'ms' : ''}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Durasi QRS</div>
+                    <div class="result-value ${getIntervalClass(data.qrsDuration, 'qrs')}">${data.qrsDuration} ms</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Interval QT</div>
+                    <div class="result-value ${getIntervalClass(data.qtInterval, 'qt')}">${data.qtInterval} ms</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Sumbu Listrik</div>
+                    <div class="result-value">${data.axis}</div>
+                </div>
+            `;
+            
+            // Tampilkan interpretasi
+            interpretationText.textContent = data.interpretation;
+            interpretation.style.display = 'block';
+            
+            // Scroll ke hasil
+            interpretation.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Fungsi untuk menentukan kelas CSS berdasarkan denyut jantung
+        function getHeartRateClass(heartRate) {
+            if (typeof heartRate !== 'number') return 'warning';
+            
+            if (heartRate >= 60 && heartRate <= 100) return 'normal';
+            if (heartRate > 100) return 'warning';
+            return 'danger';
+        }
+        
+        // Fungsi untuk menentukan kelas CSS berdasarkan interval
+        function getIntervalClass(interval, type) {
+            if (typeof interval !== 'number') return 'warning';
+            
+            switch(type) {
+                case 'pr':
+                    if (interval >= 120 && interval <= 200) return 'normal';
+                    return interval < 120 ? 'warning' : 'danger';
+                case 'qrs':
+                    if (interval >= 80 && interval <= 100) return 'normal';
+                    return interval < 80 ? 'warning' : 'danger';
+                case 'qt':
+                    if (interval >= 350 && interval <= 440) return 'normal';
+                    return interval < 350 ? 'warning' : 'danger';
+                default:
+                    return 'normal';
+            }
+        }
+        
+        // Inisialisasi: tampilkan contoh analisis untuk EKG normal
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                simulateImageAnalysis('normal');
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
-
