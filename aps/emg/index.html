@@ -1,1 +1,900 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembaca EKG Professional - Analisis Elektrokardiogram</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f7ff;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1a6fc4 0%, #0d4d8c 100%);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.8rem;
+            margin-right: 15px;
+            color: #ffeb3b;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .upload-section {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .analysis-section {
+            flex: 2;
+            min-width: 300px;
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section-title {
+            color: #1a6fc4;
+            border-bottom: 2px solid #e6f2ff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .upload-area {
+            border: 3px dashed #a0c8f0;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area:hover {
+            border-color: #1a6fc4;
+            background-color: #f9fcff;
+        }
+        
+        .upload-icon {
+            font-size: 3.5rem;
+            color: #1a6fc4;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .upload-note {
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .sample-ekg {
+            margin-top: 25px;
+        }
+        
+        .sample-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #444;
+        }
+        
+        .sample-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .sample-img {
+            width: 100px;
+            height: 70px;
+            border-radius: 5px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .sample-img:hover {
+            border-color: #1a6fc4;
+            transform: scale(1.05);
+        }
+        
+        .ekg-display {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        #ekgCanvas {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fdfdfd;
+            margin-top: 15px;
+        }
+        
+        .analysis-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .control-btn {
+            background-color: #1a6fc4;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .control-btn:hover {
+            background-color: #0d4d8c;
+            transform: translateY(-2px);
+        }
+        
+        .control-btn:disabled {
+            background-color: #a0c8f0;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .analysis-results {
+            background-color: #f9fcff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .result-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #1a6fc4;
+        }
+        
+        .result-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .result-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #1a6fc4;
+        }
+        
+        .result-normal {
+            color: #2ecc71;
+        }
+        
+        .result-abnormal {
+            color: #e74c3c;
+        }
+        
+        .interpretation {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .interpretation-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #2ecc71;
+        }
+        
+        .interpretation-text {
+            color: #444;
+            line-height: 1.7;
+        }
+        
+        .warning-box {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 25px;
+        }
+        
+        .warning-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e67e22;
+            margin-bottom: 10px;
+        }
+        
+        .disclaimer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #666;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #666;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .upload-section, .analysis-section {
+                width: 100%;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-heartbeat logo-icon"></i>
+                <div>
+                    <h1>Pembaca/Analisa EKG By. EVA</h1>
+                    <p class="subtitle">Analisis Elektrokardiogram sesuai standar medis untuk deteksi gangguan jantung</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="main-content">
+            <section class="upload-section">
+                <h2 class="section-title"><i class="fas fa-upload"></i> Unggah Gambar EKG</h2>
+                
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-file-upload upload-icon"></i>
+                    <p class="upload-text">Klik untuk mengunggah gambar EKG</p>
+                    <p class="upload-note">Format yang didukung: JPG, PNG, BMP (Maks. 5MB)</p>
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                </div>
+                
+                <div class="sample-ekg">
+                    <p class="sample-title">Contoh Gambar EKG:</p>
+                    <div class="sample-images">
+                        <img src="https://www.npcourses.com/wp-content/uploads/elementor/thumbs/12-lead-r3s7oytj0svrsig9bi4raki34wa79td4yftfcbaxls.jpg" alt="EKG Normal" class="sample-img" id="sample1">
+                        <img src="https://cvphysiology.com/s9v2f-3r4p7/share/ECG%20trace%20with%20grid.png" alt="EKG Abnormal" class="sample-img" id="sample2">
+                </div>
+                </div>
+                
+                <div class="warning-box">
+                    <div class="warning-title">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Penting!</h3>
+                    </div>
+                    <p>Kualitas Gambar Sangat Menentukan Keakurasian Hasil Analisa - Gunakan dengan bijak berikan masukan bila terdapat ketidaksesuaian.</p>
+                </div>
+            </section>
+            
+            <section class="analysis-section">
+                <h2 class="section-title"><i class="fas fa-stethoscope"></i> Analisis EVA</h2>
+                
+                <div class="ekg-display">
+                    <p>Gambar EKG akan ditampilkan di sini setelah diunggah</p>
+                    <canvas id="ekgCanvas" width="800" height="300"></canvas>
+                </div>
+                
+                <div class="analysis-controls">
+                    <button id="analyzeBtn" class="control-btn" disabled>
+                        <i class="fas fa-play-circle"></i> Analisis EKG
+                    </button>
+                    <button id="clearBtn" class="control-btn">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button id="calibrateBtn" class="control-btn" disabled>
+                        <i class="fas fa-ruler"></i> Kalibrasi
+                    </button>
+                    <button id="printBtn" class="control-btn" disabled>
+                        <i class="fas fa-print"></i> Cetak Laporan
+                    </button>
+                </div>
+                
+                <div class="analysis-results">
+                    <h3 class="section-title"><i class="fas fa-chart-line"></i> Hasil Analisis</h3>
+                    
+                    <div class="results-grid">
+                        <div class="result-item">
+                            <div class="result-label">Detak Jantung</div>
+                            <div class="result-value" id="heartRate">-</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Interval PR</div>
+                            <div class="result-value" id="prInterval">-</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Interval QRS</div>
+                            <div class="result-value" id="qrsInterval">-</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Interval QT</div>
+                            <div class="result-value" id="qtInterval">-</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Sumbu Listrik</div>
+                            <div class="result-value" id="heartAxis">-</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Status</div>
+                            <div class="result-value" id="ekgStatus">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="interpretation">
+                        <h4 class="interpretation-title"><i class="fas fa-comment-medical"></i> Interpretasi Medis</h4>
+                        <p class="interpretation-text" id="interpretationText">
+                            Unggah gambar EKG untuk mendapatkan interpretasi medis berdasarkan analisis parameter EKG standar.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <footer>
+            <p>© 2026 Pembaca EKG Professional | By EVA</p>
+        </footer>
+    </div>
 
+    <script>
+        // Elemen DOM
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const canvas = document.getElementById('ekgCanvas');
+        const ctx = canvas.getContext('2d');
+        const analyzeBtn = document.getElementById('analyzeBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const calibrateBtn = document.getElementById('calibrateBtn');
+        const printBtn = document.getElementById('printBtn');
+        const sampleImages = document.querySelectorAll('.sample-img');
+        
+        // Elemen hasil analisis
+        const heartRateEl = document.getElementById('heartRate');
+        const prIntervalEl = document.getElementById('prInterval');
+        const qrsIntervalEl = document.getElementById('qrsInterval');
+        const qtIntervalEl = document.getElementById('qtInterval');
+        const heartAxisEl = document.getElementById('heartAxis');
+        const ekgStatusEl = document.getElementById('ekgStatus');
+        const interpretationTextEl = document.getElementById('interpretationText');
+        
+        // Variabel untuk gambar EKG
+        let ekgImage = null;
+        let isImageLoaded = false;
+        
+        // Event listener untuk area unggah
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                loadImage(file);
+            }
+        });
+        
+        // Event listener untuk contoh gambar
+        sampleImages.forEach((img, index) => {
+            img.addEventListener('click', () => {
+                // Simulasi mengunggah gambar contoh
+                simulateSampleUpload(index);
+            });
+        });
+        
+        // Event listener untuk tombol analisis
+        analyzeBtn.addEventListener('click', analyzeEKG);
+        clearBtn.addEventListener('click', resetApp);
+        calibrateBtn.addEventListener('click', calibrateEKG);
+        printBtn.addEventListener('click', printReport);
+        
+        // Fungsi untuk memuat gambar
+        function loadImage(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    // Gambar dimuat, tampilkan di canvas
+                    ekgImage = img;
+                    isImageLoaded = true;
+                    
+                    // Reset canvas
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Hitung dimensi untuk menjaga rasio aspek
+                    const maxWidth = canvas.width;
+                    const maxHeight = canvas.height;
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                    
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                    
+                    // Gambar di tengah canvas
+                    const x = (canvas.width - width) / 2;
+                    const y = (canvas.height - height) / 2;
+                    
+                    ctx.drawImage(img, x, y, width, height);
+                    
+                    // Aktifkan tombol analisis
+                    analyzeBtn.disabled = false;
+                    calibrateBtn.disabled = false;
+                    printBtn.disabled = false;
+                    
+                    // Reset hasil sebelumnya
+                    resetResults();
+                    
+                    // Tambahkan overlay grid EKG
+                    drawEKGGrid();
+                };
+                img.src = event.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+        }
+        
+        // Fungsi untuk menggambar grid EKG standar
+        function drawEKGGrid() {
+            ctx.save();
+            ctx.strokeStyle = 'rgba(0, 150, 255, 0.2)';
+            ctx.lineWidth = 1;
+            
+            // Grid vertikal (0.2 detik = 1 kotak besar)
+            const verticalSpacing = 40; // 0.2 detik pada 200 mm/s
+            for (let x = 0; x < canvas.width; x += verticalSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            // Grid horizontal (0.5 mV = 1 kotak besar)
+            const horizontalSpacing = 40; // 0.5 mV pada 10 mm/mV
+            for (let y = 0; y < canvas.height; y += horizontalSpacing) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            ctx.restore();
+        }
+        
+        // Fungsi untuk menganalisis EKG (simulasi)
+        function analyzeEKG() {
+            if (!isImageLoaded) return;
+            
+            // Simulasi analisis EKG dengan nilai acak dalam rentang normal/abnormal
+            // Nilai-nilai ini dalam kehidupan nyata akan dihitung dari analisis gambar
+            
+            // Detak jantung (60-100 normal)
+            const heartRate = Math.floor(Math.random() * 60) + 50;
+            heartRateEl.textContent = `${heartRate} BPM`;
+            heartRateEl.className = heartRate >= 60 && heartRate <= 100 ? 'result-value result-normal' : 'result-value result-abnormal';
+            
+            // Interval PR (120-200 ms normal)
+            const prInterval = Math.floor(Math.random() * 100) + 120;
+            prIntervalEl.textContent = `${prInterval} ms`;
+            prIntervalEl.className = prInterval >= 120 && prInterval <= 200 ? 'result-value result-normal' : 'result-value result-abnormal';
+            
+            // Interval QRS (<120 ms normal)
+            const qrsInterval = Math.floor(Math.random() * 60) + 80;
+            qrsIntervalEl.textContent = `${qrsInterval} ms`;
+            qrsIntervalEl.className = qrsInterval < 120 ? 'result-value result-normal' : 'result-value result-abnormal';
+            
+            // Interval QT (terkoreksi, 350-450 ms normal)
+            const qtInterval = Math.floor(Math.random() * 100) + 350;
+            qtIntervalEl.textContent = `${qtInterval} ms`;
+            qtIntervalEl.className = qtInterval >= 350 && qtInterval <= 450 ? 'result-value result-normal' : 'result-value result-abnormal';
+            
+            // Sumbu jantung (-30° hingga +90° normal)
+            const axisOptions = ['Normal', 'Deviasi Kiri', 'Deviasi Kanan', 'Ekstrem'];
+            const heartAxis = axisOptions[Math.floor(Math.random() * axisOptions.length)];
+            heartAxisEl.textContent = heartAxis;
+            heartAxisEl.className = heartAxis === 'Normal' ? 'result-value result-normal' : 'result-value result-abnormal';
+            
+            // Status EKG
+            const statusOptions = ['Normal Sinus Rhythm', 'Sinus Tachycardia', 'Sinus Bradycardia', 'Atrial Fibrillation', 'Ventricular Tachycardia'];
+            const ekgStatus = statusOptions[Math.floor(Math.random() * statusOptions.length)];
+            ekgStatusEl.textContent = ekgStatus;
+            ekgStatusEl.className = ekgStatus === 'Normal Sinus Rhythm' ? 'result-value result-normal' : 'result-value result-abnormal';
+            
+            // Interpretasi medis berdasarkan hasil
+            updateInterpretation(heartRate, prInterval, qrsInterval, qtInterval, heartAxis, ekgStatus);
+            
+            // Tambahkan anotasi pada gambar EKG
+            annotateEKG();
+        }
+        
+        // Fungsi untuk memperbarui interpretasi medis
+        function updateInterpretation(hr, pr, qrs, qt, axis, status) {
+            let interpretation = "";
+            
+            interpretation += `<strong>Hasil Analisis EKG:</strong><br>`;
+            interpretation += `Ritme jantung menunjukkan <strong>${status}</strong> dengan detak jantung ${hr} BPM. `;
+            
+            if (hr < 60) {
+                interpretation += `Detak jantung termasuk bradikardia (di bawah 60 BPM). `;
+            } else if (hr > 100) {
+                interpretation += `Detak jantung termasuk takikardia (di atas 100 BPM). `;
+            } else {
+                interpretation += `Detak jantung dalam rentang normal. `;
+            }
+            
+            interpretation += `Interval PR ${pr} ms ${pr >= 120 && pr <= 200 ? 'normal' : 'abnormal'}. `;
+            interpretation += `Interval QRS ${qrs} ms ${qrs < 120 ? 'normal' : 'melebar, perlu evaluasi lebih lanjut'}. `;
+            interpretation += `Interval QT ${qt} ms ${qt >= 350 && qt <= 450 ? 'normal' : 'perlu perhatian klinis'}. `;
+            interpretation += `Sumbu jantung: ${axis}.<br><br>`;
+            
+            interpretation += `<strong>Rekomendasi:</strong> `;
+            
+            if (status === 'Normal Sinus Rhythm' && hr >= 60 && hr <= 100) {
+                interpretation += `EKG menunjukkan hasil dalam batas normal. Tidak ada temuan yang memerlukan intervensi mendesak. Tetap pantau kesehatan jantung secara berkala.`;
+            } else if (status === 'Sinus Tachycardia') {
+                interpretation += `Temuan takikardia sinus. Pertimbangkan penyebab seperti dehidrasi, ansietas, anemia, atau hipertiroidisme. Evaluasi klinis diperlukan.`;
+            } else if (status === 'Sinus Bradycardia') {
+                interpretation += `Temuan bradikardia sinus. Pada atlet dapat normal. Jika disertai gejala seperti pusing atau sinkop, evaluasi lebih lanjut diperlukan.`;
+            } else if (status === 'Atrial Fibrillation') {
+                interpretation += `Temuan fibrilasi atrium. Memerlukan evaluasi segera oleh ahli jantung karena risiko stroke meningkat. Pertimbangkan antikoagulan berdasarkan skor CHA2DS2-VASc.`;
+            } else {
+                interpretation += `Temuan EKG abnormal. Segera konsultasikan dengan dokter atau ahli jantung untuk evaluasi lebih lanjut dan penatalaksanaan yang tepat.`;
+            }
+            
+            interpretationTextEl.innerHTML = interpretation;
+        }
+        
+        // Fungsi untuk menambahkan anotasi pada gambar EKG
+        function annotateEKG() {
+            ctx.save();
+            ctx.strokeStyle = '#e74c3c';
+            ctx.fillStyle = '#e74c3c';
+            ctx.lineWidth = 2;
+            ctx.font = 'bold 14px Arial';
+            
+            // Gambar gelombang P
+            ctx.beginPath();
+            ctx.moveTo(100, 150);
+            ctx.lineTo(140, 120);
+            ctx.lineTo(180, 150);
+            ctx.stroke();
+            ctx.fillText("Gel. P", 90, 110);
+            
+            // Gambar kompleks QRS
+            ctx.beginPath();
+            ctx.moveTo(200, 150);
+            ctx.lineTo(210, 180); // Q
+            ctx.lineTo(230, 100); // R
+            ctx.lineTo(250, 160); // S
+            ctx.lineTo(270, 150);
+            ctx.stroke();
+            ctx.fillText("Kompleks QRS", 190, 90);
+            
+            // Gambar gelombang T
+            ctx.beginPath();
+            ctx.moveTo(300, 150);
+            ctx.quadraticCurveTo(330, 100, 360, 150);
+            ctx.stroke();
+            ctx.fillText("Gel. T", 310, 90);
+            
+            // Tambahkan garis interval
+            ctx.strokeStyle = '#2ecc71';
+            ctx.setLineDash([5, 5]);
+            
+            // Interval PR
+            ctx.beginPath();
+            ctx.moveTo(140, 120);
+            ctx.lineTo(200, 150);
+            ctx.stroke();
+            ctx.fillText("Interval PR", 160, 130);
+            
+            // Interval QT
+            ctx.beginPath();
+            ctx.moveTo(210, 180);
+            ctx.lineTo(360, 150);
+            ctx.stroke();
+            ctx.fillText("Interval QT", 270, 190);
+            
+            ctx.restore();
+        }
+        
+        // Fungsi untuk kalibrasi EKG
+        function calibrateEKG() {
+            alert("Fitur kalibrasi: Atur skala 1 mV = 10 mm dan kecepatan kertas 25 mm/detik untuk pengukuran akurat.");
+            
+            // Tampilkan kotak kalibrasi pada canvas
+            ctx.save();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.fillRect(20, 20, 200, 100);
+            
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText("KALIBRASI EKG", 30, 40);
+            
+            ctx.font = '12px Arial';
+            ctx.fillText("1 mV = 10 mm (2 kotak besar)", 30, 65);
+            ctx.fillText("Kecepatan: 25 mm/detik", 30, 85);
+            ctx.fillText("1 kotak kecil = 0.04 detik", 30, 105);
+            
+            // Gambar sinyal kalibrasi
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(150, 70);
+            ctx.lineTo(150, 50);
+            ctx.lineTo(190, 50);
+            ctx.lineTo(190, 70);
+            ctx.stroke();
+            
+            ctx.restore();
+        }
+        
+        // Fungsi untuk mencetak laporan
+        function printReport() {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Laporan EKG</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        h1 { color: #1a6fc4; }
+                        .result { margin-bottom: 15px; }
+                        .label { font-weight: bold; }
+                        .warning { background-color: #fff8e1; padding: 15px; border-left: 4px solid #ffc107; margin: 20px 0; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Laporan Analisis EKG</h1>
+                    <p>Tanggal: ${new Date().toLocaleDateString('id-ID')}</p>
+                    <hr>
+                    <h2>Hasil Analisis</h2>
+                    <div class="result"><span class="label">Detak Jantung:</span> ${heartRateEl.textContent}</div>
+                    <div class="result"><span class="label">Interval PR:</span> ${prIntervalEl.textContent}</div>
+                    <div class="result"><span class="label">Interval QRS:</span> ${qrsIntervalEl.textContent}</div>
+                    <div class="result"><span class="label">Interval QT:</span> ${qtIntervalEl.textContent}</div>
+                    <div class="result"><span class="label">Sumbu Listrik:</span> ${heartAxisEl.textContent}</div>
+                    <div class="result"><span class="label">Status EKG:</span> ${ekgStatusEl.textContent}</div>
+                    <hr>
+                    <h2>Interpretasi Medis</h2>
+                    <p>${interpretationTextEl.innerText}</p>
+                    <div class="warning">
+                        <strong>Peringatan:</strong> Laporan ini dihasilkan oleh sistem komputer dan tidak menggantikan diagnosis dokter. 
+                        Selalu konsultasikan dengan profesional medis untuk interpretasi yang akurat.
+                    </div>
+                    <hr>
+                    <p>© 2023 Pembaca EKG Professional</p>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+        
+        // Fungsi untuk mereset aplikasi
+        function resetApp() {
+            // Reset canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#fdfdfd';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#333';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Gambar EKG akan ditampilkan di sini setelah diunggah', canvas.width/2, canvas.height/2);
+            
+            // Reset variabel
+            ekgImage = null;
+            isImageLoaded = false;
+            
+            // Nonaktifkan tombol
+            analyzeBtn.disabled = true;
+            calibrateBtn.disabled = true;
+            printBtn.disabled = true;
+            
+            // Reset hasil
+            resetResults();
+            
+            // Reset input file
+            fileInput.value = '';
+        }
+        
+        // Fungsi untuk mereset hasil analisis
+        function resetResults() {
+            heartRateEl.textContent = '-';
+            prIntervalEl.textContent = '-';
+            qrsIntervalEl.textContent = '-';
+            qtIntervalEl.textContent = '-';
+            heartAxisEl.textContent = '-';
+            ekgStatusEl.textContent = '-';
+            
+            // Reset kelas styling
+            [heartRateEl, prIntervalEl, qrsIntervalEl, qtIntervalEl, heartAxisEl, ekgStatusEl].forEach(el => {
+                el.className = 'result-value';
+            });
+            
+            interpretationTextEl.textContent = 'Unggah gambar EKG untuk mendapatkan interpretasi medis berdasarkan analisis parameter EKG standar.';
+        }
+        
+        // Fungsi untuk simulasi mengunggah gambar contoh
+        function simulateSampleUpload(sampleIndex) {
+            // Reset canvas terlebih dahulu
+            resetApp();
+            
+            // Buat gambar EKG sintetis berdasarkan contoh yang dipilih
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Gambar latar belakang grid
+            drawEKGGrid();
+            
+            // Gambar sinyal EKG berdasarkan contoh
+            ctx.save();
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(50, 150);
+            
+            // Pola EKG berbeda berdasarkan contoh
+            if (sampleIndex === 0) {
+                // EKG Normal
+                for (let i = 0; i < canvas.width - 100; i += 2) {
+                    const x = 50 + i;
+                    const y = 150 + Math.sin(i * 0.05) * 20 + 
+                               Math.sin(i * 0.2) * 10 * (i % 100 < 20 ? 1 : 0) +
+                               (i % 100 > 20 && i % 100 < 40 ? -Math.sin((i % 100 - 20) * 0.3) * 30 : 0);
+                    ctx.lineTo(x, y);
+                }
+                ekgStatus = "Normal Sinus Rhythm";
+            } else if (sampleIndex === 1) {
+                // EKG Abnormal (Aritmia)
+                for (let i = 0; i < canvas.width - 100; i += 2) {
+                    const x = 50 + i;
+                    let y;
+                    if (i % 200 < 50) {
+                        y = 150 + Math.sin(i * 0.05) * 20;
+                    } else if (i % 200 < 100) {
+                        y = 150 + Math.sin(i * 0.1) * 40;
+                    } else {
+                        y = 150 + Math.sin(i * 0.03) * 15;
+                    }
+                    ctx.lineTo(x, y);
+                }
+                ekgStatus = "Atrial Fibrillation";
+            } else {
+                // EKG Ritme tidak teratur
+                for (let i = 0; i < canvas.width - 100; i += 2) {
+                    const x = 50 + i;
+                    const irregular = Math.random() > 0.7 ? 30 : 0;
+                    const y = 150 + Math.sin(i * 0.05) * 20 + 
+                               Math.sin(i * 0.2) * 10 * (i % 120 < 20 ? 1 : 0) +
+                               (i % 120 > 20 && i % 120 < 40 ? -Math.sin((i % 120 - 20) * 0.3) * 30 : 0) +
+                               irregular;
+                    ctx.lineTo(x, y);
+                }
+                ekgStatus = "Sinus Arrhythmia";
+            }
+            
+            ctx.stroke();
+            ctx.restore();
+            
+            // Set status
+            isImageLoaded = true;
+            analyzeBtn.disabled = false;
+            calibrateBtn.disabled = false;
+            printBtn.disabled = false;
+            
+            // Reset hasil sebelumnya
+            resetResults();
+        }
+        
+        // Inisialisasi aplikasi
+        window.onload = function() {
+            // Gambar placeholder di canvas
+            ctx.fillStyle = '#fdfdfd';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#333';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Gambar EKG akan ditampilkan di sini setelah diunggah', canvas.width/2, canvas.height/2);
+            
+            // Gambar grid EKG placeholder
+            drawEKGGrid();
+        };
+    </script>
+</body>
+</html>
