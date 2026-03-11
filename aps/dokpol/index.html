@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOKPOL POLRES METRO BEKASI</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Inter & Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a1120;
+            color: #e0e0e0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Sticky Header */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(10, 17, 32, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(2, 132, 199, 0.3);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 2.2rem;
+            color: #0284c7;
+            filter: drop-shadow(0 0 10px #0284c7);
+        }
+
+        .logo h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.7rem;
+            background: linear-gradient(135deg, #fff, #a5d8ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            color: #ddd;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: #0284c7;
+            transition: 0.3s;
+        }
+
+        .nav a:hover {
+            color: #fff;
+        }
+
+        .nav a:hover::after {
+            width: 100%;
+        }
+
+        .btn-contact {
+            background: #0284c7;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.5);
+        }
+
+        .btn-contact:hover {
+            background: #0369a1;
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(2, 132, 199, 0.8);
+        }
+
+        /* Hero Section dengan animasi latar */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        /* Partikel latar (animasi bergerak) */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(2, 132, 199, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 15px #0284c7;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+            50% { transform: translateY(-80px) translateX(40px); opacity: 0.8; }
+        }
+
+        /* Elemen 3D berputar */
+        .cube-3d {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+            animation: spin 20s infinite linear;
+            right: 10%;
+            top: 20%;
+            opacity: 0.15;
+        }
+
+        .cube-3d div {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 2px solid #0284c7;
+            background: rgba(2, 132, 199, 0.1);
+            box-shadow: 0 0 30px rgba(2, 132, 199, 0.3);
+        }
+
+        .front  { transform: translateZ(75px); }
+        .back   { transform: rotateY(180deg) translateZ(75px); }
+        .right  { transform: rotateY(90deg) translateZ(75px); }
+        .left   { transform: rotateY(-90deg) translateZ(75px); }
+        .top    { transform: rotateX(90deg) translateZ(75px); }
+        .bottom { transform: rotateX(-90deg) translateZ(75px); }
+
+        @keyframes spin {
+            0% { transform: rotateX(0deg) rotateY(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #90e0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(2, 132, 199, 0.5);
+        }
+
+        .hero .subhead {
+            font-size: 1.3rem;
+            color: #ccc;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: #0284c7;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px #0284c7;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-primary:hover {
+            background: #0369a1;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px #0284c7;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #0284c7;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-outline:hover {
+            background: #0284c7;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px #0284c7;
+        }
+
+        /* Layanan Section */
+        .services {
+            padding: 5rem 2rem;
+            background: #0e1a2b;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .section-title span {
+            color: #0284c7;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(2, 132, 199, 0.3);
+            border-radius: 30px;
+            padding: 2rem;
+            width: 280px;
+            transition: 0.4s;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .card:hover {
+            transform: rotateY(5deg) rotateX(5deg) translateY(-10px);
+            border-color: #0284c7;
+            box-shadow: 0 30px 50px rgba(2, 132, 199, 0.4);
+        }
+
+        .card i {
+            font-size: 3rem;
+            color: #0284c7;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 15px #0284c7);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .card p {
+            color: #aaa;
+            font-size: 0.95rem;
+        }
+
+        /* Tentang Section */
+        .about {
+            padding: 5rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            flex: 1 1 300px;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            color: #bbb;
+            margin-bottom: 2rem;
+        }
+
+        .stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0284c7;
+        }
+
+        .stat-label {
+            color: #aaa;
+        }
+
+        .about-3d {
+            flex: 1 1 300px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateSphere 20s infinite linear;
+        }
+
+        @keyframes rotateSphere {
+            0% { transform: rotateY(0deg) rotateX(0deg); }
+            100% { transform: rotateY(360deg) rotateX(360deg); }
+        }
+
+        .sphere {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, #0284c7, #001d3d);
+            border-radius: 50%;
+            box-shadow: 0 0 60px #0284c7;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        .footer {
+            background: #07111e;
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid #1e2a3a;
+        }
+
+        .footer p {
+            color: #888;
+        }
+
+        .footer .social {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .social a {
+            color: #aaa;
+            font-size: 1.5rem;
+            transition: 0.3s;
+        }
+
+        .social a:hover {
+            color: #0284c7;
+            transform: translateY(-3px);
+        }
+
+        /* Responsif */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            .nav {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            .cube-3d {
+                width: 100px;
+                height: 100px;
+                right: 5%;
+            }
+            .cube-3d div {
+                width: 100px;
+                height: 100px;
+            }
+            .front  { transform: translateZ(50px); }
+            .back   { transform: rotateY(180deg) translateZ(50px); }
+            .right  { transform: rotateY(90deg) translateZ(50px); }
+            .left   { transform: rotateY(-90deg) translateZ(50px); }
+            .top    { transform: rotateX(90deg) translateZ(50px); }
+            .bottom { transform: rotateX(-90deg) translateZ(50px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Sticky -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-shield-heart"></i>
+            <h2>DOKPOL METRO BEKASI</h2>
+        </div>
+        <nav class="nav">
+            <a href="#">Beranda</a>
+            <a href="#">Layanan</a>
+            <a href="#">Tentang</a>
+            <a href="#">Kontak</a>
+        </nav>
+        <button class="btn-contact"><i class="fas fa-phone-alt"></i> Hubungi</button>
+    </header>
+
+    <!-- Hero Section dengan animasi partikel dan 3D -->
+    <section class="hero">
+        <!-- Partikel bergerak (animasi) -->
+        <div class="particles">
+            <div class="particle" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="particle" style="top: 50%; left: 80%; animation-delay: 2s;"></div>
+            <div class="particle" style="top: 70%; left: 30%; animation-delay: 4s;"></div>
+            <div class="particle" style="top: 30%; left: 60%; animation-delay: 1s;"></div>
+            <div class="particle" style="top: 85%; left: 20%; animation-delay: 5s;"></div>
+            <div class="particle" style="top: 15%; left: 85%; animation-delay: 3s;"></div>
+            <div class="particle" style="top: 60%; left: 40%; animation-delay: 6s;"></div>
+            <div class="particle" style="top: 40%; left: 15%; animation-delay: 7s;"></div>
+        </div>
+
+        <!-- Kubus 3D berputar -->
+        <div class="cube-3d">
+            <div class="front"></div>
+            <div class="back"></div>
+            <div class="right"></div>
+            <div class="left"></div>
+            <div class="top"></div>
+            <div class="bottom"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1>DOKPOL<br>POLRES METRO BEKASI</h1>
+            <p class="subhead">Layanan Kesehatan Terpadu untuk Anggota dan Masyarakat</p>
+            <div class="cta-buttons">
+                <button class="btn-primary"><i class="fas fa-calendar-check"></i> Buat Janji</button>
+                <button class="btn-outline"><i class="fas fa-info-circle"></i> Pelajari Lebih</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Layanan Unggulan -->
+    <section class="services">
+        <h2 class="section-title">Layanan <span>Kami</span></h2>
+        <div class="card-container">
+            <div class="card">
+                <i class="fas fa-heartbeat"></i>
+                <h3>Pemeriksaan Umum</h3>
+                <p>Konsultasi dan pemeriksaan kesehatan harian oleh tim medis profesional.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-bone"></i>
+                <h3>EKG & Jantung</h3>
+                <p>Pemeriksaan elektrokardiogram untuk deteksi dini gangguan jantung.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-capsules"></i>
+                <h3>Apotek & Obat</h3>
+                <p>Layanan resep dan konsultasi obat dengan apoteker berpengalaman.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-ambulance"></i>
+                <h3>Ambulans 24/7</h3>
+                <p>Layanan darurat siap siaga setiap saat untuk anggota dan masyarakat.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tentang dengan animasi 3D sphere -->
+    <section class="about">
+        <div class="about-text">
+            <h2>Tentang DOKPOL</h2>
+            <p>DOKPOL POLRES METRO BEKASI adalah unit pelayanan kesehatan di lingkungan Kepolisian Resor Metro Bekasi. Kami hadir untuk memberikan layanan kesehatan prima bagi anggota Polri, PNS, dan masyarakat umum. Dengan peralatan modern dan tenaga medis kompeten, kami siap melayani Anda.</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">5000+</div>
+                    <div class="stat-label">Pasien</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">20+</div>
+                    <div class="stat-label">Dokter</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">10th</div>
+                    <div class="stat-label">Pengalaman</div>
+                </div>
+            </div>
+        </div>
+        <div class="about-3d">
+            <div class="sphere"></div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 DOKPOL POLRES METRO BEKASI. All rights reserved.</p>
+        <div class="social">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </footer>
+
+    <!-- Script untuk partikel tambahan (opsional) -->
+    <script>
+        // Membuat lebih banyak partikel secara dinamis (untuk tampilan lebih hidup)
+        function createParticles() {
+            const container = document.querySelector('.particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = (Math.random() * 10) + 's';
+                particle.style.animationDuration = (Math.random() * 8 + 5) + 's';
+                particle.style.width = (Math.random() * 6 + 2) + 'px';
+                particle.style.height = particle.style.width;
+                container.appendChild(particle);
+            }
+        }
+        window.onload = createParticles;
+    </script>
+</body>
+</html>
