@@ -65,6 +65,7 @@
         .nav {
             display: flex;
             gap: 2rem;
+            align-items: center;
         }
 
         .nav a {
@@ -92,6 +93,56 @@
 
         .nav a:hover::after {
             width: 100%;
+        }
+
+        /* Dropdown */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropbtn {
+            color: #ddd;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(15, 25, 40, 0.95);
+            backdrop-filter: blur(8px);
+            min-width: 200px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            border: 1px solid rgba(2, 132, 199, 0.3);
+            z-index: 1001;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown-content a {
+            color: #ddd;
+            padding: 0.7rem 1.5rem;
+            display: block;
+            text-decoration: none;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(2, 132, 199, 0.2);
+            border-left-color: #0284c7;
+            color: white;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
 
         .btn-contact {
@@ -447,11 +498,25 @@
     </style>
 </head>
 <body>
-    <!-- Header Sticky -->
+    <!-- Header Sticky dengan menu Aplikasi (dropdown) -->
     <header class="header">
+        <div class="logo">
+            <i class="fas fa-shield-heart"></i>
+            <h2>DOKPOL METRO BEKASI</h2>
+        </div>
         <nav class="nav">
             <a href="#">Beranda</a>
             <a href="#">Layanan</a>
+            <div class="dropdown">
+                <a href="#" class="dropbtn">Aplikasi <i class="fas fa-chevron-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="#">Analisis Diagnosis</a>
+                    <a href="#">Kalkulator Dosis Obat</a>
+                    <a href="#">OCR Resep Dokter</a>
+                    <a href="#">Kalkulator Tensi</a>
+                    <a href="#">Pembaca EKG</a>
+                </div>
+            </div>
             <a href="#">Tentang</a>
             <a href="#">Kontak</a>
         </nav>
@@ -483,7 +548,6 @@
         </div>
 
         <div class="hero-content">
-            <h1>DOKPOL<br>POLRES METRO BEKASI</h1>
             <p class="subhead">Layanan Kesehatan Terpadu untuk Anggota dan Masyarakat</p>
             <div class="cta-buttons">
                 <button class="btn-primary"><i class="fas fa-calendar-check"></i> Buat Janji</button>
@@ -547,6 +611,7 @@
     <!-- Footer -->
     <footer class="footer">
         <p>© 2026 DOKPOL POLRES METRO BEKASI. All rights reserved.</p>
+        <p>NVY25 - LDL</p>
         <div class="social">
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
