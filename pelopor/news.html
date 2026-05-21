@@ -1,1 +1,354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Berkedok Jualan Telur, Polisi Ungkap Obat Keras Golongan G di Tarumajaya | Kabar Bekasi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f9;
+            color: #1a1f2c;
+            line-height: 1.5;
+        }
+
+        .top-bar {
+            background: #0b2b40;
+            color: white;
+            padding: 12px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            border-bottom: 3px solid #eab308;
+        }
+
+        .logo-area h1 {
+            font-size: 1.5rem;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-area span {
+            font-weight: 400;
+            font-size: 0.8rem;
+            color: #cbd5e6;
+        }
+
+        .date-badge {
+            background: #1e4a6e;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            font-size: 0.85rem;
+            color: #2c5f7a;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .breadcrumb a {
+            text-decoration: none;
+            color: #0b2b40;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .main-title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            color: #0e1e2a;
+            border-left: 6px solid #eab308;
+            padding-left: 20px;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 14px;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+
+        .author-date {
+            display: flex;
+            gap: 20px;
+        }
+
+        .share-icons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .share-icons span {
+            cursor: default;
+            background: #eef2ff;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .article-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+        }
+
+        .featured-image {
+            margin: 20px 0 25px 0;
+            background-color: #eef2f5;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            background: #cfdfe9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .photo-caption {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            font-size: 0.75rem;
+            padding: 6px 12px;
+            width: 100%;
+            text-align: center;
+            font-weight: 400;
+        }
+
+        .berita-narasi {
+            font-size: 1.08rem;
+            color: #1f2a3e;
+            background: white;
+            padding: 24px 28px;
+            border-radius: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+        }
+
+        .berita-narasi p {
+            margin-bottom: 1.3rem;
+            line-height: 1.65;
+        }
+
+        /* sidebar */
+        .sidebar {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 24px 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .sidebar h3 {
+            font-size: 1.35rem;
+            border-left: 4px solid #eab308;
+            padding-left: 12px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .trending-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 14px;
+        }
+
+        .trending-item a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .trending-item a:hover {
+            color: #0f5c7a;
+        }
+
+        .trending-date {
+            font-size: 0.7rem;
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        footer {
+            background: #0b2b40;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 28px 20px;
+            margin-top: 50px;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 780px) {
+            .article-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .main-title {
+                font-size: 1.7rem;
+            }
+            .container {
+                padding: 0 16px;
+            }
+            .top-bar {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+            .berita-narasi {
+                padding: 18px;
+            }
+        }
+
+        .btn-kecil {
+            background: #eef2ff;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+        }
+
+        .info-lokasi {
+            background: #f0f4f9;
+            border-radius: 20px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="logo-area">
+        <h1>BERITA BEKASI<span> • Keadilan & Fakta</span></h1>
+    </div>
+    <div class="date-badge">
+        Kamis, 21 Mei 2026 | WIB
+    </div>
+</div>
+
+<div class="container">
+    <div class="breadcrumb">
+        <a href="#">🏠 Beranda</a> / <a href="#">Hukum & Kriminal</a> / <span style="color:#2c5f7a;">Obat Keras Golongan G</span>
+    </div>
+
+    <h1 class="main-title">BERKEDOK JUALAN TELUR, POLISI UNGKAP OBAT KERAS GOLONGAN G DI TARUMAJAYA KABUPATEN BEKASI</h1>
+
+    <div class="meta-info">
+        <div class="author-date">
+            <span>📰 Tim Redaksi Kabar Bekasi</span>
+            <span>🕒 Kamis, 21 Mei 2026 · 10:15 WIB</span>
+        </div>
+        <div class="share-icons">
+            <span>📱 Bagikan</span>
+            <span>🐦 Tweet</span>
+        </div>
+    </div>
+
+    <div class="article-wrapper">
+        <div class="main-content">
+            <!-- Foto Tersangka sesuai permintaan -->
+            <div class="featured-image">
+                <img src="https://drive.google.com/uc?id=19JMtbxT0kHz0X_fhUFIfeXjY4ptfOTnm" alt="Foto Tersangka NF" style="width: 100%; height: auto; display: block; border-radius: 16px;">
+                <div class="photo-caption">
+                    Petugas menunjukkan barang bukti dan foto identitas tersangka inisial NF (dok. Polsek Tarumajaya)
+                </div>
+            </div>
+
+            <!-- NARASI BARU sesuai permintaan -->
+            <div class="berita-narasi">
+                <p><strong>Kabupaten Bekasi</strong> — Jajaran Polsek Tarumajaya berhasil mengungkap dugaan tindak pidana peredaran obat keras golongan G jenis Tramadol dan Eximer di wilayah Kecamatan Tarumajaya, Kabupaten Bekasi, pada Kamis (21/5/2026).</p>
+                <p>Pengungkapan ini berlangsung sekitar pukul 08.30 WIB di sebuah warung di Jalan Pasar Bojong Lama, Kampung Kelapa, Desa Segara Jaya. Dalam operasi tersebut, petugas mengamankan seorang wanita berinisial NF yang diduga terlibat dalam peredaran obat keras ilegal.</p>
+                <p>Proses Penangkapan dan Pengungkapan ini bermula dari Pengaduan dan Laporan masyarakat tentang aktivitas adanya transaksi obat keras golongan G dengan berkedok jualan telor di sekitar Pasar Bojong.</p>
+                <p>Pengungkapan kasus ini merupakan bagian dari komitmen Polri dalam memberantas peredaran obat-obatan ilegal yang dapat merusak generasi muda dan mengganggu ketertiban di wilayah hukum Polres Metro Bekasi. Polisi juga mengimbau masyarakat agar tidak terlibat dalam penyalahgunaan atau peredaran obat keras tanpa izin, serta segera melaporkan aktivitas mencurigakan kepada pihak berwajib.</p>
+            </div>
+
+            <!-- Informasi tambahan (tidak mengubah narasi, hanya pelengkap layout) -->
+            <div class="info-lokasi">
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
+                    <span style="background:#0b2b40; color:white; padding:6px 16px; border-radius:40px;">📍 Lokasi Kejadian</span>
+                    <span>Pasar Bojong Lama, Kampung Kelapa, Desa Segara Jaya, Tarumajaya</span>
+                </div>
+                <div style="margin-top: 14px; font-size:0.9rem; color:#2d3e50;">
+                    ⏱️ Update: Polsek Tarumajaya mengimbau warga yang memiliki informasi tambahan untuk menghubungi Call Center 110.
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar (berita terkait & populer) -->
+        <aside class="sidebar">
+            <h3>🔥 Populer Hari Ini</h3>
+            <div class="trending-item">
+                <a href="#">Operasi Pekat: Puluhan Miras Diamankan di Cikarang</a>
+                <div class="trending-date">21 Mei 2026</div>
+            </div>
+            <div class="trending-item">
+                <a href="#">Beredar Video Viral Jual Beli Obat Keras, Polisi Bergerak Cepat</a>
+                <div class="trending-date">20 Mei 2026</div>
+            </div>
+            <div class="trending-item">
+                <a href="#">Kapolres Metro Bekasi: Peredaran Obat Golongan G Ancaman Serius</a>
+                <div class="trending-date">19 Mei 2026</div>
+            </div>
+            <div class="trending-item">
+                <a href="#">Warga Segara Jaya Lega, Warung Nakal Ditutup Paksa</a>
+                <div class="trending-date">21 Mei 2026</div>
+            </div>
+            <div style="margin: 25px 0 10px 0;">
+                <h3 style="margin-bottom: 15px;">📢 Komitmen Polri</h3>
+                <p style="font-size: 0.85rem; line-height: 1.4; background: #eef2ff; padding: 12px; border-radius: 16px;">
+                    "Polsek Tarumajaya bersama Forkopimcam terus mengedukasi bahaya obat keras ilegal. Laporkan ke Bhabinkamtibmas terdekat."
+                </p>
+            </div>
+            <div style="margin-top: 20px;">
+                <div style="background: #f1f5f9; border-radius: 20px; padding: 12px;">
+                    <span style="font-weight: bold;">📞 Layanan Darurat Polisi : 110</span><br>
+                    <small>Polres Metro Bekasi - SPKT 24 Jam</small>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 Kabar Bekasi Media Grup | Jurnalis Berintegritas | Setia pada Fakta</p>
+    <p style="margin-top: 8px; font-size: 0.7rem;">Alamat redaksi: Jln. Raya Sultan Agung No. 47, Kota Bekasi | Telp (021) 555-1234</p>
+    <p style="margin-top: 6px;">#BerantasObatIlegal #PolriPresisi #TarumajayaBersinar</p>
+</footer>
+
+<script>
+    console.log("Halaman Berita: Berkedok Jualan Telur - Pengungkapan Obat Keras Golongan G (Narasi terbaru)");
+</script>
+</body>
+</html>
+```
