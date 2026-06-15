@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Digital Library | Unit Identifikasi Kriminal Polres Metro Bekasi</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Bootstrap 4 (dibutuhkan flipbook) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    
+    <!-- CSS Flipbook asli (tidak diubah) -->
+    <link rel="stylesheet" type="text/css" href="css/flipbook.style.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    
+    <!-- TEMA NEON (hanya warna & efek, tanpa mengubah layout buku) -->
+    <style>
+        /* ========== VARIABEL THEMA NEON ========== */
+        :root {
+            --bg-deep: #06060d;
+            --bg-surface: #0c0c1a;
+            --neon-cyan: #00e0ff;
+            --neon-cyan-dim: #00b8d4;
+            --neon-purple: #8b5cf6;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg-hover: rgba(255, 255, 255, 0.06);
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b8;
+            --text-dim: #6b6b80;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --transition: 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+        /* Canvas Particles & Scanlines (sama seperti master) */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background: repeating-linear-gradient(0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 224, 255, 0.3) 2px,
+                rgba(0, 224, 255, 0.3) 3px);
+        }
+        .main-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* ========== HEADER / NAVBAR (neon) ========== */
+        .navbar {
+            position: fixed;
+            top: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1400px;
+            z-index: 100;
+            padding: 12px 28px;
+            border-radius: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(24px) saturate(160%);
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-shield {
+            width: 40px;
+            height: auto;
+            filter: drop-shadow(0 0 12px rgba(0, 220, 255, 0.6));
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 220, 255, 0.5)); }
+            50% { filter: drop-shadow(0 0 20px rgba(0, 220, 255, 0.9)); }
+        }
+        .logo-text {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 20px rgba(0, 224, 255, 0.5);
+            line-height: 1.2;
+        }
+        .logo-text span {
+            display: block;
+            font-size: 0.6rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+        }
+        .navbar .form-inline .form-control {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            border-radius: 30px;
+            font-size: 0.85rem;
+        }
+        .navbar .form-inline .form-control:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0,224,255,0.2);
+            background: rgba(0,0,0,0.7);
+        }
+        .btn-outline-danger {
+            background: rgba(0, 224, 255, 0.1);
+            border-color: rgba(0, 224, 255, 0.4);
+            color: var(--neon-cyan);
+            border-radius: 30px;
+            transition: all var(--transition);
+        }
+        .btn-outline-danger:hover {
+            background: rgba(0, 224, 255, 0.3);
+            border-color: var(--neon-cyan);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0,224,255,0.4);
+        }
+        
+        /* ========== LAYOUT BUKU ASLI (TIDAK DIUBAH) ========== */
+        /* Style persis dari file index.html awal (tidak ada perubahan ukuran/jarak) */
+        .bookshelf .thumb {
+            display: inline-block;
+            cursor: pointer;
+            margin: 0px 0.5%;
+            width: 15% !important;
+            box-shadow: 0px 1px 3px rgba(0,0,0,.3);
+            max-width: 120px;
+        }
+        .bookshelf .thumb img {
+            width: 100%;
+            display: block;
+            vertical-align: top;
+        }
+        .bookshelf .shelf-img {
+            z-index: 0;
+            height: auto;
+            max-width: 100%;
+            vertical-align: top;
+            margin-top: -12px;
+        }
+        .bookshelf .covers {
+            width: 100%;
+            height: auto;
+            z-index: 99;
+            position: relative;
+            text-align: center;
+        }
+        .bookshelf {
+            text-align: center;
+            padding: 0px;
+        }
+        
+        /* Pagination (neon tapi struktur tetap) */
+        .pagination {
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination .page-link {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-family: 'Orbitron', monospace;
+        }
+        .pagination .page-link:hover {
+            background: rgba(0,224,255,0.2);
+            border-color: var(--neon-cyan);
+            color: var(--neon-cyan);
+        }
+        .pagination .active .page-link {
+            background: var(--neon-cyan);
+            border-color: var(--neon-cyan);
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 15px var(--neon-cyan);
+        }
+        
+        /* ========== FOOTER (neon, konten Unit Identifikasi) ========== */
+        footer#footer {
+            background: transparent !important;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 60px;
+            padding: 40px 0;
+        }
+        #footer h5 {
+            color: var(--neon-cyan);
+            border-left-color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+        }
+        #footer a, #footer .quick-links li a {
+            color: var(--text-secondary) !important;
+            transition: all 0.2s;
+        }
+        #footer a:hover, #footer .quick-links li a:hover {
+            color: var(--neon-cyan) !important;
+            text-shadow: 0 0 5px var(--neon-cyan);
+            margin-left: 3px;
+        }
+        .social .list-inline-item a {
+            font-size: 28px;
+            color: var(--text-dim);
+            transition: all 0.2s;
+        }
+        .social .list-inline-item a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
+        }
+        .text-white {
+            color: var(--text-secondary) !important;
+        }
+        
+        /* Override untuk komponen flipbook (warna saja) */
+        .flipbook-main-wrapper, .flipbook-bookLayer, .book {
+            background: transparent !important;
+        }
+        .flipbook-nav .flipbook-arrow-wrapper i, 
+        .flipbook-left-arrow, .flipbook-right-arrow {
+            background: rgba(0,0,0,0.6) !important;
+            backdrop-filter: blur(8px);
+            border-radius: 60px !important;
+        }
+        .flipbook-left-arrow:hover, .flipbook-right-arrow:hover {
+            background: var(--neon-cyan) !important;
+            color: #000 !important;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+        .flipbook-menuBottom, .flipbook-menuTop {
+            background: rgba(12,12,26,0.8) !important;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0,224,255,0.2);
+            border-radius: 60px;
+        }
+        .flipbook-menu-btn {
+            color: var(--text-secondary) !important;
+        }
+        .flipbook-menu-btn:hover {
+            color: var(--neon-cyan) !important;
+            text-shadow: 0 0 8px var(--neon-cyan);
+        }
+        .flipbook-currentPageHolder {
+            background: rgba(0,0,0,0.5);
+            border-radius: 30px;
+            padding: 0 10px;
+        }
+        .flipbook-currentPageNumber {
+            color: var(--neon-cyan) !important;
+            font-family: 'Orbitron', monospace;
+        }
+        
+        /* Animasi halus untuk konten */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bookshelf, .pagination {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Responsive: tetap pertahankan ukuran thumb relatif */
+        @media (max-width: 768px) {
+            .navbar {
+                top: 8px;
+                width: calc(100% - 20px);
+                padding: 8px 16px;
+            }
+            .logo-text {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PARTICLE BACKGROUND & SCANLINES (sama seperti master) -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="scanlines"></div>
+
+    <div class="main-wrapper">
+        <!-- Navbar neon -->
+        <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="#">
+                <svg class="logo-shield" viewBox="0 0 40 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 2L3 10v14c0 11 7 18 17 20 10-2 17-9 17-20V10L20 2z" fill="rgba(0,200,240,0.15)" stroke="rgba(0,224,255,0.7)" stroke-width="2"/>
+                    <circle cx="20" cy="20" r="6" fill="rgba(0,224,255,0.5)" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+                    <path d="M20 14v12M14 20h12" stroke="rgba(255,255,255,0.7)" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                <div class="logo-text">
+                    UNIT IDENTIFIKASI<span>Polres Metro Bekasi</span>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <form class="form-inline ml-auto">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Cari dokumen..." aria-label="Search">
+                    <button class="btn btn-outline-danger my-2 my-sm-0" type="submit"><i class="fas fa-search"></i> Cari</button>
+                </form>
+            </div>
+        </nav>
+
+        <!-- Spasi karena navbar fixed -->
+        <div style="height: 100px;"></div>
+
+        <!-- KONTEN RAK BUKU (struktur dan class asli, tidak diubah) -->
+        <div class="bookshelf">
+            <div class="covers">
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+            </div>
+            <img class="shelf-img" src="images/shelf_wood.png" alt="rak">
+        </div>
+        <div class="bookshelf">
+            <div class="covers">
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+            </div>
+            <img class="shelf-img" src="images/shelf_glass.png" alt="rak">
+        </div>
+        <div class="bookshelf">
+            <div class="covers">
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+                <div class="thumb book-1">
+                    <a href="v-pdf.html">
+                        <img src="images/book2/1.jpg" alt="cover">
+                    </a>
+                </div>
+            </div>
+            <img class="shelf-img" src="images/shelf_metal.png" alt="rak">
+        </div>
+
+        <!-- Pagination (struktur asli, tema neon) -->
+        <nav>
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Footer dengan tema neon (konten Unit Identifikasi) -->
+        <footer id="footer" class="footer mt-5">
+            <div class="container">
+                <div class="row text-center text-xs-center text-sm-left text-md-left">
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <h5>Tentang Unit Identifikasi</h5>
+                        <ul class="list-unstyled quick-links">
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Profil Unit</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Pejabat Struktural</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Renstra Forensik</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <h5>Layanan Forensik</h5>
+                        <ul class="list-unstyled quick-links">
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Identifikasi Sidik Jari</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Analisis DNA</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Forensik Digital</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Rekonstruksi TKP</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <h5>Kontak & Pengaduan</h5>
+                        <ul class="list-unstyled quick-links">
+                            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Mapolres Metro Bekasi</a></li>
+                            <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
+                            <li><a href="#"><i class="fas fa-envelope"></i> identifikasi@polresbekasi.go.id</a></li>
+                            <li><a href="#"><i class="fas fa-headset"></i> Call Center: 110</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+                        <ul class="list-unstyled list-inline social text-center">
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-twitter-square"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-square"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-youtube-square"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-center">
+                        <p class="h6">© 2026 Unit Identifikasi Kriminal Polres Metro Bekasi · Teknologi Forensik Digital</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Script pendukung (Bootstrap, jQuery, Flipbook) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="js/flipbook.min.js"></script>
+    
+    <!-- Particle animation (sama seperti master) -->
+    <script>
+        (function() {
+            const particleCanvas = document.getElementById('particles-canvas');
+            if (!particleCanvas) return;
+            const pctx = particleCanvas.getContext('2d');
+            let particles = [];
+            const PARTICLE_COUNT = 90;
+            const CONNECTION_DIST = 140;
+
+            function resizeParticleCanvas() {
+                particleCanvas.width = window.innerWidth;
+                particleCanvas.height = window.innerHeight;
+            }
+            resizeParticleCanvas();
+            window.addEventListener('resize', resizeParticleCanvas);
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * particleCanvas.width;
+                    this.y = Math.random() * particleCanvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.radius = Math.random() * 2 + 0.8;
+                    this.alpha = Math.random() * 0.5 + 0.2;
+                    this.color = Math.random() < 0.6 ?
+                        `rgba(0,210,255,${this.alpha})` :
+                        `rgba(139,92,246,${this.alpha})`;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < -20) this.x = particleCanvas.width + 20;
+                    if (this.x > particleCanvas.width + 20) this.x = -20;
+                    if (this.y < -20) this.y = particleCanvas.height + 20;
+                    if (this.y > particleCanvas.height + 20) this.y = -20;
+                }
+                draw(ctx) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                particles.push(new Particle());
+            }
+
+            function animateParticles() {
+                pctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                for (const p of particles) {
+                    p.update();
+                    p.draw(pctx);
+                }
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < CONNECTION_DIST) {
+                            const opacity = (1 - dist / CONNECTION_DIST) * 0.18;
+                            pctx.beginPath();
+                            pctx.moveTo(particles[i].x, particles[i].y);
+                            pctx.lineTo(particles[j].x, particles[j].y);
+                            pctx.strokeStyle = `rgba(0,200,240,${opacity})`;
+                            pctx.lineWidth = 0.6;
+                            pctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <link rel="shortcut icon" href="images/KPK_Logo.svg">
+    <title>View PDF | Unit Identifikasi Kriminal</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Google Fonts (Neon theme) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- AJAX -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    
+    <!-- CSS Flipbook -->
+    <link rel="stylesheet" type="text/css" href="css/flipbook.style.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="css/footer.css">
+    
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    
+    <!-- Flipbook JS -->
+    <script src="js/flipbook.min.js"></script>
+    
+    <!-- TEMA NEON FUTURISTIK (Unit Identifikasi) -->
+    <style>
+        /* ========== VARIABEL NEON ========== */
+        :root {
+            --bg-deep: #06060d;
+            --bg-surface: #0c0c1a;
+            --neon-cyan: #00e0ff;
+            --neon-cyan-dim: #00b8d4;
+            --neon-purple: #8b5cf6;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg-hover: rgba(255, 255, 255, 0.06);
+            --text-primary: #e8e8f0;
+            --text-secondary: #a0a0b8;
+            --text-dim: #6b6b80;
+            --transition: 0.35s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        /* Canvas Particles & Scanlines */
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.03;
+            background: repeating-linear-gradient(0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 224, 255, 0.3) 2px,
+                rgba(0, 224, 255, 0.3) 3px);
+        }
+        
+        /* Konten utama di atas layer */
+        .main-wrapper {
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Navbar Neon */
+        .navbar {
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(24px) saturate(160%);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+        }
+        .navbar-brand img {
+            filter: drop-shadow(0 0 12px rgba(0, 220, 255, 0.6));
+            transition: all var(--transition);
+        }
+        .navbar-brand img:hover {
+            filter: drop-shadow(0 0 20px rgba(0, 224, 255, 0.9));
+        }
+        
+        /* Card Info (glassmorphism) */
+        .card {
+            background: var(--glass-bg) !important;
+            backdrop-filter: blur(16px) saturate(140%);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            transition: all var(--transition);
+        }
+        .card:hover {
+            border-color: rgba(0, 224, 255, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 180, 220, 0.1);
+        }
+        #title {
+            color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(0,224,255,0.5);
+        }
+        #author, #date, #size {
+            color: var(--text-secondary);
+        }
+        #description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        
+        /* Tombol Neon */
+        .btn-primary {
+            background: linear-gradient(135deg, #00c8f0, #0090d0);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 24px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            box-shadow: 0 6px 30px rgba(0, 180, 230, 0.4);
+            transition: all var(--transition);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 190, 240, 0.55);
+            background: linear-gradient(135deg, #00d8ff, #00a0e0);
+        }
+        .btn-primary i {
+            margin-left: 8px;
+        }
+        
+        /* Footer (tema Unit Identifikasi) */
+        footer#footer {
+            background: transparent !important;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 60px;
+            padding: 40px 0;
+        }
+        #footer h5 {
+            color: var(--neon-cyan);
+            border-left-color: var(--neon-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+        }
+        #footer a, #footer .quick-links li a {
+            color: var(--text-secondary) !important;
+            transition: all 0.2s;
+        }
+        #footer a:hover, #footer .quick-links li a:hover {
+            color: var(--neon-cyan) !important;
+            text-shadow: 0 0 5px var(--neon-cyan);
+            margin-left: 3px;
+        }
+        .social .list-inline-item a {
+            font-size: 28px;
+            color: var(--text-dim);
+            transition: all 0.2s;
+        }
+        .social .list-inline-item a:hover {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
+        }
+        .text-white {
+            color: var(--text-secondary) !important;
+        }
+        
+        /* Override untuk komponen flipbook */
+        .flipbook-main-wrapper, .flipbook-bookLayer, .book {
+            background: transparent !important;
+        }
+        .flipbook-nav .flipbook-arrow-wrapper i, 
+        .flipbook-left-arrow, .flipbook-right-arrow {
+            background: rgba(0,0,0,0.6) !important;
+            backdrop-filter: blur(8px);
+            border-radius: 60px !important;
+        }
+        .flipbook-left-arrow:hover, .flipbook-right-arrow:hover {
+            background: var(--neon-cyan) !important;
+            color: #000 !important;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+        .flipbook-menuBottom, .flipbook-menuTop {
+            background: rgba(12,12,26,0.8) !important;
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0,224,255,0.2);
+            border-radius: 60px;
+        }
+        .flipbook-menu-btn {
+            color: var(--text-secondary) !important;
+        }
+        .flipbook-menu-btn:hover {
+            color: var(--neon-cyan) !important;
+            text-shadow: 0 0 8px var(--neon-cyan);
+        }
+        
+        /* Animasi */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .info, .card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#read").flipBook({
+                pdfUrl: 'pdf/pdf.pdf',
+                lightBox: true,
+                layout: 3,
+                currentPage: { vAlign: "bottom", hAlign: "left" },
+                btnShare: { enabled: false },
+                btnPrint: { hideOnMobile: true },
+                btnDownloadPages: {
+                    enabled: true,
+                    title: "Download pages",
+                    icon: "fa-download",
+                    icon2: "file_download",
+                    url: "images/pdf.rar",
+                    name: "allPages.zip",
+                    hideOnMobile: false
+                },
+                btnColor: 'rgb(0,224,255)', // neon cyan
+                sideBtnColor: '#00e0ff',
+                sideBtnSize: 60,
+                sideBtnBackground: "rgba(0,0,0,.7)",
+                sideBtnRadius: 60,
+                btnSound: { vAlign: "top", hAlign: "left" },
+                btnAutoplay: { vAlign: "top", hAlign: "left" },
+                btnShare: {
+                    enabled: true,
+                    title: "Share",
+                    icon: "fa-share-alt"
+                },
+                facebook: {
+                    enabled: true,
+                    url: "ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
+                },
+                google_plus: { enabled: false },
+                email: {
+                    enabled: true,
+                    url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf",
+                    title: "PDF KPK",
+                    description: "Silahkan click link di bawah untuk melihat / mengunduh pdf"
+                },
+                twitter: {
+                    enabled: true,
+                    url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
+                },
+                pinterest: {
+                    enabled: true,
+                    url: "https://ismanyan.github.io/Pdf_flipbook.demo.github.io/pdf/pdf.pdf"
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <!-- Particle Background & Scanlines -->
+    <canvas id="particles-canvas"></canvas>
+    <div class="scanlines"></div>
+
+    <div class="main-wrapper">
+        <!-- Navbar (tema Unit Identifikasi) -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="Unit Identifikasi Logo" width="150">
+            </a>
+        </nav>
+
+        <br><br><br><br><br>
+
+        <!-- Informasi PDF -->
+        <section class="info" id="info">
+            <div class="container">
+                <div class="card shadow">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="images/book2/1.jpg" class="w-100 book-1" alt="cover">
+                        </div>
+                        <div class="col-md-7 mt-3">
+                            <h3 id="title">DOKUMEN FORENSIK DIGITAL</h3>
+                            <p id="author" class="d-inline">Unit Identifikasi Kriminal</p>
+                            <p id="date" class="d-inline">Polres Metro Bekasi</p>
+                            <p id="size"><i class="fas fa-file"></i> File Size <b>2.4 MB</b></p>
+                            <div class="button">
+                                <a id="read" class="btn btn-primary mt-2 text-white">Baca PDF <i class="fas fa-book-reader fa-lg"></i></a>
+                                <a href="pdf/pdf.pdf" class="btn btn-primary mt-2 text-white" download>Unduh PDF <i class="fas fa-download fa-lg"></i></a>
+                            </div>
+                            <p id="description">
+                                Dokumen ini berisi standar operasional prosedur forensik digital, teknik identifikasi sidik jari, 
+                                serta panduan analisis DNA. Disediakan oleh Unit Identifikasi Kriminal Polres Metro Bekasi 
+                                untuk mendukung investigasi berbasis ilmu pengetahuan dan teknologi mutakhir.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer (tema Unit Identifikasi) -->
+        <footer id="footer" class="footer mt-5">
+            <div class="container">
+                <div class="row text-center text-xs-center text-sm-left text-md-left">
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <h5>Tentang Unit Identifikasi</h5>
+                        <ul class="list-unstyled quick-links">
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Profil Unit</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Pejabat Struktural</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Renstra Forensik</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <h5>Layanan Forensik</h5>
+                        <ul class="list-unstyled quick-links">
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Identifikasi Sidik Jari</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Analisis DNA</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Forensik Digital</a></li>
+                            <li><a href="#"><i class="fa fa-angle-double-right"></i>Rekonstruksi TKP</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-4">
+                        <h5>Kontak & Pengaduan</h5>
+                        <ul class="list-unstyled quick-links">
+                            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Mapolres Metro Bekasi</a></li>
+                            <li><a href="#"><i class="fas fa-phone"></i> (021) 1234 5678</a></li>
+                            <li><a href="#"><i class="fas fa-envelope"></i> identifikasi@polresbekasi.go.id</a></li>
+                            <li><a href="#"><i class="fas fa-headset"></i> Call Center: 110</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-5">
+                        <ul class="list-unstyled list-inline social text-center">
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-twitter-square"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-square"></i></a></li>
+                            <li class="list-inline-item"><a href="#"><i class="fab fa-youtube-square"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 mt-2 text-center">
+                        <p class="h6">© 2026 Unit Identifikasi Kriminal Polres Metro Bekasi · Teknologi Forensik Digital</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts pendukung -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+    
+    <!-- Particle Animation (sama seperti master) -->
+    <script>
+        (function() {
+            const particleCanvas = document.getElementById('particles-canvas');
+            if (!particleCanvas) return;
+            const pctx = particleCanvas.getContext('2d');
+            let particles = [];
+            const PARTICLE_COUNT = 90;
+            const CONNECTION_DIST = 140;
+
+            function resizeParticleCanvas() {
+                particleCanvas.width = window.innerWidth;
+                particleCanvas.height = window.innerHeight;
+            }
+            resizeParticleCanvas();
+            window.addEventListener('resize', resizeParticleCanvas);
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * particleCanvas.width;
+                    this.y = Math.random() * particleCanvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.radius = Math.random() * 2 + 0.8;
+                    this.alpha = Math.random() * 0.5 + 0.2;
+                    this.color = Math.random() < 0.6 ?
+                        `rgba(0,210,255,${this.alpha})` :
+                        `rgba(139,92,246,${this.alpha})`;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.x < -20) this.x = particleCanvas.width + 20;
+                    if (this.x > particleCanvas.width + 20) this.x = -20;
+                    if (this.y < -20) this.y = particleCanvas.height + 20;
+                    if (this.y > particleCanvas.height + 20) this.y = -20;
+                }
+                draw(ctx) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < PARTICLE_COUNT; i++) {
+                particles.push(new Particle());
+            }
+
+            function animateParticles() {
+                pctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+                for (const p of particles) {
+                    p.update();
+                    p.draw(pctx);
+                }
+                for (let i = 0; i < particles.length; i++) {
+                    for (let j = i + 1; j < particles.length; j++) {
+                        const dx = particles[i].x - particles[j].x;
+                        const dy = particles[i].y - particles[j].y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < CONNECTION_DIST) {
+                            const opacity = (1 - dist / CONNECTION_DIST) * 0.18;
+                            pctx.beginPath();
+                            pctx.moveTo(particles[i].x, particles[i].y);
+                            pctx.lineTo(particles[j].x, particles[j].y);
+                            pctx.strokeStyle = `rgba(0,200,240,${opacity})`;
+                            pctx.lineWidth = 0.6;
+                            pctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animateParticles);
+            }
+            animateParticles();
+        })();
+    </script>
+</body>
+</html>
