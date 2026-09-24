@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRIS & DANA - Kantin Kabitha</title>
+    <style>
+        :root {
+            --cream: #f5e6d3;
+            --coffee-dark: #3b2a1a;
+            --coffee-medium: #6b4226;
+            --coffee-light: #8b5e3c;
+            --gold: #c9a96e;
+            --gold-light: #e8d5b5;
+            --red-accent: #a0522d;
+            --paper: #faf3e8;
+            --ink: #2c1810;
+            --shadow: rgba(43, 27, 15, 0.25);
+            --border-vintage: #d4b896;
+            --danger: #b83b3b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background-color: var(--cream);
+            background-image:
+                radial-gradient(ellipse at top left, rgba(201, 169, 110, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(107, 66, 38, 0.12) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%236b4226' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            color: var(--ink);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px 40px;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: repeating-linear-gradient(90deg,
+                    var(--coffee-dark) 0px,
+                    var(--coffee-dark) 20px,
+                    var(--gold) 20px,
+                    var(--gold) 40px,
+                    var(--red-accent) 40px,
+                    var(--red-accent) 60px);
+            z-index: 1000;
+        }
+
+        .frame-container {
+            width: 100%;
+            max-width: 760px;
+            margin-top: 30px;
+            background: var(--paper);
+            border-radius: 12px;
+            box-shadow:
+                0 8px 32px var(--shadow),
+                0 0 0 6px var(--gold-light),
+                0 0 0 8px var(--border-vintage);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .frame-container::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 2px solid var(--gold);
+            border-radius: 6px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-ornament {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+
+        .header-ornament .line {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .header-ornament .diamond {
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            transform: rotate(45deg);
+            border-radius: 1px;
+        }
+
+        .coffee-icon-large {
+            font-size: 52px;
+            display: block;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--coffee-dark);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 0px var(--gold-light);
+            margin-bottom: 5px;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            color: var(--red-accent);
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .tagline {
+            text-align: center;
+            padding: 8px 20px 15px;
+            font-size: 0.9rem;
+            color: var(--coffee-medium);
+            font-style: italic;
+            border-bottom: 2px dashed var(--border-vintage);
+            margin: 0 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ==================== HALAMAN QRIS & DANA ==================== */
+        .payment-section {
+            padding: 0 30px 40px;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .payment-head {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .payment-title {
+            font-size: 1.7rem;
+            color: var(--coffee-dark);
+            letter-spacing: 1.5px;
+        }
+
+        .payment-sub {
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--coffee-medium);
+            margin-top: 5px;
+        }
+
+        .payment-card {
+            width: 100%;
+            max-width: 520px;
+            background: linear-gradient(180deg, #fdf8f0, #f5e6d3);
+            border: 2px solid var(--border-vintage);
+            border-radius: 16px;
+            padding: 32px 28px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(43, 27, 15, 0.12);
+        }
+
+        .qris-box {
+            background: #fff;
+            border: 3px solid var(--border-vintage);
+            border-radius: 14px;
+            padding: 22px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .qris-img {
+            width: 380px;
+            height: 380px;
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+
+        .qris-label {
+            font-size: 0.95rem;
+            color: var(--coffee-medium);
+            margin-top: 12px;
+            letter-spacing: 0.6px;
+            font-weight: 700;
+        }
+
+        .payment-info {
+            margin: 16px 0 22px;
+            font-size: 1rem;
+            color: var(--coffee-dark);
+            line-height: 1.8;
+        }
+
+        .payment-info strong {
+            color: var(--coffee-medium);
+        }
+
+        .payment-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .btn-download,
+        .btn-pay-dana {
+            padding: 15px 22px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .btn-download {
+            background: transparent;
+            border-color: var(--coffee-medium);
+            color: var(--coffee-medium);
+        }
+
+        .btn-download:hover {
+            background: var(--coffee-medium);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(107, 66, 38, 0.25);
+        }
+
+        .btn-pay-dana {
+            background: linear-gradient(135deg, #118eea, #0b6bb8);
+            color: #fff;
+            border-color: #0b6bb8;
+            box-shadow: 0 4px 14px rgba(17, 142, 234, 0.35);
+        }
+
+        .btn-pay-dana:hover {
+            background: linear-gradient(135deg, #0f7fd1, #095a9e);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(17, 142, 234, 0.45);
+        }
+
+        .btn-pay-dana:active {
+            transform: translateY(0);
+        }
+
+        .payment-note {
+            font-size: 0.75rem;
+            color: #9a8a7a;
+            font-style: italic;
+            margin-top: 6px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--coffee-dark);
+            color: var(--gold-light);
+            padding: 14px 22px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            z-index: 3000;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+            border-left: 4px solid var(--gold);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 640px) {
+            .qris-img {
+                width: 300px;
+                height: 300px;
+            }
+            .payment-card {
+                padding: 24px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0 8px 20px;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+            .coffee-icon-large {
+                font-size: 40px;
+            }
+            .qris-img {
+                width: 260px;
+                height: 260px;
+            }
+            .qris-box {
+                padding: 14px;
+            }
+            .payment-card {
+                padding: 20px 14px;
+            }
+            .payment-title {
+                font-size: 1.3rem;
+            }
+            .payment-section {
+                padding: 0 12px 30px;
+            }
+            .toast {
+                bottom: 15px;
+                right: 15px;
+                left: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="frame-container">
+        <header class="header">
+            <span class="coffee-icon-large">☕</span>
+            <div class="header-ornament">
+                <div class="line"></div>
+                <div class="diamond"></div>
+                <div class="line"></div>
+            </div>
+            <h1>Kantin Kabitha</h1>
+            <p class="subtitle">~ Polres Metro Bekasi ~</p>
+        </header>
+
+        <div class="tagline">
+            "Setiap cangkir adalah cerita, setiap gigitan adalah kenangan."
+        </div>
+
+        <section class="payment-section">
+            <div class="payment-head">
+                <h2 class="payment-title">💳 Pembayaran QRIS &amp; DANA</h2>
+                <p class="payment-sub">Scan QRIS atau bayar langsung ke DANA Business</p>
+            </div>
+
+            <div class="payment-card">
+                <div class="qris-box">
+                    <img id="qrisImage" src="" alt="QRIS Code" class="qris-img">
+                    <p class="qris-label">QRIS Kantin Kabitha</p>
+                </div>
+
+                <div class="payment-info">
+                    <p><strong>DANA Business:</strong> 083833557316</p>
+                    <p><strong>Atas Nama:</strong> Kantin Kabitha</p>
+                </div>
+
+                <div class="payment-actions">
+                    <button type="button" class="btn-download" id="btnDownloadQris">⬇️ Download QRIS</button>
+                    <button type="button" class="btn-pay-dana" id="btnPayDana">💳 Bayar via DANA</button>
+                </div>
+
+                <p class="payment-note">* Tombol Bayar via DANA akan membuka aplikasi DANA (jika terpasang).</p>
+            </div>
+        </section>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            const DANA_NUMBER = '083833557316';
+            const QRIS_IMAGE_URL = 'https://ident-bekasi.github.io/web/gambar/IMG-20260924-WA0009.jpg';
+
+            const toast = document.getElementById('toast');
+            const qrisImage = document.getElementById('qrisImage');
+            const btnDownloadQris = document.getElementById('btnDownloadQris');
+            const btnPayDana = document.getElementById('btnPayDana');
+
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }
+
+            function initQris() {
+                qrisImage.src = QRIS_IMAGE_URL;
+                qrisImage.onerror = function() {
+                    showToast('⚠️ Gagal memuat gambar QRIS');
+                };
+            }
+
+            function downloadQris() {
+                showToast('⏳ Mengunduh QRIS...');
+                fetch(QRIS_IMAGE_URL)
+                    .then(res => {
+                        if (!res.ok) throw new Error('Gagal memuat gambar');
+                        return res.blob();
+                    })
+                    .then(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'qris-kantin-kabitha.jpg';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                        showToast('✅ QRIS berhasil diunduh');
+                    })
+                    .catch(() => {
+                        window.open(QRIS_IMAGE_URL, '_blank');
+                        showToast('📷 Gambar dibuka di tab baru, simpan secara manual');
+                    });
+            }
+
+            function payWithDana() {
+                const danaLink = 'dana://pay?phone=' + DANA_NUMBER;
+                const fallback = 'https://link.dana.id/pay?phone=' + DANA_NUMBER;
+
+                showToast('💳 Membuka DANA...');
+
+                window.location.href = danaLink;
+
+                setTimeout(() => {
+                    if (!document.hidden) {
+                        window.open(fallback, '_blank');
+                    }
+                }, 1500);
+            }
+
+            btnDownloadQris.addEventListener('click', downloadQris);
+            btnPayDana.addEventListener('click', payWithDana);
+
+            initQris();
+        })();
+    </script>
+</body>
+  </html>
